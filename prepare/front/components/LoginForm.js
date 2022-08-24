@@ -3,8 +3,8 @@ import { Form, Input, Button } from 'antd';
 import Link from 'next/link';
 import styled from 'styled-components';
 import useInput from '../hooks/useInput';
-import { useDispatch } from 'react-redux';
-import { loginAction } from '../reducers/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginRequestAction } from '../reducers/user';
 
 // styled components
 // ButtonWrapper div태그로
@@ -17,22 +17,25 @@ const FormWrapper = styled(Form)`
 `;
 
 function LoginForm() {
+  const { logInLoading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const [id, onChangeId] = useInput('');
+  const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
 
   // id, password 값이 변하지 않는 한 기존 함수 재사용
   const onSubmitForm = useCallback(() => {
-    console.log(id, password);
-    dispatch(loginAction({ id, password })); // redux useDispatch로 로그인 액션 실행
-  }, [id, password]);
+    console.log(email, password);
+    dispatch(loginRequestAction({ email, password })); // redux useDispatch로 로그인 액션 실행
+  }, [email, password]);
 
   return (
     <FormWrapper onFinish={onSubmitForm}>
       <div>
-        <label htmlFor='user-id'>아이디</label>
+        <label htmlFor='user-id' type='email'>
+          이메일
+        </label>
         <br />
-        <Input name='user-id' value={id} onChange={onChangeId} required />
+        <Input name='user-id' value={email} onChange={onChangeEmail} required />
       </div>
       <div>
         <label htmlFor='user-password'>비밀번호</label>
@@ -49,7 +52,7 @@ function LoginForm() {
         <Button
           type='primary'
           htmlType='submit'
-          loading={false}
+          loading={logInLoading}
           onClick={onSubmitForm}
         >
           로그인

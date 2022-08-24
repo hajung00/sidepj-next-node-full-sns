@@ -29,7 +29,7 @@ const Global = createGlobalStyle`
 
 function AppLayout({ children }) {
   // redux useSelector로 store에 저장된 데이터 가져오기
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const { me } = useSelector((state) => state.user);
 
   return (
     <div>
@@ -58,7 +58,7 @@ function AppLayout({ children }) {
       {/* 반응형 그리드 antd에서 정한 breakpoint가 되면 25%, 50%, 25%차지*/}
       <Row gutter={8}>
         <Col xs={24} md={6}>
-          {isLoggedIn ? <UserProfile /> : <LoginForm />}
+          {me ? <UserProfile /> : <LoginForm />}
         </Col>
         <Col xs={24} md={12}>
           {children}

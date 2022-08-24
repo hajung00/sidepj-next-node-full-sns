@@ -1,24 +1,27 @@
-import React, { useCallback, useState, useRef } from 'react';
+import React, { useCallback, useRef, useEffect } from 'react';
 import { Button, Form, Input } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { addPost } from '../reducers/post';
+import useInput from '../hooks/useInput';
 
 function PostForm() {
   // redux useSelector로 store에 저장된 데이터 가져오기
-  const { imagePaths } = useSelector((state) => state.post);
-
-  const [text, setText] = useState('');
-  const onChangeText = useCallback((e) => {
-    setText(e.target.value);
-  }, []);
-
+  const { imagePaths, addPostDone } = useSelector((state) => state.post);
   const dispatch = useDispatch();
+
+  const [text, onChangeText, setText] = useInput('');
+
+  // post가 완료되면 그때 빈칸으로
+  useEffect(() => {
+    if (addPostDone) {
+      setText('');
+    }
+  }, [addPostDone]);
 
   // 짹짹 버튼 누르면
   const onSubmit = useCallback(() => {
-    dispatch(addPost); // redux useDispatch로 로그아웃 액션 실행
-    setText('');
-  }, []);
+    dispatch(addPost(text)); // redux useDispatch로 addpost 액션 실행
+  }, [text]);
 
   const imageInput = useRef();
   const onClickImageUpload = useCallback(() => {
