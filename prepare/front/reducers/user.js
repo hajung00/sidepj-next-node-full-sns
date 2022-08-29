@@ -90,9 +90,10 @@ const dummyUser = (data) => ({
 });
 
 // 회원가입 액션
-export const signUpRequestAction = () => {
+export const signUpRequestAction = (data) => {
   return {
     type: SIGN_UP_REQUEST,
+    data,
   };
 };
 

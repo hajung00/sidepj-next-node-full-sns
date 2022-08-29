@@ -1,11 +1,12 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import AppLayout from '../components/AppLayout';
 import Head from 'next/head';
 import { Form, Input, Checkbox, Button } from 'antd';
 import useInput from '../hooks/useInput';
 import styled from 'styled-components';
-import { useDispatch, useStore } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 import { signUpRequestAction } from '../reducers/user';
+import Router from 'next/router';
 
 const ErrorMessage = styled.div`
   color: red;
@@ -38,7 +39,21 @@ const Signup = () => {
   });
 
   const dispatch = useDispatch();
-  const { signUpLoading } = useStore((state) => state.user);
+  const { signUpLoading, signUpDone, signUpError } = useSelector(
+    (state) => state.user
+  );
+
+  useEffect(() => {
+    if (signUpDone) {
+      Router.replace('/');
+    }
+  }, [signUpDone]);
+
+  useEffect(() => {
+    if (signUpError) {
+      alert(signUpError);
+    }
+  }, [signUpError]);
 
   // 제출했을 때, 비밀번호 같은지, check box(동의) 눌렀는지 확인
   const onSubmit = useCallback(() => {
