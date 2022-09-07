@@ -39,7 +39,7 @@ const Signup = () => {
   });
 
   const dispatch = useDispatch();
-  const { signUpLoading, signUpDone, signUpError } = useSelector(
+  const { signUpLoading, signUpDone, signUpError, me } = useSelector(
     (state) => state.user
   );
 
@@ -54,6 +54,12 @@ const Signup = () => {
       alert(signUpError);
     }
   }, [signUpError]);
+
+  useEffect(() => {
+    if (me && me.id) {
+      Router.replace('/');
+    }
+  }, [me && me.id]);
 
   // 제출했을 때, 비밀번호 같은지, check box(동의) 눌렀는지 확인
   const onSubmit = useCallback(() => {

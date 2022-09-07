@@ -6,6 +6,12 @@ import { faker } from '@faker-js/faker';
 export const initialState = {
   mainPosts: [],
   imagePaths: [],
+  likePostLoading: false,
+  likePostError: null,
+  likePostDone: false,
+  unlikePostLoading: false,
+  unlikePostError: null,
+  unlikePostDone: false,
   hasMorePost: true,
   postAdded: false,
   loadPostLoading: false,
@@ -21,35 +27,18 @@ export const initialState = {
   addCommentError: null,
   addCommentDone: false,
 };
-export const generateDummyPost = (number) =>
-  Array(number)
-    .fill()
-    .map(() => ({
-      id: shortId.generate(),
-      User: {
-        id: shortId.generate(),
-        nickname: faker.internet.userName(),
-      },
-      content: faker.lorem.paragraph(),
-      Images: [
-        {
-          src: faker.image.cats(),
-        },
-      ],
-      Comments: [
-        {
-          id: shortId.generate(),
-          User: {
-            id: shortId.generate(),
-            nickname: faker.name.firstName(),
-          },
-          content: faker.lorem.paragraph(),
-        },
-      ],
-    }));
 
 //action => 객체
 //action이 동적으로 필요하면 action creator 함수 생성
+
+export const LIKE_POST_REQUEST = 'LIKE_POST_REQUEST';
+export const LIKE_POST_SUCCESS = 'LIKE_POST_SUCCESS';
+export const LIKE_POST_FAILURE = 'LIKE_POST_FAILURE';
+
+export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST';
+export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS';
+export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE';
+
 export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST';
 export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS';
 export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE';
@@ -75,28 +64,6 @@ export const addPost = (data) => ({
 export const addComment = (data) => ({
   type: ADD_COMMENT_REQUEST,
   data,
-});
-
-// post dummydata
-const dummyPost = (data) => ({
-  id: data.id,
-  User: {
-    id: 1,
-    nickname: '하정2',
-  },
-  content: data.content,
-  Images: [],
-  Comments: [],
-});
-
-// comment dummydata
-const dummyComment = (data) => ({
-  id: shortId.generate(),
-  User: {
-    id: 1,
-    nickname: 'hajung',
-  },
-  content: data,
 });
 
 // reducer
@@ -135,7 +102,7 @@ const reducer = (state = initialState, action) => {
       case ADD_POST_SUCCESS:
         draft.addPostLoading = false;
         draft.addPostDone = true;
-        draft.mainPosts.unshift(dummyPost(action.data));
+        draft.mainPosts.unshift(action.data);
         break;
       // return {
       //   ...state,
@@ -179,8 +146,8 @@ const reducer = (state = initialState, action) => {
         break;
 
       case ADD_COMMENT_SUCCESS: {
-        const post = draft.mainPosts.find((y) => y.id === action.data.postId);
-        post.Comments.unshift(dummyComment(action.data.content));
+        const post = draft.mainPosts.find((y) => y.id === action.data.PostId);
+        post.Comments.unshift(action.data);
         draft.addCommentLoading = false;
         draft.addCommentDone = true;
         break;
@@ -204,6 +171,36 @@ const reducer = (state = initialState, action) => {
       case ADD_COMMENT_FAILURE:
         draft.addCommentLoading = false;
         draft.addCommentError = action.error;
+        break;
+
+      // *like
+      case LIKE_POST_REQUEST:
+        draft.likePostLoading = true;
+        draft.likePostError = null;
+        draft.likePostDone = false;
+        break;
+      case LIKE_POST_SUCCESS:
+        draft.likePostLoading = false;
+        draft.likePostDone = true;
+        break;
+      case LIKE_POST_FAILURE:
+        draft.likePostLoading = false;
+        draft.likePostError = action.error;
+        break;
+
+      // *unlike
+      case UNLIKE_POST_REQUEST:
+        draft.unlikePostLoading = true;
+        draft.unlikePostError = null;
+        draft.unlikePostDone = false;
+        break;
+      case UNLIKE_POST_SUCCESS:
+        draft.unlikePostLoading = false;
+        draft.unlikePostDone = true;
+        break;
+      case UNLIKE_POST_FAILURE:
+        draft.unlikePostLoading = false;
+        draft.unlikePostError = action.error;
         break;
 
       default:

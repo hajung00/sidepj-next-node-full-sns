@@ -1,6 +1,9 @@
 import { all, fork, takeLatest, put, delay, call } from 'redux-saga/effects';
 import axios from 'axios';
 import {
+  LOAD_MY_INFO_REQUEST,
+  LOAD_MY_INFO_SUCCESS,
+  LOAD_MY_INFO_FAILURE,
   FOLLOW_REQUEST,
   FOLLOW_SUCCESS,
   FOLLOW_FAILURE,
@@ -17,6 +20,9 @@ import {
   SIGN_UP_SUCCESS,
   SIGN_UP_FAILURE,
 } from '../reducers/user';
+function* watchLoadMyInfo() {
+  yield takeLatest(LOAD_MY_INFO_REQUEST, loadmyInfo);
+}
 function* watchFollow() {
   yield takeLatest(FOLLOW_REQUEST, follow);
 }
@@ -31,6 +37,24 @@ function* watchLogOut() {
 }
 function* watchSignUp() {
   yield takeLatest(SIGN_UP_REQUEST, signUp);
+}
+
+function loadmyInfoAPI() {
+  return axios.get('/user');
+}
+function* loadmyInfo(action) {
+  try {
+    const result = yield call(loadmyInfoAPI, action.data);
+    yield put({
+      type: LOAD_MY_INFO_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    yield put({
+      type: LOAD_MY_INFO_FAILURE,
+      error: err.response.data,
+    });
+  }
 }
 
 // 팔로우
@@ -78,17 +102,15 @@ function* unFollow(action) {
 }
 // 로그인
 function logInAPI(data) {
-  return axios.post('/api/login', data);
+  return axios.post('/user/login', data);
 }
 
 function* logIn(action) {
   try {
-    // const result = yield call(logInAPI, action.data);
-    yield delay(1000);
+    const result = yield call(logInAPI, action.data);
     yield put({
       type: LOG_IN_SUCCESS,
-      data: action.data,
-      //data: result.data,
+      data: result.data,
     });
   } catch (err) {
     yield put({
@@ -100,16 +122,14 @@ function* logIn(action) {
 
 // 로그아웃
 function logOutAPI() {
-  return axios.post('/api/logout');
+  return axios.post('user/logout');
 }
 
 function* logOut() {
   try {
-    // const result = yield call(logOutAPI);
-    yield delay(1000);
+    const result = yield call(logOutAPI);
     yield put({
       type: LOG_OUT_SUCCESS,
-      //data: result.data,
     });
   } catch (err) {
     yield put({
@@ -121,7 +141,7 @@ function* logOut() {
 
 // 회원가입
 function signUpAPI(data) {
-  return axios.post('http://localhost:3065/user', data);
+  return axios.post('/user', data);
 }
 
 function* signUp(action) {
@@ -141,6 +161,7 @@ function* signUp(action) {
 
 export default function* userSaga() {
   yield all([
+    fork(watchLoadMyInfo),
     fork(watchFollow),
     fork(watchUnFollow),
     fork(watchLogIn),

@@ -2,6 +2,9 @@ import produce from 'immer';
 
 // state
 export const initialState = {
+  loadmyInfoLoading: false,
+  loadmyInfoDone: false,
+  loadmyInfoError: null,
   logInLoading: false, // 로그인 시도중
   logInDone: false,
   logInError: null,
@@ -26,6 +29,10 @@ export const initialState = {
 };
 
 // 오타 방지용(변수 선언)
+export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
+export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS';
+export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
+
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
 export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
 export const LOG_IN_FAILURE = 'LOG_IN_FAILURE';
@@ -71,24 +78,6 @@ export const logoutRequestAction = (data) => {
   };
 };
 
-// dummyUser
-const dummyUser = (data) => ({
-  ...data, // [email, password]
-  nickname: 'hajung',
-  id: 1,
-  Posts: [{ id: 1 }],
-  Followings: [
-    { nickname: '하정1' },
-    { nickname: '하정2' },
-    { nickname: '하정3' },
-  ],
-  Followers: [
-    { nickname: '하정1' },
-    { nickname: '하정2' },
-    { nickname: '하정3' },
-  ],
-});
-
 // 회원가입 액션
 export const signUpRequestAction = (data) => {
   return {
@@ -101,6 +90,24 @@ export const signUpRequestAction = (data) => {
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
+      // follow
+      case LOAD_MY_INFO_REQUEST:
+        draft.loadmyInfoLoading = true;
+        draft.loadmyInfoError = null;
+        draft.loadmyInfoDone = false;
+        break;
+
+      case LOAD_MY_INFO_SUCCESS:
+        draft.loadmyInfoLoading = false;
+        draft.loadmyInfoDone = true;
+        draft.me = action.data;
+        break;
+
+      case LOAD_MY_INFO_FAILURE:
+        draft.loadmyInfoLoading = false;
+        draft.loadmyInfoError = action.error;
+        break;
+
       // follow
       case FOLLOW_REQUEST:
         draft.followLoading = true;
@@ -149,7 +156,7 @@ const reducer = (state = initialState, action) => {
       case LOG_IN_SUCCESS:
         draft.logInLoading = false;
         draft.logInDone = true;
-        draft.me = dummyUser(action.data);
+        draft.me = action.data;
         break;
 
       case LOG_IN_FAILURE:

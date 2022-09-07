@@ -1,9 +1,17 @@
 const express = require('express');
 const postRouter = require('./routes/post');
+const postsRouter = require('./routes/posts');
 const userRouter = require('./routes/user');
 const db = require('./models');
 const cors = require('cors');
+const passportConfig = require('./passport');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const passport = require('passport');
+const dotenv = require('dotenv');
+const morgan = require('morgan');
 const app = express();
+dotenv.config();
 
 db.sequelize
   .sync()
@@ -12,20 +20,40 @@ db.sequelize
   })
   .catch(console.err);
 
+passportConfig();
+
 app.use(
   cors({
-    origin: '*',
+    origin: 'http://localhost:3000',
+    credentials: true, //cookie 전달 허용
   })
 );
+
+app.use(morgan('dev'));
 // front에서 받아온 데이터를 req.body에 넣어줌
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// cookie, session 설정
+// cookie: 로그인 되면 백앤드 서버에서 브라우저로 정보 전달해주는데 비밀번호 그냥 보내면 해킹에 취약해 랜덤한 문자열 생성
+// session: 백앤드 user의 전체 데이터(nickname, id, email ,,,)
+app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(
+  session({
+    saveUninitialized: false,
+    resave: false,
+    secret: process.env.COOKIE_SECRET,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get('/', (req, res) => {
   res.send('hello');
 });
 
 app.use('/post', postRouter);
+app.use('/posts', postsRouter);
 app.use('/user', userRouter);
 
 app.listen(3065, () => {

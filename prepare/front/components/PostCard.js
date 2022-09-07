@@ -21,9 +21,17 @@ function PostCard({ post }) {
   const id = useSelector((state) => state.user.me?.id);
 
   // 좋아요 부분 눌렀을 때 토글
-  const [liked, setLiked] = useState(false);
-  const onToggleLike = useCallback(() => {
-    setLiked((prev) => !prev);
+  const onLike = useCallback(() => {
+    dispatch({
+      type: LIKE_POST_REQUEST,
+      data: post.id,
+    });
+  }, []);
+  const onUnLike = useCallback(() => {
+    dispatch({
+      type: UNLIKE_POST_REQUEST,
+      data: post.id,
+    });
   }, []);
 
   // 댓글 부분 눌렀을 때 토글
@@ -56,10 +64,10 @@ function PostCard({ post }) {
             <HeartTwoTone
               key='heart'
               twoToneColor='#eb2f96'
-              onClick={onToggleLike}
+              onClick={onUnLike}
             />
           ) : (
-            <HeartOutlined key='heart' onClick={onToggleLike} />
+            <HeartOutlined key='heart' onClick={onLike} />
           ),
 
           //댓글 버튼 누르면 댓글부분 열리게
@@ -133,6 +141,7 @@ PostCard.propTypes = {
     id: PropTypes.number,
     User: PropTypes.object,
     content: PropTypes.string,
+    createAt: PropTypes.string,
     Images: PropTypes.arrayOf(PropTypes.object),
     Comments: PropTypes.arrayOf(PropTypes.object),
   }).isRequired,
