@@ -5,6 +5,7 @@ const passport = require('passport');
 const router = express.Router();
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
+// GET /user
 router.get('/', async (req, res, next) => {
   try {
     if (req.user) {

@@ -2,7 +2,7 @@ const express = require('express');
 const { Post, Image, Comment, User } = require('../models');
 const { isLoggedIn } = require('./middlewares');
 const router = express.Router();
-//POST post
+//POST /post
 router.post('/', isLoggedIn, async (req, res, next) => {
   try {
     const post = await Post.create({
@@ -28,6 +28,11 @@ router.post('/', isLoggedIn, async (req, res, next) => {
           model: User,
           attributes: ['id', 'nickname'],
         },
+        {
+          model: User,
+          as: 'Likers',
+          attributese: ['id'],
+        },
       ],
     });
 
@@ -38,7 +43,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
   }
 });
 
-//Post comment
+//Post /post/id/comment
 router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
   try {
     const post = await Post.findOne({
@@ -67,4 +72,35 @@ router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
     next(error);
   }
 });
+
+//PATCH /post/1/like
+router.patch('/:postId/like', isLoggedIn, async (req, res, next) => {
+  try {
+    const post = await Post.findOne({ where: { id: req.params.postId } });
+    if (!post) {
+      return res.status(403).send('게시글이 존재하지 않습니다.');
+    }
+    await post.addLikers(req.user.id);
+    res.json({ PostId: post.id, UserId: req.user.id });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+// DELETE /post/1/like
+router.delete('/:postId/like', isLoggedIn, async (req, res, next) => {
+  try {
+    const post = await Post.findOne({ where: { id: req.params.postId } });
+    if (!post) {
+      return res.status(403).send('게시글이 존재하지 않습니다.');
+    }
+    await post.removeLikers(req.user.id);
+    res.json({ PostId: post.id, UserId: req.user.id });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 module.exports = router;

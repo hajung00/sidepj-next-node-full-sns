@@ -12,27 +12,31 @@ import { useDispatch, useSelector } from 'react-redux';
 import PostImages from '../components/PostImages';
 import CommentForm from './CommentForm';
 import PostCardContent from './PostCardContent';
-import { REMOVE_POST_REQUEST } from '../reducers/post';
+import {
+  REMOVE_POST_REQUEST,
+  LIKE_POST_REQUEST,
+  UNLIKE_POST_REQUEST,
+} from '../reducers/post';
 import FollowButton from './FollowButton';
 
 function PostCard({ post }) {
   // 로그인 상태 확인 위해 user에 me:{id, password} 의 id를 가져온다
   // optional chaining연산자 : state.user.me && state.user.me.id를 state.user.me?.id
   const id = useSelector((state) => state.user.me?.id);
-
+  const liked = post.Likers.find((y) => y.id === id);
   // 좋아요 부분 눌렀을 때 토글
   const onLike = useCallback(() => {
     dispatch({
       type: LIKE_POST_REQUEST,
       data: post.id,
     });
-  }, []);
+  }, [id]);
   const onUnLike = useCallback(() => {
     dispatch({
       type: UNLIKE_POST_REQUEST,
       data: post.id,
     });
-  }, []);
+  }, [id]);
 
   // 댓글 부분 눌렀을 때 토글
   const [commentFormOpened, setCommentFormOpened] = useState(false);
@@ -144,6 +148,7 @@ PostCard.propTypes = {
     createAt: PropTypes.string,
     Images: PropTypes.arrayOf(PropTypes.object),
     Comments: PropTypes.arrayOf(PropTypes.object),
+    Likers: PropTypes.arrayOf(PropTypes.object),
   }).isRequired,
 };
 export default PostCard;

@@ -67,10 +67,11 @@ function* loadPost(action) {
       type: LOAD_POST_SUCCESS,
       data: result.data,
     });
-  } catch (err) {
+  } catch (error) {
+    console.error(error);
     yield put({
       type: LOAD_POST_FAILURE,
-      data: err.response.data,
+      data: error.response.data,
     });
   }
 }
@@ -155,7 +156,7 @@ function* likePost(action) {
     const result = yield call(likePostAPI, action.data);
     yield put({
       type: LIKE_POST_SUCCESS,
-      data: result.data,
+      data: result.data, //PostId, UserId
     });
   } catch (err) {
     yield put({
