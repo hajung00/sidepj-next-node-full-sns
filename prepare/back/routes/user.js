@@ -86,11 +86,6 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
   })(req, res, next);
 });
 
-router.post('/logout', isLoggedIn, (req, res) => {
-  req.logout();
-  req.session.destroy();
-  res.send('ok');
-});
 // 회원가입
 router.post('/', isNotLoggedIn, async (req, res, next) => {
   try {
@@ -109,6 +104,31 @@ router.post('/', isNotLoggedIn, async (req, res, next) => {
       password: hashedPassword,
     });
     res.status(200).send('ok');
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+// POST /logout
+router.post('/logout', isLoggedIn, (req, res) => {
+  req.logout();
+  req.session.destroy();
+  res.send('ok');
+});
+
+// PATCH /user/nickname
+router.patch('/nickname', isLoggedIn, async (req, res, next) => {
+  try {
+    await User.update(
+      {
+        nickname: req.body.nickname,
+      },
+      {
+        where: { id: req.user.id },
+      }
+    );
+    res.status(200).json({ nickname: req.body.nickname });
   } catch (error) {
     console.error(error);
     next(error);

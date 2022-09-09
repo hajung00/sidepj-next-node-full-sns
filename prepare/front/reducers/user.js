@@ -41,9 +41,9 @@ export const LOG_OUT_REQUEST = 'LOG_OUT_REQUEST';
 export const LOG_OUT_SUCCESS = 'LOG_OUT_SUCCESS';
 export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE';
 
-export const CHANGE_NICNAME_REQUEST = 'CHANGE_NICNAME_REQUEST';
-export const CHANGE_NICNAME_SUCCESS = 'CHANGE_NICNAME_SUCCESS';
-export const CHANGE_NICNAME_FAILURE = 'CHANGE_NICNAME_FAILURE';
+export const CHANGE_NICKNAME_REQUEST = 'CHANGE_NICKNAME_REQUEST';
+export const CHANGE_NICKNAME_SUCCESS = 'CHANGE_NICKNAME_SUCCESS';
+export const CHANGE_NICKNAME_FAILURE = 'CHANGE_NICKNAME_FAILURE';
 
 export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
 export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
@@ -200,19 +200,19 @@ const reducer = (state = initialState, action) => {
         break;
 
       // 닉네임 변경
-      case CHANGE_NICNAME_REQUEST:
+      case CHANGE_NICKNAME_REQUEST:
         draft.changeNickNameLoading = true;
         draft.changeNickNameError = null;
         draft.changeNickNameDone = false;
         break;
 
-      case CHANGE_NICNAME_SUCCESS:
+      case CHANGE_NICKNAME_SUCCESS:
+        draft.me.nickname = action.data.nickname;
         draft.changeNickNameLoading = false;
         draft.changeNickNameDone = true;
-        draft.me = null;
         break;
 
-      case CHANGE_NICNAME_FAILURE:
+      case CHANGE_NICKNAME_FAILURE:
         draft.changeNickNameLoading = false;
         draft.changeNickNameError = action.error;
         break;
