@@ -11,6 +11,7 @@ const passport = require('passport');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const app = express();
+const path = require('path');
 dotenv.config();
 
 db.sequelize
@@ -31,6 +32,7 @@ app.use(
 
 app.use(morgan('dev'));
 // front에서 받아온 데이터를 req.body에 넣어줌
+app.use('/', express.static(path.join(__dirname, 'uploads')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

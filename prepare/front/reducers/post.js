@@ -26,10 +26,19 @@ export const initialState = {
   addCommentLoading: false,
   addCommentError: null,
   addCommentDone: false,
+  uploadImagesLoading: false,
+  uploadImagesError: null,
+  uploadImagesDone: false,
 };
 
 //action => 객체
 //action이 동적으로 필요하면 action creator 함수 생성
+
+export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
+export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
+export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE';
+
+export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 
 export const LIKE_POST_REQUEST = 'LIKE_POST_REQUEST';
 export const LIKE_POST_SUCCESS = 'LIKE_POST_SUCCESS';
@@ -71,6 +80,25 @@ export const addComment = (data) => ({
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
+      case UPLOAD_IMAGES_REQUEST:
+        draft.uploadImagesLoading = true;
+        draft.uploadImagesError = null;
+        draft.uploadImagesDone = false;
+        break;
+      case UPLOAD_IMAGES_SUCCESS:
+        draft.imagePaths = action.data;
+        draft.uploadImagesLoading = false;
+        draft.uploadImagesDone = true;
+        break;
+      case UPLOAD_IMAGES_FAILURE:
+        draft.uploadImagesLoading = false;
+        draft.uploadImagesError = action.error;
+        break;
+
+      case REMOVE_IMAGE:
+        draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
+        break;
+
       case LOAD_POST_REQUEST:
         draft.loadPostLoading = true;
         draft.loadPostError = null;
@@ -103,6 +131,7 @@ const reducer = (state = initialState, action) => {
         draft.addPostLoading = false;
         draft.addPostDone = true;
         draft.mainPosts.unshift(action.data);
+        draft.imagePaths = [];
         break;
       // return {
       //   ...state,
