@@ -5,6 +5,7 @@ import { faker } from '@faker-js/faker';
 // state
 export const initialState = {
   mainPosts: [],
+  singlePost: null,
   imagePaths: [],
   likePostLoading: false,
   likePostError: null,
@@ -17,6 +18,9 @@ export const initialState = {
   loadPostLoading: false,
   loadPostError: null,
   loadPostDone: false,
+  loadPostsLoading: false,
+  loadPostsError: null,
+  loadPostsDone: false,
   addPostLoading: false,
   addPostError: null,
   addPostDone: false,
@@ -55,6 +59,10 @@ export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST';
 export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS';
 export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE';
 
+export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
+export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
+export const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE';
+
 export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST';
 export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS';
 export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE';
@@ -87,6 +95,21 @@ export const addComment = (data) => ({
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
+      case LOAD_POST_REQUEST:
+        draft.loadPostLoading = true;
+        draft.loadPostError = null;
+        draft.loadPostDone = false;
+        break;
+      case LOAD_POST_SUCCESS:
+        draft.loadPostLoading = false;
+        draft.loadPostDone = true;
+        draft.singlePost = action.data;
+        break;
+      case LOAD_POST_FAILURE:
+        draft.loadPostLoading = false;
+        draft.loadPostError = action.error;
+        break;
+
       case RETWEET_REQUEST:
         draft.retweetLoading = true;
         draft.retweetError = null;
@@ -121,18 +144,18 @@ const reducer = (state = initialState, action) => {
         draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
         break;
 
-      case LOAD_POST_REQUEST:
+      case LOAD_POSTS_REQUEST:
         draft.loadPostLoading = true;
         draft.loadPostError = null;
         draft.loadPostDone = false;
         break;
-      case LOAD_POST_SUCCESS:
+      case LOAD_POSTS_SUCCESS:
         draft.loadPostLoading = false;
         draft.loadPostDone = true;
         draft.mainPosts = draft.mainPosts.concat(action.data);
         draft.hasMorePost = action.data.length === 10;
         break;
-      case LOAD_POST_FAILURE:
+      case LOAD_POSTS_FAILURE:
         draft.loadPostLoading = false;
         draft.loadPostError = action.error;
         break;

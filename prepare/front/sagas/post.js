@@ -14,6 +14,9 @@ import {
   LOAD_POST_REQUEST,
   LOAD_POST_SUCCESS,
   LOAD_POST_FAILURE,
+  LOAD_POSTS_REQUEST,
+  LOAD_POSTS_SUCCESS,
+  LOAD_POSTS_FAILURE,
   ADD_POST_REQUEST,
   ADD_POST_SUCCESS,
   ADD_POST_FAILURE,
@@ -53,8 +56,12 @@ function* watchUnlikePost() {
   yield takeLatest(UNLIKE_POST_REQUEST, unlikePost);
 }
 
+function* watchLoadPosts() {
+  yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts);
+}
+
 function* watchLoadPost() {
-  yield throttle(5000, LOAD_POST_REQUEST, loadPost);
+  yield takeLatest(LOAD_POST_REQUEST, loadPost);
 }
 
 function* watchAddPost() {
@@ -69,7 +76,7 @@ function* watchAddComment() {
   yield takeLatest(ADD_COMMENT_REQUEST, addComment);
 }
 
-// post loading
+// retweet
 function retweetAPI(data) {
   return axios.post(`/post/${data}/retweet`, data);
 }
@@ -91,13 +98,13 @@ function* retweet(action) {
 }
 
 // post loading
-function loadPostAPI(lastId) {
-  return axios.get(`/posts?lastId=${lastId || 0}`);
+function loadPostAPI(data) {
+  return axios.get(`/post/${data}`);
 }
 
 function* loadPost(action) {
   try {
-    const result = yield call(loadPostAPI, action.lastId);
+    const result = yield call(loadPostAPI, action.data);
     yield put({
       type: LOAD_POST_SUCCESS,
       data: result.data,
@@ -106,6 +113,27 @@ function* loadPost(action) {
     console.error(error);
     yield put({
       type: LOAD_POST_FAILURE,
+      error: error.response.data,
+    });
+  }
+}
+
+// posts loading
+function loadPostsAPI(lastId) {
+  return axios.get(`/posts?lastId=${lastId || 0}`);
+}
+
+function* loadPosts(action) {
+  try {
+    const result = yield call(loadPostsAPI, action.lastId);
+    yield put({
+      type: LOAD_POSTS_SUCCESS,
+      data: result.data,
+    });
+  } catch (error) {
+    console.error(error);
+    yield put({
+      type: LOAD_POSTS_FAILURE,
       error: error.response.data,
     });
   }
@@ -243,6 +271,7 @@ function* unlikePost(action) {
 
 export default function* postSaga() {
   yield all([
+    fork(watchLoadPosts),
     fork(watchLoadPost),
     fork(watchAddPost),
     fork(watchRemovePost),
