@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Menu, Input, Row, Col } from 'antd';
@@ -7,7 +7,8 @@ import LoginForm from '../components/LoginForm';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { createGlobalStyle } from 'styled-components';
-
+import useInput from '../hooks/useInput';
+import Router from 'next/router';
 const SearchInput = styled(Input.Search)`
   vertical-align: middle;
 `;
@@ -30,7 +31,11 @@ const Global = createGlobalStyle`
 function AppLayout({ children }) {
   // redux useSelector로 store에 저장된 데이터 가져오기
   const { me } = useSelector((state) => state.user);
+  const [searchInput, onChangeSerchInput] = useInput('');
 
+  const onSearch = useCallback(() => {
+    Router.push(`/hashtag/${searchInput}`);
+  }, [searchInput]);
   return (
     <div>
       <Global />
@@ -46,7 +51,12 @@ function AppLayout({ children }) {
           </Link>
         </Menu.Item>
         <Menu.Item>
-          <SearchInput allowClear enterButton />
+          <SearchInput
+            enterButton
+            value={searchInput}
+            onChange={onChangeSerchInput}
+            onSearch={onSearch}
+          />
         </Menu.Item>
         <Menu.Item>
           <Link href='/signup'>

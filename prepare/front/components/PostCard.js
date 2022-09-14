@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Card, Button, Popover, Avatar, List, Comment } from 'antd';
 import PropTypes from 'prop-types';
+import Link from 'next/link';
 import {
   EllipsisOutlined,
   HeartOutlined,
@@ -138,7 +139,13 @@ function PostCard({ post }) {
             }
           >
             <Card.Meta
-              avatar={<Avatar>{post.Retweet.User.nickname[0]}</Avatar>}
+              avatar={
+                <Link href={`/user/${post.Retweet.User.id}`}>
+                  <a>
+                    <Avatar>{post.Retweet.User.nickname[0]}</Avatar>
+                  </a>
+                </Link>
+              }
               title={post.Retweet.User.nickname}
               // 해시태그 분별 conponent
               description={<PostCardContent postData={post.Retweet.content} />}
@@ -146,7 +153,13 @@ function PostCard({ post }) {
           </Card>
         ) : (
           <Card.Meta
-            avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
+            avatar={
+              <Link href={`/user/${post.User.id}`}>
+                <a>
+                  <Avatar>{post.User.nickname[0]}</Avatar>
+                </a>
+              </Link>
+            }
             title={post.User.nickname}
             // 해시태그 분별 conponent
             description={<PostCardContent postData={post.content} />}
@@ -168,7 +181,13 @@ function PostCard({ post }) {
               <li>
                 <Comment
                   author={item.User.nickname}
-                  avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
+                  avatar={
+                    <Link href={`/user/${item.User.id}`}>
+                      <a>
+                        <Avatar>{item.User.nickname[0]}</Avatar>
+                      </a>
+                    </Link>
+                  }
                   content={item.content}
                 />
               </li>
