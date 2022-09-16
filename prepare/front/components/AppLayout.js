@@ -58,11 +58,6 @@ function AppLayout({ children }) {
             onSearch={onSearch}
           />
         </Menu.Item>
-        <Menu.Item>
-          <Link href='/signup'>
-            <a>회원가입</a>
-          </Link>
-        </Menu.Item>
       </Menu>
 
       {/* 반응형 그리드 antd에서 정한 breakpoint가 되면 25%, 50%, 25%차지*/}

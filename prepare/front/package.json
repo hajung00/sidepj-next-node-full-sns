@@ -4,18 +4,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "next"
+    "dev": "next",
+    "build": "cross-env ANALYZE=true NODE_ENV=production next build"
   },
   "author": "hajung",
   "license": "ISC",
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
+    "@next/bundle-analyzer": "^12.3.0",
     "antd": "^4.22.4",
     "axios": "^0.27.2",
     "babel-plugin-styled-components": "^2.0.7",
+    "cross-env": "^7.0.3",
     "exlint": "^0.1.6",
     "faker": "^6.6.6",
     "immer": "^9.0.15",
+    "moment": "^2.29.4",
     "next": "^9.5.5",
     "next-redux-wrapper": "^6.0.2",
     "prop-types": "^15.8.1",

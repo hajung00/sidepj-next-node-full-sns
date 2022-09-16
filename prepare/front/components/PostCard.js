@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Card, Button, Popover, Avatar, List, Comment } from 'antd';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
+import moment from 'moment';
 import {
   EllipsisOutlined,
   HeartOutlined,
@@ -20,6 +21,8 @@ import {
   RETWEET_REQUEST,
 } from '../reducers/post';
 import FollowButton from './FollowButton';
+
+moment.locale('ko');
 
 function PostCard({ post }) {
   // 로그인 상태 확인 위해 user에 me:{id, password} 의 id를 가져온다
@@ -138,6 +141,10 @@ function PostCard({ post }) {
               )
             }
           >
+            <div style={{ float: 'right' }}>
+              {moment(post.createAt).format('YYYY.MM.DD')}
+            </div>
+
             <Card.Meta
               avatar={
                 <Link href={`/user/${post.Retweet.User.id}`}>
@@ -152,18 +159,23 @@ function PostCard({ post }) {
             />
           </Card>
         ) : (
-          <Card.Meta
-            avatar={
-              <Link href={`/user/${post.User.id}`}>
-                <a>
-                  <Avatar>{post.User.nickname[0]}</Avatar>
-                </a>
-              </Link>
-            }
-            title={post.User.nickname}
-            // 해시태그 분별 conponent
-            description={<PostCardContent postData={post.content} />}
-          />
+          <>
+            <div style={{ float: 'right' }}>
+              {moment(post.createAt).format('YYYY.MM.DD')}
+            </div>
+            <Card.Meta
+              avatar={
+                <Link href={`/user/${post.User.id}`}>
+                  <a>
+                    <Avatar>{post.User.nickname[0]}</Avatar>
+                  </a>
+                </Link>
+              }
+              title={post.User.nickname}
+              // 해시태그 분별 conponent
+              description={<PostCardContent postData={post.content} />}
+            />
+          </>
         )}
       </Card>
 
