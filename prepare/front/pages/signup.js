@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { signUpRequestAction } from '../reducers/user';
 import Router from 'next/router';
+import Link from 'next/link';
 
 const ErrorMessage = styled.div`
   color: red;
@@ -69,7 +70,7 @@ const Signup = () => {
   }, [email, password, passwordcheck, term]);
 
   return (
-    <AppLayout>
+    <>
       <Head>
         <title>회원가입 | NodeBird</title>
       </Head>
@@ -130,8 +131,14 @@ const Signup = () => {
             가입하기
           </Button>
         </div>
+        <div>
+          계정이 있으신가요?{' '}
+          <Link href='/'>
+            <a>로그인</a>
+          </Link>
+        </div>
       </Form>
-    </AppLayout>
+    </>
   );
 };
 export default Signup;

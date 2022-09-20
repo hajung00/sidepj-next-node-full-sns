@@ -1,77 +1,44 @@
-import React, { useEffect } from 'react';
-import { END } from 'redux-saga';
-import axios from 'axios';
-import AppLayout from '../components/AppLayout';
-import PostForm from '../components/PostForm';
-import PostCard from '../components/PostCard';
-import { useDispatch, useSelector } from 'react-redux';
-import { LOAD_POSTS_REQUEST } from '../reducers/post';
-import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
-import wrapper from '../store/configureStore';
+import LoginForm from '../components/LoginForm';
+import styled from 'styled-components';
 
-const Home = () => {
-  const dispatch = useDispatch();
-  const { me } = useSelector((state) => state.user);
-  const { mainPosts, hasMorePosts, loadPostLoading, retweetError } =
-    useSelector((state) => state.post);
+const LoginWrapper = styled.div`
+  width: 100%;
+  height: 730px;
+`;
 
-  useEffect(() => {
-    if (retweetError) {
-      alert(retweetError);
-    }
-  }, [retweetError]);
+const LoginSubWrapper = styled.div`
+  padding-top: 5%;
+  padding-left: 10%;
+  width: 50%;
+  float: left;
+  font-family: sans-serif;
+  font-weight: bold;
+  height: 100%;
+`;
 
-  // scroll
-  useEffect(() => {
-    const onScroll = () => {
-      if (
-        window.scrollY + document.documentElement.clientHeight >
-        document.documentElement.scrollHeight - 300
-      ) {
-        if (hasMorePosts && !loadPostLoading) {
-          const lastId = mainPosts[mainPosts.length - 1]?.id;
-          dispatch({
-            type: LOAD_POSTS_REQUEST,
-            lastId,
-          });
-        }
-      }
-    };
-    window.addEventListener('scroll', onScroll);
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-    };
-  }, [hasMorePosts, loadPostLoading, mainPosts]);
-
+const Login = () => {
   return (
     <>
-      <AppLayout>
-        {/* 로그인해야 게시물 작성 가능 */}
-        {me && <PostForm />}
-        {/* 작성글이 있으면 보여줌 */}
-        {mainPosts.map((post) => (
-          <PostCard key={post.id} post={post} />
-        ))}
-      </AppLayout>
+      <LoginWrapper>
+        <div style={{ width: '50%', height: '100%', float: 'left' }}>
+          <img
+            alt='node-brid'
+            src='images/login_back.png'
+            style={{ width: '100%', height: '100%' }}
+          />
+        </div>
+        <LoginSubWrapper>
+          <h1 style={{ fontWeight: 'bolder', fontSize: '3rem' }}>
+            지금 일어나고 있는 일
+          </h1>
+          <h2 style={{ fontWeight: 'bolder', fontSize: '2rem' }}>
+            오늘 트위터에 가입하세요.
+          </h2>
+          <LoginForm />
+        </LoginSubWrapper>
+      </LoginWrapper>
     </>
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(
-  async (context) => {
-    const cookie = context.req ? context.req.headers.cookie : '';
-    axios.defaults.headers.Cookie = '';
-    if (context.req && cookie) {
-      axios.defaults.headers.Cookie = cookie;
-    }
-    context.store.dispatch({
-      type: LOAD_MY_INFO_REQUEST,
-    });
-    context.store.dispatch({
-      type: LOAD_POSTS_REQUEST,
-    });
-    context.store.dispatch(END);
-    await context.store.sagaTask.toPromise();
-  }
-);
-export default Home;
+export default Login;

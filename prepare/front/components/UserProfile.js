@@ -3,13 +3,15 @@ import React, { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { LOG_OUT_REQUEST } from '../reducers/user';
 import Link from 'next/link';
+import Router from 'next/router';
 const UserProfile = () => {
-  const { me, logOutLoading } = useSelector((state) => state.user);
+  const { me, logOutLoading, logOutDone } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const onLogout = useCallback(() => {
     dispatch({
       type: LOG_OUT_REQUEST,
     });
+    Router.push('/');
   }, []);
 
   return (
