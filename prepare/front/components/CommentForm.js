@@ -35,6 +35,7 @@ function CommentForm({ post }) {
             onChange={onChangeCommentText}
             rows={4}
           />
+
           <Button type='primary' htmlType='submit'>
             삐약
           </Button>

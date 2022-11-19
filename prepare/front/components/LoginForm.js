@@ -15,7 +15,7 @@ import Router from 'next/router';
 
 const LoginFormWrapper = styled.div`
   width: 300px;
-  height: 70%;
+  height: 80%;
   padding-top: 5%;
   float: left;
 `;
@@ -57,7 +57,7 @@ function LoginForm() {
   const onSubmitForm = useCallback(() => {
     console.log(email, password);
     dispatch(loginRequestAction({ email, password })); // redux useDispatch로 로그인 액션 실행
-    // if (logInDone && me);
+    if (logInDone && me);
     Router.push('/main');
   }, [email, password]);
 

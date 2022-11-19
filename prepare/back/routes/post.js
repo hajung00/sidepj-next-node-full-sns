@@ -235,6 +235,7 @@ router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {
 });
 //Post /post/id/comment
 router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
+  console.log(req.body);
   try {
     const post = await Post.findOne({
       where: { id: req.params.postId },
@@ -306,6 +307,32 @@ router.delete('/:postId', isLoggedIn, async (req, res, next) => {
       where: { id: req.params.postId, UserId: req.user.id },
     });
     res.status(200).json({ PostId: parseInt(req.params.postId, 10) });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+// DELETE /post/10/comment
+router.delete('/:commentId/comment', isLoggedIn, async (req, res, next) => {
+  console.log(req.params.commentId);
+  try {
+    const comment = await Comment.findOne({
+      where: { id: req.params.commentId },
+    });
+    if (!comment) {
+      return res.status(403).send('댓글이 존재하지 않습니다.');
+    }
+    await Comment.destroy({
+      where: {
+        UserId: req.user.id,
+        id: req.params.commentId,
+      },
+    });
+    res.status(200).json({
+      commentId: parseInt(req.params.commentId, 10),
+      PostId: parseInt(comment.PostId),
+    });
   } catch (error) {
     console.error(error);
     next(error);

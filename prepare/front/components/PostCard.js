@@ -19,6 +19,7 @@ import {
   LIKE_POST_REQUEST,
   UNLIKE_POST_REQUEST,
   RETWEET_REQUEST,
+  REMOVE_COMMENT_REQUEST,
 } from '../reducers/post';
 import FollowButton from './FollowButton';
 
@@ -78,6 +79,20 @@ function PostCard({ post }) {
       data: post.id,
     });
   }, [id]);
+
+  //댓글 삭제
+  const removeComment = useCallback(
+    (i) => {
+      if (!id) {
+        return alert('해당 댓글을 삭제할 수 없습니다.');
+      }
+      return dispatch({
+        type: REMOVE_COMMENT_REQUEST,
+        data: { commentId: i, postId: post.id, userId: id },
+      });
+    },
+    [id]
+  );
 
   return (
     <div style={{ marginBottom: '20px' }}>
@@ -202,6 +217,13 @@ function PostCard({ post }) {
                   }
                   content={item.content}
                 />
+                <Button
+                  onClick={() => {
+                    removeComment(item.id);
+                  }}
+                >
+                  삭제
+                </Button>
               </li>
             )}
           />

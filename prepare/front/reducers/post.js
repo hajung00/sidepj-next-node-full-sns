@@ -36,6 +36,9 @@ export const initialState = {
   retweetLoading: false,
   retweetError: null,
   retweetDone: false,
+  removeCommentLoading: false,
+  removeCommentError: null,
+  removeCommentDone: false,
 };
 
 //action => 객체
@@ -88,6 +91,10 @@ export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
 
+export const REMOVE_COMMENT_REQUEST = 'REMOVE_COMMENT_REQUEST';
+export const REMOVE_COMMENT_SUCCESS = 'REMOVE_COMMENT_SUCCESS';
+export const REMOVE_COMMENT_FAILURE = 'REMOVE_COMMENT_FAILURE';
+
 export const addPost = (data) => ({
   type: ADD_POST_REQUEST,
   data,
@@ -103,6 +110,24 @@ export const addComment = (data) => ({
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
+      case REMOVE_COMMENT_REQUEST:
+        draft.removeCommentLoading = true;
+        draft.removeCommentError = null;
+        draft.removeCommentDone = false;
+        break;
+      case REMOVE_COMMENT_SUCCESS:
+        const post = draft.mainPosts.find((y) => y.id === action.data.PostId);
+        post.Comments = post.Comments.filter(
+          (y) => y.id !== action.data.commentId
+        );
+        draft.removeCommentLoading = false;
+        draft.removeCommentDone = true;
+        break;
+      case REMOVE_COMMENT_FAILURE:
+        draft.removeCommentLoading = false;
+        draft.removeCommentError = action.error;
+        break;
+
       case LOAD_POST_REQUEST:
         draft.loadPostLoading = true;
         draft.loadPostError = null;

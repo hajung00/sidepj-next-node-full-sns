@@ -36,31 +36,43 @@ function AppLayout({ children }) {
   const onSearch = useCallback(() => {
     Router.push(`/hashtag/${searchInput}`);
   }, [searchInput]);
+
   return (
     <div>
       <Global />
-      <Menu mode='horizontal'>
+      <Menu mode='vertical'>
         <Menu.Item>
           <Link href='/'>
-            <a>노드버드</a>
+            <a>Home</a>
           </Link>
         </Menu.Item>
         <Menu.Item>
           <Link href='/profile'>
-            <a>프로필</a>
+            <a>Profile</a>
           </Link>
         </Menu.Item>
         <Menu.Item>
+          <Link href='/profile'>
+            <a>Explore</a>
+          </Link>
+        </Menu.Item>
+        <Menu.Item>
+          <Link href='/profile'>
+            <a>BookMarks</a>
+          </Link>
+        </Menu.Item>
+        {/* <Menu.Item>
           <SearchInput
             enterButton
             value={searchInput}
             onChange={onChangeSerchInput}
             onSearch={onSearch}
           />
-        </Menu.Item>
+        </Menu.Item> */}
       </Menu>
 
       {/* 반응형 그리드 antd에서 정한 breakpoint가 되면 25%, 50%, 25%차지*/}
+      {/* gutter: column사이의 간격 */}
       <Row gutter={8}>
         <Col xs={24} md={6}>
           {me ? <UserProfile /> : <LoginForm />}
@@ -76,7 +88,7 @@ function AppLayout({ children }) {
             target='_blank'
             rel='noreferrer noopener'
           >
-            Made by ZeroCho
+            Made by Hajung
           </a>
         </Col>
       </Row>

@@ -13,6 +13,40 @@ const ErrorMessage = styled.div`
   color: red;
 `;
 
+const SignupPageWrapper = styled.div`
+  width: 100%;
+  height: 730px;
+  float: left;
+`;
+const SignUpFormWrapper = styled.div`
+  width: 50%;
+  height: 80%;
+  float: left;
+  padding-left: 10%;
+  padding-top: 8%;
+  font-family: sans-serif;
+  font-weight: bold;
+`;
+
+const FormWrapper = styled(Form)`
+  padding: 15px;
+  border: 1px solid gray;
+  width: 300px;
+  text-align: center;
+`;
+
+const InputWrapper = styled.div`
+  margin-top: 10px;
+`;
+
+const SignupWrapper = styled.div`
+  width: 300px;
+  padding: 20px 20px;
+  margin-top: 30px;
+  border: 1px solid gray;
+  text-align: center;
+`;
+
 const Signup = () => {
   // 커스텀 훅 사용
   const [email, onChangeEmail] = useInput('');
@@ -70,75 +104,89 @@ const Signup = () => {
   }, [email, password, passwordcheck, term]);
 
   return (
-    <>
-      <Head>
-        <title>회원가입 | NodeBird</title>
-      </Head>
-      {/* 가입하기 버튼 누르면 submit되어 onFinish 실행 */}
-      <Form onFinish={onSubmit}>
-        <div>
-          <label htmlFor='user-email'>아이디</label>
-          <br />
-          <Input
-            name='user-email'
-            type='email'
-            value={email}
-            onChange={onChangeEmail}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor='user-nickname'>닉네임</label>
-          <br />
-          <Input
-            name='user-nickname'
-            value={nickname}
-            onChange={onChangeNickName}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor='user-password'>비밀번호</label>
-          <br />
-          <Input
-            name='user-password'
-            value={password}
-            onChange={onChangePassword}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor='user-passwordCheck'>비밀번호 확인</label>
-          <br />
-          <Input
-            name='user-passwordCheck'
-            value={passwordcheck}
-            onChange={onChangePasswordCheck}
-            required
-          />
-          {passwordError ? (
-            <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>
-          ) : null}
-        </div>
-        <div>
-          <Checkbox name='user-term' checked={term} onChange={onChangeTerm}>
-            동의합니다.
-          </Checkbox>
-          {termError ? <ErrorMessage>약관을 동의해주세요.</ErrorMessage> : null}
-        </div>
-        <div>
-          <Button type='primary' htmlType='submit' loading={signUpLoading}>
-            가입하기
-          </Button>
-        </div>
-        <div>
-          계정이 있으신가요?{' '}
+    <SignupPageWrapper>
+      <div style={{ width: '50%', height: '100%', float: 'left' }}>
+        <img
+          alt='node-brid'
+          src='images/login_back.png'
+          style={{ width: '100%', height: '100%' }}
+        />
+      </div>
+      <SignUpFormWrapper>
+        <Head>
+          <title>회원가입 | NodeBird</title>
+        </Head>
+
+        {/* 가입하기 버튼 누르면 submit되어 onFinish 실행 */}
+
+        <FormWrapper onFinish={onSubmit}>
+          <h1>Node Brid</h1>
+          <InputWrapper>
+            <label htmlFor='user-email'>아이디</label>
+            <br />
+            <Input
+              name='user-email'
+              type='email'
+              value={email}
+              onChange={onChangeEmail}
+              required
+            />
+          </InputWrapper>
+          <InputWrapper>
+            <label htmlFor='user-nickname'>닉네임</label>
+            <br />
+            <Input
+              name='user-nickname'
+              value={nickname}
+              onChange={onChangeNickName}
+              required
+            />
+          </InputWrapper>
+          <InputWrapper>
+            <label htmlFor='user-password'>비밀번호</label>
+            <br />
+            <Input
+              name='user-password'
+              value={password}
+              onChange={onChangePassword}
+              required
+            />
+          </InputWrapper>
+          <InputWrapper>
+            <label htmlFor='user-passwordCheck'>비밀번호 확인</label>
+            <br />
+            <Input
+              name='user-passwordCheck'
+              value={passwordcheck}
+              onChange={onChangePasswordCheck}
+              required
+            />
+            {passwordError ? (
+              <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>
+            ) : null}
+          </InputWrapper>
+          <div style={{ marginTop: '10px' }}>
+            <Checkbox name='user-term' checked={term} onChange={onChangeTerm}>
+              동의합니다.
+            </Checkbox>
+            {termError ? (
+              <ErrorMessage>약관을 동의해주세요.</ErrorMessage>
+            ) : null}
+          </div>
+          <div style={{ marginTop: '10px' }}>
+            <Button type='primary' htmlType='submit' loading={signUpLoading}>
+              가입하기
+            </Button>
+          </div>
+        </FormWrapper>
+        <SignupWrapper>
+          계정이 있으신가요?
           <Link href='/'>
-            <a>로그인</a>
+            <a> 로그인</a>
           </Link>
-        </div>
-      </Form>
-    </>
+        </SignupWrapper>
+      </SignUpFormWrapper>
+    </SignupPageWrapper>
   );
 };
 export default Signup;
