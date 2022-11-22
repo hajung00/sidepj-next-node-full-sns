@@ -102,6 +102,10 @@ export const EDIT_CONTENT_REQUEST = 'EDIT_CONTENT_REQUEST';
 export const EDIT_CONTENT_SUCCESS = 'EDIT_CONTENT_SUCCESS';
 export const EDIT_CONTENT_FAILURE = 'EDIT_CONTENT_FAILURE';
 
+export const LOAD_RELATIVE_POSTS_REQUEST = 'LOAD_RELATIVE_POSTS_REQUEST';
+export const LOAD_RELATIVE_POSTS_SUCCESS = 'LOAD_RELATIVE_POSTS_SUCCESS';
+export const LOAD_RELATIVE_POSTS_FAILURE = 'LOAD_RELATIVE_POSTS_FAILURE';
+
 export const addPost = (data) => ({
   type: ADD_POST_REQUEST,
   data,
@@ -117,6 +121,23 @@ export const addComment = (data) => ({
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
+      case LOAD_RELATIVE_POSTS_REQUEST:
+        draft.loadPostsLoading = true;
+        draft.loadPostsError = null;
+        draft.loadPostsDone = false;
+        break;
+      case LOAD_RELATIVE_POSTS_SUCCESS: {
+        draft.loadPostsLoading = false;
+        draft.loadPostsDone = true;
+        draft.mainPosts = draft.mainPosts.concat(action.data);
+        draft.hasMorePosts = action.data.length === 10;
+        break;
+      }
+      case LOAD_RELATIVE_POSTS_FAILURE:
+        draft.loadPostsLoading = false;
+        draft.loadPostsError = action.error;
+        break;
+
       case EDIT_CONTENT_REQUEST:
         draft.editContentLoading = true;
         draft.editContentError = null;

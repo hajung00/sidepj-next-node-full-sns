@@ -42,7 +42,7 @@ function AppLayout({ children }) {
       <Global />
       <Menu mode='vertical'>
         <Menu.Item>
-          <Link href='/'>
+          <Link href='/main'>
             <a>Home</a>
           </Link>
         </Menu.Item>
@@ -52,8 +52,8 @@ function AppLayout({ children }) {
           </Link>
         </Menu.Item>
         <Menu.Item>
-          <Link href='/profile'>
-            <a>Explore</a>
+          <Link href='/allpost'>
+            <a>All post</a>
           </Link>
         </Menu.Item>
         <Menu.Item>

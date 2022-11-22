@@ -50,6 +50,9 @@ import {
   EDIT_CONTENT_REQUEST,
   EDIT_CONTENT_SUCCESS,
   EDIT_CONTENT_FAILURE,
+  LOAD_RELATIVE_POSTS_REQUEST,
+  LOAD_RELATIVE_POSTS_SUCCESS,
+  LOAD_RELATIVE_POSTS_FAILURE,
 } from '../reducers/post';
 
 function* watchRetweet() {
@@ -80,6 +83,10 @@ function* watchLoadPosts() {
   yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts);
 }
 
+function* watchLoadRelativePosts() {
+  yield throttle(5000, LOAD_RELATIVE_POSTS_REQUEST, loadRelativePosts);
+}
+
 function* watchLoadPost() {
   yield takeLatest(LOAD_POST_REQUEST, loadPost);
 }
@@ -102,6 +109,27 @@ function* watchRemoveComment() {
 
 function* watchEditContent() {
   yield takeLatest(EDIT_CONTENT_REQUEST, editContent);
+}
+
+// relativeposts loading
+function loadRelativePostsAPI(lastId) {
+  return axios.get(`/posts/related?lastId=${lastId || 0}`);
+}
+
+function* loadRelativePosts(action) {
+  try {
+    const result = yield call(loadRelativePostsAPI, action.lastId);
+    yield put({
+      type: LOAD_RELATIVE_POSTS_SUCCESS,
+      data: result.data,
+    });
+  } catch (error) {
+    console.error(error);
+    yield put({
+      type: LOAD_RELATIVE_POSTS_FAILURE,
+      error: error.response.data,
+    });
+  }
 }
 
 // retweet
@@ -148,7 +176,7 @@ function* loadPost(action) {
 
 // posts loading
 function loadPostsAPI(lastId) {
-  return axios.get(`/posts?lastId=${lastId || 0}`);
+  return axios.get(`/posts/unrelated?lastId=${lastId || 0}`);
 }
 
 function* loadPosts(action) {
@@ -402,5 +430,6 @@ export default function* postSaga() {
     fork(watchRetweet),
     fork(watchRemoveComment),
     fork(watchEditContent),
+    fork(watchLoadRelativePosts),
   ]);
 }
