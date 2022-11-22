@@ -1,21 +1,20 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Button, Modal, Card, Avatar } from 'antd';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { EDIT_CONTENT_REQUEST } from '../reducers/post';
 function EditContentModal({ post }) {
-  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-
-  const onSubmit = () => {
-    // setLoading(true);
-    // setTimeout(() => {
-    //   setLoading(false);
-    //   setOpen(false);
-    // }, 3000);
-    console.log(editContent);
-    setEditContent(post.content);
-  };
-
+  const dispatch = useDispatch();
   const [editContent, setEditContent] = useState(post.content);
+  const { editContentLoading } = useSelector((state) => state.post);
+
+  const onSubmit = useCallback(() => {
+    dispatch({
+      type: EDIT_CONTENT_REQUEST,
+      data: { content: editContent, postId: post.id },
+    });
+    setOpen(false);
+  }, [editContent]);
 
   return (
     <div>
@@ -47,7 +46,7 @@ function EditContentModal({ post }) {
           <Button
             key='submit'
             type='primary'
-            loading={loading}
+            loading={editContentLoading}
             onClick={onSubmit}
           >
             Submit

@@ -339,4 +339,35 @@ router.delete('/:commentId/comment', isLoggedIn, async (req, res, next) => {
   }
 });
 
+// patch /post/10/
+router.patch('/:postId', isLoggedIn, async (req, res, next) => {
+  console.log(req.body.content);
+  try {
+    const post = await Post.findOne({
+      where: { id: req.params.postId },
+    });
+    if (!post) {
+      return res.status(403).send('해당 게시글이 존재하지 않습니다.');
+    }
+    await Post.update(
+      {
+        content: req.body.content,
+      },
+      {
+        where: {
+          UserId: req.user.id,
+          id: req.params.postId,
+        },
+      }
+    );
+    res.status(200).json({
+      content: req.body.content,
+      PostId: parseInt(req.params.postId, 10),
+    });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 module.exports = router;

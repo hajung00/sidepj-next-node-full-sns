@@ -39,6 +39,9 @@ export const initialState = {
   removeCommentLoading: false,
   removeCommentError: null,
   removeCommentDone: false,
+  editContentLoading: false,
+  editContentError: null,
+  editContentDone: false,
 };
 
 //action => 객체
@@ -95,6 +98,10 @@ export const REMOVE_COMMENT_REQUEST = 'REMOVE_COMMENT_REQUEST';
 export const REMOVE_COMMENT_SUCCESS = 'REMOVE_COMMENT_SUCCESS';
 export const REMOVE_COMMENT_FAILURE = 'REMOVE_COMMENT_FAILURE';
 
+export const EDIT_CONTENT_REQUEST = 'EDIT_CONTENT_REQUEST';
+export const EDIT_CONTENT_SUCCESS = 'EDIT_CONTENT_SUCCESS';
+export const EDIT_CONTENT_FAILURE = 'EDIT_CONTENT_FAILURE';
+
 export const addPost = (data) => ({
   type: ADD_POST_REQUEST,
   data,
@@ -110,12 +117,28 @@ export const addComment = (data) => ({
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
+      case EDIT_CONTENT_REQUEST:
+        draft.editContentLoading = true;
+        draft.editContentError = null;
+        draft.editContentDone = false;
+        break;
+      case EDIT_CONTENT_SUCCESS:
+        const post = draft.mainPosts.find((y) => y.id === action.data.PostId);
+        post.content = action.data.content;
+        draft.editContentLoading = false;
+        draft.editContentDone = true;
+        break;
+      case EDIT_CONTENT_FAILURE:
+        draft.editContentLoading = false;
+        draft.editContentError = action.error;
+        break;
+
       case REMOVE_COMMENT_REQUEST:
         draft.removeCommentLoading = true;
         draft.removeCommentError = null;
         draft.removeCommentDone = false;
         break;
-      case REMOVE_COMMENT_SUCCESS:
+      case REMOVE_COMMENT_SUCCESS: {
         const post = draft.mainPosts.find((y) => y.id === action.data.PostId);
         post.Comments = post.Comments.filter(
           (y) => y.id !== action.data.commentId
@@ -123,6 +146,8 @@ const reducer = (state = initialState, action) => {
         draft.removeCommentLoading = false;
         draft.removeCommentDone = true;
         break;
+      }
+
       case REMOVE_COMMENT_FAILURE:
         draft.removeCommentLoading = false;
         draft.removeCommentError = action.error;

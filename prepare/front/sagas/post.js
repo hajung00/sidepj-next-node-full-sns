@@ -47,6 +47,9 @@ import {
   REMOVE_COMMENT_REQUEST,
   REMOVE_COMMENT_SUCCESS,
   REMOVE_COMMENT_FAILURE,
+  EDIT_CONTENT_REQUEST,
+  EDIT_CONTENT_SUCCESS,
+  EDIT_CONTENT_FAILURE,
 } from '../reducers/post';
 
 function* watchRetweet() {
@@ -95,6 +98,10 @@ function* watchAddComment() {
 
 function* watchRemoveComment() {
   yield takeLatest(REMOVE_COMMENT_REQUEST, removeComment);
+}
+
+function* watchEditContent() {
+  yield takeLatest(EDIT_CONTENT_REQUEST, editContent);
 }
 
 // retweet
@@ -254,6 +261,27 @@ function* removePost(action) {
   }
 }
 
+// 포스트 수정
+function editContentAPI(data) {
+  return axios.patch(`/post/${data.postId}`, data);
+}
+
+function* editContent(action) {
+  try {
+    const result = yield call(editContentAPI, action.data);
+    yield put({
+      type: EDIT_CONTENT_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: EDIT_CONTENT_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
 // comment 추가
 function addCommentAPI(data) {
   return axios.post(`/post/${data.postId}/comment`, data);
@@ -373,5 +401,6 @@ export default function* postSaga() {
     fork(watchUploadImages),
     fork(watchRetweet),
     fork(watchRemoveComment),
+    fork(watchEditContent),
   ]);
 }
