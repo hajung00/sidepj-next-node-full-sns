@@ -22,7 +22,7 @@ import {
   REMOVE_COMMENT_REQUEST,
 } from '../reducers/post';
 import FollowButton from './FollowButton';
-
+import EditContentModal from '../components/EditContentModal';
 moment.locale('ko');
 
 function PostCard({ post }) {
@@ -125,7 +125,7 @@ function PostCard({ post }) {
 
                 {id && post.User.id === id ? (
                   <>
-                    <Button>수정</Button>
+                    <EditContentModal post={post} />
                     <Button
                       type='danger'
                       onClick={onRemovePost}
