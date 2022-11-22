@@ -4,7 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { LOG_OUT_REQUEST } from '../reducers/user';
 import Link from 'next/link';
 import Router from 'next/router';
-const UserProfile = () => {
+import ProfileEditForm from './ProfileEditForm';
+const UserProfile = ({ title }) => {
   const { me, logOutLoading, logOutDone } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const onLogout = useCallback(() => {
@@ -56,9 +57,13 @@ const UserProfile = () => {
         }
         title={me.nickname}
       />
-      <Button onClick={onLogout} loading={logOutLoading}>
-        로그아웃
-      </Button>
+      {title === '프로필 수정' ? (
+        <ProfileEditForm />
+      ) : (
+        <Button onClick={onLogout} loading={logOutLoading}>
+          {title}
+        </Button>
+      )}
     </Card>
   );
 };

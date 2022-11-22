@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import AppLayout from '../components/AppLayout';
 import Head from 'next/head';
-import NicknameEditForm from '../components/NicknameEditForm';
+import ProfileEditForm from '../components/ProfileEditForm';
 import FollowList from '../components/FollowList';
 import { useSelector } from 'react-redux';
 import Router from 'next/router';
 import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import useSWR from 'swr';
 import axios from 'axios';
+import UserProfile from '../components/UserProfile';
 
 const fetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data);
@@ -56,7 +57,7 @@ const Profile = () => {
         <title>내 프로필 | NodeBird</title>
       </Head>
       <AppLayout>
-        <NicknameEditForm />
+        <UserProfile title={'프로필 수정'} />
         <FollowList
           header='팔로잉'
           data={followingsData}
