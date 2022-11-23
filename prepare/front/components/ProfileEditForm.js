@@ -2,7 +2,10 @@ import React, { useCallback, useMemo, useState, useRef } from 'react';
 import { Form, Avatar, Button, Modal, Input } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import useInput from '../hooks/useInput';
-import { CHANGE_NICKNAME_REQUEST } from '../reducers/user';
+import {
+  CHANGE_NICKNAME_REQUEST,
+  CHANGE_PROFILE_IMG_REQUEST,
+} from '../reducers/user';
 
 const ProfileEditForm = () => {
   const style = useMemo(() => ({
@@ -43,15 +46,18 @@ const ProfileEditForm = () => {
   };
 
   const onSubmit = useCallback(() => {
-    dispatch({
-      type: CHANGE_NICKNAME_REQUEST,
-      data: nickname,
-    });
+    // dispatch(
+    //   {
+    //     type: CHANGE_NICKNAME_REQUEST,
+    //     data: nickname,
+    //   },
+    //   {
+    //     type: CHANGE_PROFILE_IMG_REQUEST,
+    //     data: nickname,
+    //   }
+    // );
+    console.log(nickname, Image);
   }, [nickname]);
-  console.log(me);
-  // display: flex;
-  // flex-direction: column;
-  // justify-content: center;
 
   return (
     <>
@@ -119,36 +125,6 @@ const ProfileEditForm = () => {
           </div>
         </Form>
       </Modal>
-
-      {/* <Form style={style}>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-          }}
-        >
-          <div>
-            <Avatar
-              src={Image}
-              style={{ width: '100px' }}
-              size={100}
-              onClick={() => {
-                fileInput.current.click();
-              }}
-            />
-            <input
-              type='file'
-              style={{ display: 'none' }}
-              name='profile_img'
-              onChange={onChange}
-              ref={fileInput}
-            />
-          </div>
-          <div style={{ margin: '2% 2%' }}>{nickname}</div>
-          <Button onClick={onSubmit}>수정</Button>
-        </div>
-      </Form> */}
     </>
   );
 };

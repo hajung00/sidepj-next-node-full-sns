@@ -34,6 +34,9 @@ import {
   LOAD_USER_REQUEST,
   LOAD_USER_SUCCESS,
   LOAD_USER_FAILURE,
+  UPLOAD_PROFILEIMAGES_REQUEST,
+  UPLOAD_PROFILEIMAGES_SUCCESS,
+  UPLOAD_PROFILEIMAGES_FAILURE,
 } from '../reducers/user';
 function* watchLoadUser() {
   yield takeLatest(LOAD_USER_REQUEST, loadUser);
@@ -68,6 +71,29 @@ function* watchSignUp() {
 
 function* watchChangeNickname() {
   yield takeLatest(CHANGE_NICKNAME_REQUEST, changeNickname);
+}
+function* watchLoadProfileImages() {
+  yield takeLatest(UPLOAD_PROFILEIMAGES_REQUEST, loadProfileImages);
+}
+
+// loadProfileImages
+function loadProfileImagesAPI(data) {
+  console.log(data);
+  return axios.post('/user/images', data);
+}
+function* loadProfileImages(action) {
+  try {
+    const result = yield call(loadProfileImagesAPI, action.data);
+    yield put({
+      type: UPLOAD_PROFILEIMAGES_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    yield put({
+      type: UPLOAD_PROFILEIMAGES_FAILURE,
+      error: err.response.data,
+    });
+  }
 }
 
 // loadFollowers
@@ -268,6 +294,7 @@ function* changeNickname(action) {
 
 // 회원가입
 function signUpAPI(data) {
+  console.log(data);
   return axios.post('/user', data);
 }
 
@@ -299,5 +326,6 @@ export default function* userSaga() {
     fork(watchLoadFollowers),
     fork(watchLoadFollowings),
     fork(watchRemoveFollower),
+    fork(watchLoadProfileImages),
   ]);
 }

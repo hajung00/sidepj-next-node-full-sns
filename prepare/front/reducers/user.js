@@ -37,6 +37,10 @@ export const initialState = {
   removeFollowerError: null,
   me: null,
   userInfo: null,
+  profileImg: [],
+  uploadProfileImagesLoading: false, // removefollower 시도중
+  uploadProfileImagesDone: false,
+  uploadProfileImagesError: null,
 };
 
 // 오타 방지용(변수 선언)
@@ -84,6 +88,10 @@ export const REMOVE_FOLLOWER_REQUEST = 'REMOVE_FOLLOWER_REQUEST';
 export const REMOVE_FOLLOWER_SUCCESS = 'REMOVE_FOLLOWER_SUCCESS';
 export const REMOVE_FOLLOWER_FAILURE = 'REMOVE_FOLLOWER_FAILURE';
 
+export const UPLOAD_PROFILEIMAGES_REQUEST = 'UPLOAD_PROFILEIMAGES_REQUEST';
+export const UPLOAD_PROFILEIMAGES_SUCCESS = 'UPLOAD_PROFILEIMAGES_SUCCESS';
+export const UPLOAD_PROFILEIMAGES_FAILURE = 'UPLOAD_PROFILEIMAGES_FAILURE';
+
 // User에 내가 쓴 게시물 정보 들어있는데 post를 작성해 추가된것을 user에서 받아오기 위한 액션.
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
@@ -97,7 +105,7 @@ export const loginRequestAction = (data) => {
   };
 };
 
-// 회원가입 액션
+// 로그아웃 액션
 export const logoutRequestAction = (data) => {
   return {
     type: LOG_OUT_REQUEST,
@@ -117,6 +125,23 @@ export const signUpRequestAction = (data) => {
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
+      case UPLOAD_PROFILEIMAGES_REQUEST:
+        draft.uploadProfileImagesLoading = true;
+        draft.uploadProfileImagesError = null;
+        draft.uploadProfileImagesDone = false;
+        break;
+
+      case UPLOAD_PROFILEIMAGES_SUCCESS:
+        draft.uploadProfileImagesLoading = false;
+        draft.uploadProfileImagesDone = true;
+        draft.profileImg = action.data;
+        break;
+
+      case UPLOAD_PROFILEIMAGES_FAILURE:
+        draft.uploadProfileImagesLoading = false;
+        draft.uploadProfileImagesError = action.error;
+        break;
+
       case LOAD_USER_REQUEST:
         draft.loadUserLoading = true;
         draft.loadUserError = null;
@@ -236,6 +261,7 @@ const reducer = (state = initialState, action) => {
         draft.signUpLoading = false;
         draft.signUpDone = true;
         draft.me = null;
+
         break;
 
       case SIGN_UP_FAILURE:

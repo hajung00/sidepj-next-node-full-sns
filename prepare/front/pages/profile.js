@@ -51,6 +51,7 @@ const Profile = () => {
     return '팔로잉/팔로워 로딩 중 에러 발생';
   }
 
+  console.log(me);
   return (
     <>
       <Head>

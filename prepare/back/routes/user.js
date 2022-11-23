@@ -5,6 +5,31 @@ const passport = require('passport');
 const router = express.Router();
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const { Op } = require('sequelize');
+const fs = require('fs');
+const multer = require('multer');
+const path = require('path');
+
+try {
+  fs.accessSync('uploads');
+} catch (error) {
+  console.log('uploads 폴더 생성');
+  fs.mkdirSync('uploads');
+}
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, 'uploads');
+    },
+    filename(req, file, done) {
+      // 제로초.png
+      const ext = path.extname(file.originalname); //확장자 추출(pmg)
+      const basename = path.basename(file.originalname, ext); //제로초
+      done(null, basename + '_' + new Date().getTime() + ext); // 제로초12312434.png
+    },
+  }),
+  limits: { fileSize: 20 * 1024 * 1024 },
+});
 
 // GET /user
 router.get('/', async (req, res, next) => {
@@ -41,6 +66,12 @@ router.get('/', async (req, res, next) => {
     console.error(error);
     next(error);
   }
+});
+
+// POST /user/images
+router.post('/images', upload.array('image'), (req, res, next) => {
+  console.log(req.files);
+  res.json(req.files.map((y) => y.filename));
 });
 
 // GET /user/followers
@@ -163,28 +194,36 @@ router.post('/login', (req, res, next) => {
 });
 
 // 회원가입
-router.post('/', isNotLoggedIn, async (req, res, next) => {
-  try {
-    const exUser = await User.findOne({
-      where: {
+router.post(
+  '/',
+  upload.none(),
+  isNotLoggedIn,
+
+  async (req, res, next) => {
+    console.log(req.body);
+    try {
+      const exUser = await User.findOne({
+        where: {
+          email: req.body.email,
+        },
+      });
+      if (exUser) {
+        return res.status(403).send('이미 사용중인 아이디입니다.');
+      }
+      const hashedPassword = await bcrypt.hash(req.body.password, 12);
+      await User.create({
         email: req.body.email,
-      },
-    });
-    if (exUser) {
-      return res.status(403).send('이미 사용중인 아이디입니다.');
+        nickname: req.body.nickname,
+        password: hashedPassword,
+        image: req.body.image,
+      });
+      res.status(200).send('ok');
+    } catch (error) {
+      console.error(error);
+      next(error);
     }
-    const hashedPassword = await bcrypt.hash(req.body.password, 12);
-    await User.create({
-      email: req.body.email,
-      nickname: req.body.nickname,
-      password: hashedPassword,
-    });
-    res.status(200).send('ok');
-  } catch (error) {
-    console.error(error);
-    next(error);
   }
-});
+);
 
 // POST /logout
 router.post('/logout', isLoggedIn, (req, res) => {

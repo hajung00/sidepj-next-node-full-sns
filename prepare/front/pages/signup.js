@@ -1,11 +1,15 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import AppLayout from '../components/AppLayout';
 import Head from 'next/head';
-import { Form, Input, Checkbox, Button } from 'antd';
+import { Form, Input, Checkbox, Button, Avatar } from 'antd';
 import useInput from '../hooks/useInput';
 import styled from 'styled-components';
 import { useDispatch, useSelector, useStore } from 'react-redux';
-import { signUpRequestAction } from '../reducers/user';
+import {
+  signUpRequestAction,
+  SIGN_UP_REQUEST,
+  UPLOAD_PROFILEIMAGES_REQUEST,
+} from '../reducers/user';
 import Router from 'next/router';
 import Link from 'next/link';
 
@@ -57,6 +61,13 @@ const Signup = () => {
   // 비밀번호 확인은 입력한 비밀번호와 입력했는지 확인해야 하기 때문에 커스텀 훅 x
   const [passwordcheck, setChangePasswordCheck] = useState('');
   const [passwordError, setPasswordError] = useState(false);
+
+  const fileInput = useRef(null);
+  const [File, setFile] = useState('');
+  const [Image, setImage] = useState(
+    'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+  );
+
   const onChangePasswordCheck = useCallback(
     (e) => {
       setChangePasswordCheck(e.target.value);
@@ -74,10 +85,8 @@ const Signup = () => {
   });
 
   const dispatch = useDispatch();
-  const { signUpLoading, signUpDone, signUpError, me } = useSelector(
-    (state) => state.user
-  );
-
+  const { signUpLoading, signUpDone, signUpError, me, profileImg } =
+    useSelector((state) => state.user);
   useEffect(() => {
     if (signUpDone) {
       Router.replace('/');
@@ -100,8 +109,50 @@ const Signup = () => {
   const onSubmit = useCallback(() => {
     if (password !== passwordcheck) setPasswordError(true);
     if (!term) setTermError(true);
-    dispatch(signUpRequestAction({ email, nickname, password }));
-  }, [email, password, passwordcheck, term]);
+
+    const formData = new FormData();
+    profileImg.forEach((p) => {
+      formData.append('image', p);
+    });
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('nickname', nickname);
+
+    return dispatch({
+      type: SIGN_UP_REQUEST,
+      data: formData,
+    });
+  }, [email, password, passwordcheck, term, profileImg]);
+
+  const onChange = useCallback((e) => {
+    if (e.target.files[0]) {
+      setFile(e.target.files[0]);
+    } else {
+      //업로드 취소할 시
+      setImage(
+        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+      );
+      return;
+    }
+    //화면에 프로필 사진 표시
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setImage(reader.result);
+      }
+    };
+    reader.readAsDataURL(e.target.files[0]);
+
+    console.log('images', e.target.files);
+    const imageFormData = new FormData(); // FormData 를 이용해 Mulitpart 형식 전송
+    [].forEach.call(e.target.files, (f) => {
+      imageFormData.append('image', f);
+    });
+    dispatch({
+      type: UPLOAD_PROFILEIMAGES_REQUEST,
+      data: imageFormData,
+    });
+  }, []);
 
   return (
     <SignupPageWrapper>
@@ -121,6 +172,26 @@ const Signup = () => {
 
         <FormWrapper onFinish={onSubmit}>
           <h1>Node Brid</h1>
+          <InputWrapper>
+            <label htmlFor='user-email'>프로필 사진</label>
+            <div>
+              <Avatar
+                src={Image}
+                style={{ width: '100px' }}
+                size={100}
+                onClick={() => {
+                  fileInput.current.click();
+                }}
+              />
+              <input
+                type='file'
+                style={{ display: 'none' }}
+                name='profile_img'
+                onChange={onChange}
+                ref={fileInput}
+              />
+            </div>
+          </InputWrapper>
           <InputWrapper>
             <label htmlFor='user-email'>아이디</label>
             <br />
@@ -174,7 +245,12 @@ const Signup = () => {
             ) : null}
           </div>
           <div style={{ marginTop: '10px' }}>
-            <Button type='primary' htmlType='submit' loading={signUpLoading}>
+            <Button
+              type='primary'
+              htmlType='submit'
+              loading={signUpLoading}
+              onClick={onSubmit}
+            >
               가입하기
             </Button>
           </div>
