@@ -232,18 +232,22 @@ router.post('/logout', isLoggedIn, (req, res) => {
   res.send('ok');
 });
 
-// PATCH /user/nickname
-router.patch('/nickname', isLoggedIn, async (req, res, next) => {
+// PATCH /user/profile
+router.patch('/profile', upload.none(), isLoggedIn, async (req, res, next) => {
+  console.log(req.body);
   try {
     await User.update(
       {
         nickname: req.body.nickname,
+        image: req.body.image,
       },
       {
         where: { id: req.user.id },
       }
     );
-    res.status(200).json({ nickname: req.body.nickname });
+    res
+      .status(200)
+      .json({ nickname: req.body.nickname, image: req.body.image });
   } catch (error) {
     console.error(error);
     next(error);

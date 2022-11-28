@@ -3,8 +3,8 @@ import { Form, Avatar, Button, Modal, Input } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import useInput from '../hooks/useInput';
 import {
-  CHANGE_NICKNAME_REQUEST,
-  CHANGE_PROFILE_IMG_REQUEST,
+  CHANGE_PROFILE_REQUEST,
+  UPLOAD_PROFILEIMAGES_REQUEST,
 } from '../reducers/user';
 
 const ProfileEditForm = () => {
@@ -13,26 +13,22 @@ const ProfileEditForm = () => {
     border: '1px solid #d9d9d9',
     padding: '20px',
   }));
-  const { me } = useSelector((state) => state.user);
+  const { me, profileImg } = useSelector((state) => state.user);
   const [nickname, onChangeNickname] = useInput(me?.nickname || '');
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
   const [File, setFile] = useState('');
-  const [Image, setImage] = useState(
-    'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
-  );
+  const [Image, setImage] = useState(`http://localhost:3065/${me.image}`);
 
   const fileInput = useRef(null);
-
-  const onChange = (e) => {
+  console.log(profileImg);
+  const onChange = useCallback((e) => {
     if (e.target.files[0]) {
       setFile(e.target.files[0]);
     } else {
       //업로드 취소할 시
-      setImage(
-        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
-      );
+      setImage(`http://localhost:3065/${me.image}`);
       return;
     }
     //화면에 프로필 사진 표시
@@ -43,20 +39,28 @@ const ProfileEditForm = () => {
       }
     };
     reader.readAsDataURL(e.target.files[0]);
-  };
+    console.log('images', e.target.files);
+    const imageFormData = new FormData(); // FormData 를 이용해 Mulitpart 형식 전송
+    [].forEach.call(e.target.files, (f) => {
+      imageFormData.append('image', f);
+    });
+    dispatch({
+      type: UPLOAD_PROFILEIMAGES_REQUEST,
+      data: imageFormData,
+    });
+  }, []);
 
   const onSubmit = useCallback(() => {
-    // dispatch(
-    //   {
-    //     type: CHANGE_NICKNAME_REQUEST,
-    //     data: nickname,
-    //   },
-    //   {
-    //     type: CHANGE_PROFILE_IMG_REQUEST,
-    //     data: nickname,
-    //   }
-    // );
-    console.log(nickname, Image);
+    const formData = new FormData();
+    profileImg.forEach((p) => {
+      formData.append('image', p);
+    });
+    formData.append('nickname', nickname);
+    dispatch({
+      type: CHANGE_PROFILE_REQUEST,
+      data: formData,
+    });
+    setOpen(false);
   }, [nickname]);
 
   return (

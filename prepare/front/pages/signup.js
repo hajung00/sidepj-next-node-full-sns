@@ -87,6 +87,7 @@ const Signup = () => {
   const dispatch = useDispatch();
   const { signUpLoading, signUpDone, signUpError, me, profileImg } =
     useSelector((state) => state.user);
+  console.log(me);
   useEffect(() => {
     if (signUpDone) {
       Router.replace('/');

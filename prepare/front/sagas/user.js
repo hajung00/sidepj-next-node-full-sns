@@ -19,9 +19,9 @@ import {
   SIGN_UP_REQUEST,
   SIGN_UP_SUCCESS,
   SIGN_UP_FAILURE,
-  CHANGE_NICKNAME_REQUEST,
-  CHANGE_NICKNAME_SUCCESS,
-  CHANGE_NICKNAME_FAILURE,
+  CHANGE_PROFILE_REQUEST,
+  CHANGE_PROFILE_SUCCESS,
+  CHANGE_PROFILE_FAILURE,
   LOAD_FOLLOWINGS_REQUEST,
   LOAD_FOLLOWINGS_SUCCESS,
   LOAD_FOLLOWINGS_FAILURE,
@@ -69,8 +69,8 @@ function* watchSignUp() {
   yield takeLatest(SIGN_UP_REQUEST, signUp);
 }
 
-function* watchChangeNickname() {
-  yield takeLatest(CHANGE_NICKNAME_REQUEST, changeNickname);
+function* watchProfile() {
+  yield takeLatest(CHANGE_PROFILE_REQUEST, changeProfile);
 }
 function* watchLoadProfileImages() {
   yield takeLatest(UPLOAD_PROFILEIMAGES_REQUEST, loadProfileImages);
@@ -272,21 +272,22 @@ function* logOut() {
 }
 
 // changenickname
-function changeNicknameAPI(data) {
-  return axios.patch('/user/nickname', { nickname: data });
+function changeProfileAPI(data) {
+  console.log(data);
+  return axios.patch('/user/profile', data);
 }
 
-function* changeNickname(action) {
+function* changeProfile(action) {
   try {
-    const result = yield call(changeNicknameAPI, action.data);
+    const result = yield call(changeProfileAPI, action.data);
     console.log(result);
     yield put({
-      type: CHANGE_NICKNAME_SUCCESS,
+      type: CHANGE_PROFILE_SUCCESS,
       data: result.data,
     });
   } catch (err) {
     yield put({
-      type: CHANGE_NICKNAME_FAILURE,
+      type: CHANGE_PROFILE_FAILURE,
       error: err.response.data,
     });
   }
@@ -322,7 +323,7 @@ export default function* userSaga() {
     fork(watchLogIn),
     fork(watchLogOut),
     fork(watchSignUp),
-    fork(watchChangeNickname),
+    fork(watchProfile),
     fork(watchLoadFollowers),
     fork(watchLoadFollowings),
     fork(watchRemoveFollower),

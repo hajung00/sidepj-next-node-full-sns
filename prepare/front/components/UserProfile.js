@@ -14,7 +14,7 @@ const UserProfile = ({ title }) => {
     });
     Router.push('/');
   }, []);
-
+  console.log(me);
   return (
     <Card
       actions={[
@@ -51,7 +51,9 @@ const UserProfile = ({ title }) => {
         avatar={
           <Link href={`/user/${me.id}`}>
             <a>
-              <Avatar>{me.nickname[0]}</Avatar>
+              <Avatar src={`http://localhost:3065/${me.image}`}>
+                {me.nickname[0]}
+              </Avatar>
             </a>
           </Link>
         }

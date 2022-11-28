@@ -60,9 +60,9 @@ export const LOG_OUT_REQUEST = 'LOG_OUT_REQUEST';
 export const LOG_OUT_SUCCESS = 'LOG_OUT_SUCCESS';
 export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE';
 
-export const CHANGE_NICKNAME_REQUEST = 'CHANGE_NICKNAME_REQUEST';
-export const CHANGE_NICKNAME_SUCCESS = 'CHANGE_NICKNAME_SUCCESS';
-export const CHANGE_NICKNAME_FAILURE = 'CHANGE_NICKNAME_FAILURE';
+export const CHANGE_PROFILE_REQUEST = 'CHANGE_PROFILE_REQUEST';
+export const CHANGE_PROFILE_SUCCESS = 'CHANGE_PROFILE_SUCCESS';
+export const CHANGE_PROFILE_FAILURE = 'CHANGE_PROFILE_FAILURE';
 
 export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
 export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
@@ -261,7 +261,7 @@ const reducer = (state = initialState, action) => {
         draft.signUpLoading = false;
         draft.signUpDone = true;
         draft.me = null;
-
+        draft.profileImg = [];
         break;
 
       case SIGN_UP_FAILURE:
@@ -269,20 +269,21 @@ const reducer = (state = initialState, action) => {
         draft.signUpError = action.error;
         break;
 
-      // 닉네임 변경
-      case CHANGE_NICKNAME_REQUEST:
+      // 프로필 변경
+      case CHANGE_PROFILE_REQUEST:
         draft.changeNickNameLoading = true;
         draft.changeNickNameError = null;
         draft.changeNickNameDone = false;
         break;
 
-      case CHANGE_NICKNAME_SUCCESS:
+      case CHANGE_PROFILE_SUCCESS:
         draft.me.nickname = action.data.nickname;
+        draft.me.image = action.data.image;
         draft.changeNickNameLoading = false;
         draft.changeNickNameDone = true;
         break;
 
-      case CHANGE_NICKNAME_FAILURE:
+      case CHANGE_PROFILE_FAILURE:
         draft.changeNickNameLoading = false;
         draft.changeNickNameError = action.error;
         break;
