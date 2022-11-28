@@ -20,7 +20,7 @@ router.get('/unrelated', async (req, res, next) => {
       include: [
         {
           model: User,
-          attributes: ['id', 'nickname'],
+          attributes: ['id', 'nickname', 'image'],
         },
         {
           model: Image,
@@ -30,7 +30,7 @@ router.get('/unrelated', async (req, res, next) => {
           include: [
             {
               model: User,
-              attributes: ['id', 'nickname'],
+              attributes: ['id', 'nickname', 'image'],
             },
           ],
         },
@@ -45,7 +45,7 @@ router.get('/unrelated', async (req, res, next) => {
           include: [
             {
               model: User,
-              attributes: ['id', 'nickname'],
+              attributes: ['id', 'nickname', 'image'],
             },
             {
               model: Image,
@@ -91,7 +91,7 @@ router.get('/related', async (req, res, next) => {
       include: [
         {
           model: User,
-          attributes: ['id', 'nickname'],
+          attributes: ['id', 'nickname', 'image'],
         },
         {
           model: Image,
@@ -101,7 +101,7 @@ router.get('/related', async (req, res, next) => {
           include: [
             {
               model: User,
-              attributes: ['id', 'nickname'],
+              attributes: ['id', 'nickname', 'image'],
             },
           ],
         },
@@ -116,7 +116,7 @@ router.get('/related', async (req, res, next) => {
           include: [
             {
               model: User,
-              attributes: ['id', 'nickname'],
+              attributes: ['id', 'nickname', 'image'],
             },
             {
               model: Image,

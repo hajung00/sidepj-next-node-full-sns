@@ -124,12 +124,12 @@ router.get('/:userId', async (req, res, next) => {
         {
           model: User,
           as: 'Followings',
-          attributes: ['id'],
+          attributes: ['id', 'image'],
         },
         {
           model: User,
           as: 'Followers',
-          attributes: ['id'],
+          attributes: ['id', 'image'],
         },
       ],
     });
@@ -138,6 +138,7 @@ router.get('/:userId', async (req, res, next) => {
       data.Posts = data.Posts.length;
       data.Followers = data.Followers.length;
       data.Followings = data.Followings.length;
+      data.Image = data.image;
       res.status(200).json(data);
     } else {
       res.status(404).json('존재하지 않는 사용자 입니다.');
@@ -234,7 +235,7 @@ router.post('/logout', isLoggedIn, (req, res) => {
 
 // PATCH /user/profile
 router.patch('/profile', upload.none(), isLoggedIn, async (req, res, next) => {
-  console.log(req.body);
+  console.log(req.body.image);
   try {
     await User.update(
       {
@@ -314,7 +315,7 @@ router.get('/:userId/posts', async (req, res, next) => {
       include: [
         {
           model: User,
-          attributes: ['id', 'nickname'],
+          attributes: ['id', 'nickname', 'image'],
         },
         {
           model: Image,
@@ -324,7 +325,7 @@ router.get('/:userId/posts', async (req, res, next) => {
           include: [
             {
               model: User,
-              attributes: ['id', 'nickname'],
+              attributes: ['id', 'nickname', 'image'],
             },
           ],
         },
@@ -339,7 +340,7 @@ router.get('/:userId/posts', async (req, res, next) => {
           include: [
             {
               model: User,
-              attributes: ['id', 'nickname'],
+              attributes: ['id', 'nickname', 'image'],
             },
             {
               model: Image,

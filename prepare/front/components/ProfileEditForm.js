@@ -19,7 +19,9 @@ const ProfileEditForm = () => {
   const [open, setOpen] = useState(false);
 
   const [File, setFile] = useState('');
-  const [Image, setImage] = useState(`http://localhost:3065/${me.image}`);
+  const [Image, setImage] = useState(
+    me.image !== null ? `http://localhost:3065/${me.image}` : ''
+  );
 
   const fileInput = useRef(null);
   console.log(profileImg);
@@ -28,7 +30,7 @@ const ProfileEditForm = () => {
       setFile(e.target.files[0]);
     } else {
       //업로드 취소할 시
-      setImage(`http://localhost:3065/${me.image}`);
+      setImage(me.image !== null ? `http://localhost:3065/${me.image}` : '');
       return;
     }
     //화면에 프로필 사진 표시
@@ -61,7 +63,7 @@ const ProfileEditForm = () => {
       data: formData,
     });
     setOpen(false);
-  }, [nickname]);
+  }, [nickname, profileImg]);
 
   return (
     <>
@@ -115,7 +117,9 @@ const ProfileEditForm = () => {
               onClick={() => {
                 fileInput.current.click();
               }}
-            />
+            >
+              {me.nickname[0]}
+            </Avatar>
             <input
               type='file'
               style={{ display: 'none' }}

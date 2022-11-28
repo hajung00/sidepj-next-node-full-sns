@@ -75,7 +75,11 @@ function AppLayout({ children }) {
       {/* gutter: column사이의 간격 */}
       <Row gutter={8}>
         <Col xs={24} md={6}>
-          {me ? <UserProfile title={'로그아웃'} /> : <LoginForm />}
+          {me ? (
+            <UserProfile title={'로그아웃'} />
+          ) : (
+            <Link href='/'>로그인 필요</Link>
+          )}
         </Col>
         <Col xs={24} md={12}>
           {children}

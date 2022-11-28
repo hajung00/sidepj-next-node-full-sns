@@ -28,7 +28,9 @@ moment.locale('ko');
 function PostCard({ post }) {
   // 로그인 상태 확인 위해 user에 me:{id, password} 의 id를 가져온다
   // optional chaining연산자 : state.user.me && state.user.me.id를 state.user.me?.id
-  const id = useSelector((state) => state.user.me?.id);
+  console.log(post);
+  const { me } = useSelector((state) => state.user);
+  const id = me.id;
   const liked = post.Likers.find((y) => y.id === id);
   const { removePostLoading } = useSelector((state) => state.post);
 
@@ -164,7 +166,15 @@ function PostCard({ post }) {
               avatar={
                 <Link href={`/user/${post.Retweet.User.id}`}>
                   <a>
-                    <Avatar>{post.Retweet.User.nickname[0]}</Avatar>
+                    <Avatar
+                      src={
+                        post.Retweet.User.image !== null
+                          ? `http://localhost:3065/${post.Retweet.User.image}`
+                          : ''
+                      }
+                    >
+                      {post.Retweet.User.nickname[0]}
+                    </Avatar>
                   </a>
                 </Link>
               }
@@ -182,7 +192,15 @@ function PostCard({ post }) {
               avatar={
                 <Link href={`/user/${post.User.id}`}>
                   <a>
-                    <Avatar>{post.User.nickname[0]}</Avatar>
+                    <Avatar
+                      src={
+                        post.User.image !== null
+                          ? `http://localhost:3065/${post.User.image}`
+                          : ''
+                      }
+                    >
+                      {post.User.nickname[0]}
+                    </Avatar>
                   </a>
                 </Link>
               }
@@ -211,7 +229,15 @@ function PostCard({ post }) {
                   avatar={
                     <Link href={`/user/${item.User.id}`}>
                       <a>
-                        <Avatar>{item.User.nickname[0]}</Avatar>
+                        <Avatar
+                          src={
+                            item.User.image != null
+                              ? `http://localhost:3065/${item.User.image}`
+                              : ''
+                          }
+                        >
+                          {item.User.nickname[0]}
+                        </Avatar>
                       </a>
                     </Link>
                   }

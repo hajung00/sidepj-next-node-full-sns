@@ -1,5 +1,5 @@
 import { Avatar, Card, Button } from 'antd';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { LOG_OUT_REQUEST } from '../reducers/user';
 import Link from 'next/link';
@@ -7,6 +7,15 @@ import Router from 'next/router';
 import ProfileEditForm from './ProfileEditForm';
 const UserProfile = ({ title }) => {
   const { me, logOutLoading, logOutDone } = useSelector((state) => state.user);
+  const [src, setSrc] = useState('');
+  useEffect(() => {
+    if (me) {
+      setSrc(`http://localhost:3065/${me.image}`);
+    } else {
+      setSrc('');
+    }
+  }, [me]);
+
   const dispatch = useDispatch();
   const onLogout = useCallback(() => {
     dispatch({
@@ -51,9 +60,7 @@ const UserProfile = ({ title }) => {
         avatar={
           <Link href={`/user/${me.id}`}>
             <a>
-              <Avatar src={`http://localhost:3065/${me.image}`}>
-                {me.nickname[0]}
-              </Avatar>
+              <Avatar src={src}>{me.nickname[0]}</Avatar>
             </a>
           </Link>
         }

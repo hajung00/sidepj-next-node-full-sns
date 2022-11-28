@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Button, Card } from 'antd';
+import { List, Button, Card, Avatar } from 'antd';
 import { StopOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import { UNFOLLOW_REQUEST, REMOVE_FOLLOWER_REQUEST } from '../reducers/user';
@@ -41,6 +41,13 @@ function FollowList({ header, data, onClickMore, loading }) {
           <Card
             actions={[<StopOutlined key='stop' onClick={onCancel(item.id)} />]}
           >
+            <Avatar
+              src={
+                item.image != null ? `http://localhost:3065/${item.image}` : ''
+              }
+            >
+              {item.nickname[0]}
+            </Avatar>
             <Card.Meta description={item.nickname} />
           </Card>
         </List.Item>
