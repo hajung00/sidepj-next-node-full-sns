@@ -3,6 +3,7 @@ const postRouter = require('./routes/post');
 const postsRouter = require('./routes/posts');
 const userRouter = require('./routes/user');
 const hashtagRouter = require('./routes/hashtag');
+
 const db = require('./models');
 const cors = require('cors');
 const passportConfig = require('./passport');

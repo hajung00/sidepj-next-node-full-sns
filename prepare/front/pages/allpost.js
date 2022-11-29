@@ -15,14 +15,32 @@ import wrapper from '../store/configureStore';
 const AllPosts = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
-  const { mainPosts, hasMorePosts, loadPostLoading, retweetError } =
-    useSelector((state) => state.post);
+  const {
+    mainPosts,
+    hasMorePosts,
+    loadPostLoading,
+    retweetError,
+    accusePostError,
+    accuseMessage,
+  } = useSelector((state) => state.post);
 
   useEffect(() => {
     if (retweetError) {
       alert(retweetError);
     }
   }, [retweetError]);
+
+  useEffect(() => {
+    if (accusePostError) {
+      alert(accusePostError);
+    }
+  }, [accusePostError]);
+
+  useEffect(() => {
+    if (accuseMessage) {
+      alert(accuseMessage);
+    }
+  }, [accuseMessage]);
 
   // scroll
   useEffect(() => {

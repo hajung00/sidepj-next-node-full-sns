@@ -7,6 +7,8 @@ export const initialState = {
   mainPosts: [],
   singlePost: null,
   imagePaths: [],
+  accuseMessage: '',
+  accuseMessageReset: false,
   likePostLoading: false,
   likePostError: null,
   likePostDone: false,
@@ -42,6 +44,9 @@ export const initialState = {
   editContentLoading: false,
   editContentError: null,
   editContentDone: false,
+  accusePostLoading: false,
+  accusePostError: null,
+  accusePostDone: false,
 };
 
 //action => 객체
@@ -106,6 +111,12 @@ export const LOAD_RELATIVE_POSTS_REQUEST = 'LOAD_RELATIVE_POSTS_REQUEST';
 export const LOAD_RELATIVE_POSTS_SUCCESS = 'LOAD_RELATIVE_POSTS_SUCCESS';
 export const LOAD_RELATIVE_POSTS_FAILURE = 'LOAD_RELATIVE_POSTS_FAILURE';
 
+export const ACCUSE_POST_REQUEST = 'ACCUSE_POST_REQUEST';
+export const ACCUSE_POST_SUCCESS = 'ACCUSE_POST_SUCCESS';
+export const ACCUSE_POST_FAILURE = 'ACCUSE_POST_FAILURE';
+
+export const ACCUSE_MESSAGE_REQUEST = 'ACCUSE_MESSAGE_REQUEST';
+
 export const addPost = (data) => ({
   type: ADD_POST_REQUEST,
   data,
@@ -121,6 +132,41 @@ export const addComment = (data) => ({
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
+      case ACCUSE_POST_REQUEST:
+        draft.accusePostLoading = true;
+        draft.accusePostError = null;
+        draft.accusePostDone = false;
+        break;
+      case ACCUSE_POST_SUCCESS: {
+        if (action.data.UserId) {
+          draft.accusePostLoading = false;
+          draft.accusePostDone = true;
+          const post = draft.mainPosts.find((y) => y.id === action.data.PostId);
+          draft.accuseMessage = `postId: ${post.id}글을 ${action.data.Nickname}님이 신고하였습니다.`;
+          draft.accuseMessageReset = true;
+          break;
+        } else {
+          draft.accusePostLoading = false;
+          draft.accusePostDone = true;
+          draft.mainPosts = draft.mainPosts.filter(
+            (y) => y.id !== action.data.PostId
+          );
+          break;
+        }
+      }
+
+      case ACCUSE_POST_FAILURE:
+        draft.accusePostLoading = false;
+        draft.accusePostError = action.error;
+        break;
+
+      case ACCUSE_MESSAGE_REQUEST:
+        {
+          draft.accuseMessage = '';
+          draft.accuseMessageReset = false;
+        }
+        break;
+
       case LOAD_RELATIVE_POSTS_REQUEST:
         draft.loadPostsLoading = true;
         draft.loadPostsError = null;

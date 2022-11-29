@@ -53,6 +53,10 @@ import {
   LOAD_RELATIVE_POSTS_REQUEST,
   LOAD_RELATIVE_POSTS_SUCCESS,
   LOAD_RELATIVE_POSTS_FAILURE,
+  ACCUSE_POST_REQUEST,
+  ACCUSE_POST_SUCCESS,
+  ACCUSE_POST_FAILURE,
+  ACCUSE_MESSAGE_REQUEST,
 } from '../reducers/post';
 
 function* watchRetweet() {
@@ -109,6 +113,35 @@ function* watchRemoveComment() {
 
 function* watchEditContent() {
   yield takeLatest(EDIT_CONTENT_REQUEST, editContent);
+}
+
+function* watchAccusePost() {
+  yield takeLatest(ACCUSE_POST_REQUEST, accusePost);
+}
+
+function* watchAccuseMessage() {
+  yield takeLatest(ACCUSE_MESSAGE_REQUEST, accuseMessage);
+}
+
+// accusePost
+function accusePostAPI(data) {
+  return axios.post(`/post/accuse`, data);
+}
+
+function* accusePost(action) {
+  try {
+    const result = yield call(accusePostAPI, action.data);
+    yield put({
+      type: ACCUSE_POST_SUCCESS,
+      data: result.data,
+    });
+  } catch (error) {
+    console.error(error);
+    yield put({
+      type: ACCUSE_POST_FAILURE,
+      error: error.response.data,
+    });
+  }
 }
 
 // relativeposts loading
@@ -394,10 +427,9 @@ function* likePost(action) {
   }
 }
 
-// unlike
-function unlikePostAPI(data) {
-  return axios.delete(`/post/${data}/like`);
-}
+//accuseMessage
+
+function* accuseMessage() {}
 
 function* unlikePost(action) {
   try {
@@ -431,5 +463,7 @@ export default function* postSaga() {
     fork(watchRemoveComment),
     fork(watchEditContent),
     fork(watchLoadRelativePosts),
+    fork(watchAccusePost),
+    fork(watchAccuseMessage),
   ]);
 }

@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const { Post, Image, Comment, User, Hashtag } = require('../models');
+const { Post, Image, Comment, User, Hashtag, Accuse } = require('../models');
 const { isLoggedIn } = require('./middlewares');
 const router = express.Router();
 
@@ -268,6 +268,62 @@ router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
 router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => {
   console.log(req.files);
   res.json(req.files.map((y) => y.filename));
+});
+
+// // POST /post/accuse
+router.post('/accuse', isLoggedIn, async (req, res, next) => {
+  console.log(req.body);
+  try {
+    const post = await Post.findOne({
+      where: { id: req.body.postId },
+    });
+    if (!post) {
+      return res.status(403).send('존재하지 않는 게시글입니다.');
+    }
+    const accusePost = await Accuse.findOne({
+      where: {
+        UserId: req.user.id,
+        PostId: req.body.postId,
+      },
+    });
+    if (accusePost) {
+      return res.status(403).send('이미 신고한 게시글입니다.');
+    }
+
+    const user = await User.findOne({
+      where: { id: req.user.id },
+    });
+    const accuse = await Accuse.findAll({
+      where: {
+        PostId: req.body.postId,
+      },
+    });
+    console.log(accuse.length);
+    if (accuse.length >= 2) {
+      await Accuse.create({
+        PostId: req.body.postId,
+        UserId: req.user.id,
+        content: `content: ${req.body.content}  userId: ${post.UserId}`,
+      });
+      await Post.destroy({
+        where: { id: req.body.postId },
+      });
+      return res.status(200).send({ PostId: req.body.postId });
+    } else {
+      await Accuse.create({
+        PostId: req.body.postId,
+        UserId: req.user.id,
+      });
+      res.status(200).send({
+        PostId: req.body.postId,
+        UserId: req.user.id,
+        Nickname: user.nickname,
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
 });
 
 //PATCH /post/1/like

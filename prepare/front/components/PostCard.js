@@ -20,6 +20,8 @@ import {
   UNLIKE_POST_REQUEST,
   RETWEET_REQUEST,
   REMOVE_COMMENT_REQUEST,
+  ACCUSE_POST_REQUEST,
+  ACCUSE_MESSAGE_REQUEST,
 } from '../reducers/post';
 import FollowButton from './FollowButton';
 import EditContentModal from '../components/EditContentModal';
@@ -32,7 +34,9 @@ function PostCard({ post }) {
   const { me } = useSelector((state) => state.user);
   const id = me.id;
   const liked = post.Likers.find((y) => y.id === id);
-  const { removePostLoading } = useSelector((state) => state.post);
+  const { removePostLoading, accuseMessageReset, accuseMessage } = useSelector(
+    (state) => state.post
+  );
 
   // 좋아요 부분 눌렀을 때 토글
   const onLike = useCallback(() => {
@@ -90,11 +94,27 @@ function PostCard({ post }) {
       }
       return dispatch({
         type: REMOVE_COMMENT_REQUEST,
-        data: { commentId: i, postId: post.id, userId: id },
+        data: { postId: post.id, userId: id },
       });
     },
     [id]
   );
+
+  // 게시글 신고
+  const onAccusePost = useCallback(() => {
+    if (accuseMessageReset) {
+      dispatch({
+        type: ACCUSE_MESSAGE_REQUEST,
+      });
+    }
+
+    return dispatch({
+      type: ACCUSE_POST_REQUEST,
+      data: { content: post.content, postId: post.id, userId: id },
+    });
+  });
+
+  console.log(accuseMessageReset, accuseMessage);
 
   return (
     <div style={{ marginBottom: '20px' }}>
@@ -137,7 +157,7 @@ function PostCard({ post }) {
                     </Button>
                   </>
                 ) : (
-                  <Button>신고</Button>
+                  <Button onClick={onAccusePost}>신고</Button>
                 )}
               </Button.Group>
             }
@@ -273,4 +293,4 @@ PostCard.propTypes = {
     Retweet: PropTypes.objectOf(PropTypes.any),
   }).isRequired,
 };
-export default PostCard;
+export default React.memo(PostCard);
