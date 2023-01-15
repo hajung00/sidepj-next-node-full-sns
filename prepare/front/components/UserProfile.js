@@ -5,7 +5,7 @@ import { LOG_OUT_REQUEST } from '../reducers/user';
 import Link from 'next/link';
 import Router from 'next/router';
 import ProfileEditForm from './ProfileEditForm';
-const UserProfile = ({ title }) => {
+const UserProfile = ({ title, main }) => {
   const { me, logOutLoading, logOutDone } = useSelector((state) => state.user);
   const [src, setSrc] = useState('');
   useEffect(() => {
@@ -16,64 +16,69 @@ const UserProfile = ({ title }) => {
     }
   }, [me]);
 
-  const dispatch = useDispatch();
-  const onLogout = useCallback(() => {
-    dispatch({
-      type: LOG_OUT_REQUEST,
-    });
-    Router.push('/');
-  }, []);
   console.log(me);
   return (
-    <Card
-      actions={[
-        <div key='twit'>
-          <Link href={`/user/${me.id}`}>
-            <a>
-              짹짹
-              <br />
-              {me.Posts.length}
-            </a>
-          </Link>
-        </div>,
-        <div key='following'>
-          <Link href={'/profile'}>
-            <a>
-              팔로잉
-              <br />
-              {me.Followings.length}
-            </a>
-          </Link>
-        </div>,
-        <div key='follower'>
-          <Link href={'/profile'}>
-            <a>
-              팔로워
-              <br />
-              {me.Followers.length}
-            </a>
-          </Link>
-        </div>,
-      ]}
-    >
-      <Card.Meta
-        avatar={
-          <Link href={`/user/${me.id}`}>
-            <a>
-              <Avatar src={src}>{me.nickname[0]}</Avatar>
-            </a>
-          </Link>
-        }
-        title={me.nickname}
-      />
-      {title === '프로필 수정' ? (
-        <ProfileEditForm />
+    <>
+      {main === true ? (
+        <Card>
+          <Card.Meta
+            avatar={
+              <Link href={`/user/${me.id}`}>
+                <a>
+                  <Avatar src={src}>{me.nickname[0]}</Avatar>
+                </a>
+              </Link>
+            }
+            title={me.nickname}
+          />
+          {title === '프로필 수정' ? <ProfileEditForm /> : ''}
+        </Card>
       ) : (
-        <Button onClick={onLogout} loading={logOutLoading}>
-          {title}
-        </Button>
+        <Card
+          actions={[
+            <div key='twit'>
+              <Link href={`/user/${me.id}`}>
+                <a>
+                  게시글
+                  <br />
+                  {me.Posts.length}
+                </a>
+              </Link>
+            </div>,
+            <div key='following'>
+              <Link href={'/profile'}>
+                <a>
+                  팔로잉
+                  <br />
+                  {me.Followings.length}
+                </a>
+              </Link>
+            </div>,
+            <div key='follower'>
+              <Link href={'/profile'}>
+                <a>
+                  팔로워
+                  <br />
+                  {me.Followers.length}
+                </a>
+              </Link>
+            </div>,
+          ]}
+        >
+          <Card.Meta
+            avatar={
+              <Link href={`/user/${me.id}`}>
+                <a>
+                  <Avatar src={src}>{me.nickname[0]}</Avatar>
+                </a>
+              </Link>
+            }
+            title={me.nickname}
+          />
+          {title === '프로필 수정' ? <ProfileEditForm /> : ''}
+        </Card>
       )}
-    </Card>
+    </>
   );
 };
 
