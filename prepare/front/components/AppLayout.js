@@ -11,50 +11,43 @@ import useInput from '../hooks/useInput';
 import Router from 'next/router';
 import { LOG_OUT_REQUEST } from '../reducers/user';
 
-const SearchInput = styled(Input.Search)``;
+const SearchInputWrapper = styled.div`
+  backgroundcolor: red;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 60px;
+`;
 
 const Global = createGlobalStyle`
-// @media (max-width: 1020px) {
-//   .ant-col:nth-child(2){
-//     padding-left: 0 !important;
-//     width:calc(100% - 200px) !important;
-//     position: relative !important;}
 
-//   .ant-col:last-child{
-//       padding-right: 0 !important;
-//       width:0px !important;
-//       position: relative !important;
-//       max-width: fit-content !important;
-//       min-width: fit-content;
-//     }
-  
-// }
   .ant-row{
     margin-right: 0 !important;
     margin-left: 0 !important;
   }
   .ant-col:first-child{
     padding-left: 0 !important;
-    width:200px !important;
+ 
     position: relative !important;
-    max-width: fit-content !important;
-    min-width: fit-content;
+   
   }
   .ant-col:nth-child(2){
     padding-left: 0 !important;
-    width:calc(100% - 400px) !important;
+  
     position: relative !important;
   }
   .ant-col:last-child{
     padding-right: 0 !important;
-    width:200px !important;
+  
     position: relative !important;
-    max-width: fit-content !important;
-    min-width: fit-content;
+   
   }
+
+
   .ant-menu-item-selected, .ant-menu-item-active{
     img {
-      width: 15% !important;
+      width: 30px !important;
       transition: all 0.2s !important;
     }
      a {
@@ -71,10 +64,66 @@ const Global = createGlobalStyle`
     transition: all 0.2s !important;
   }
 
+  @media (max-width: 1200px ) and (min-width: 768px){
+    
+    .ant-col:first-child {
+     -webkit-flex: 0 0 90px;
+     
+     ul li a{
+     display:none;
+     }
+     ul li .more{
+      display:none;
+     }
+    }
+
+    .ant-col-md-4 {
+      width:0px;
+    }
+    .ant-col-md-11{
+      width:1500px;
+    }
+    .ant-col-md-9{
+      width:0px;
+    }
+    .ant-col:nth-child(2){
+     min-width:583px;
+     margin-left:10%;
+    }
+
+    .ant-col:last-child{
+     display:none;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .ant-col:first-child {
+      -webkit-flex: 0 0 90px;
+      
+      ul li a{
+      display:none;
+      }
+      ul li .more{
+       display:none;
+      }
+     }
+ 
+     .ant-col-md-4 {
+       width:0px;
+     }
+    .ant-col:nth-child(2){
+     min-width:400px !important;
+     margin-left:5% !important;
+    }
+    .ant-col:last-child{
+      display:none;
+  }
+
+
 `;
 const MenuItem_wrapper = styled.div`
   img {
-    width: 12%;
+    width: 26px;
     margin-right: 15px;
     margin-bottom: 2px;
   }
@@ -85,17 +134,18 @@ const MenuItem_wrapper = styled.div`
 
   // 더보기 버튼
   div div {
-    width: 50px;
+    width: 23px;
     height: 50px;
     position: relative;
     margin-top: 12px;
+    margin-right: 20px;
   }
   div div:hover {
     cursor: pointer;
   }
   div div span {
     background: black;
-    width: 40%;
+    width: 20px;
     height: 2px;
     display: block;
     position: absolute;
@@ -139,26 +189,6 @@ const LogoutBtn = styled.button`
   }
 `;
 
-const LeftCol = styled(Col)`
-  ul li:hover {
-    img {
-      width: 15%;
-      transition: all 0.2s;
-    }
-    a {
-      color: black;
-      font-size: 18px;
-      transition: all 0.1s;
-    }
-    span {
-      color: black;
-      font-size: 18px;
-      transition: all 0.1s;
-    }
-    transition: all 0.2s;
-  }
-`;
-
 function AppLayout({ children }) {
   // redux useSelector로 store에 저장된 데이터 가져오기
   const { me, logOutLoading } = useSelector((state) => state.user);
@@ -184,8 +214,8 @@ function AppLayout({ children }) {
 
       {/* 반응형 그리드 antd에서 정한 breakpoint가 되면 25%, 50%, 25%차지*/}
       {/* gutter: column사이의 간격 */}
-      <Row gutter={8}>
-        <LeftCol xs={24} md={6}>
+      <Row gutter={50}>
+        <Col md={4}>
           {' '}
           {me ? <UserProfile main={true} /> : <Link href='/'>로그인 필요</Link>}
           <Menu
@@ -196,45 +226,65 @@ function AppLayout({ children }) {
           >
             <Menu.Item style={{ height: 'auto' }}>
               <MenuItem_wrapper>
-                <img src={process.env.PUBLIC_URL + '../../images/home.jpg'} />
                 <Link href='/main'>
-                  <a>홈</a>
+                  <>
+                    <img
+                      src={process.env.PUBLIC_URL + '../../images/home.jpg'}
+                    />
+                    <a>홈</a>
+                  </>
                 </Link>
               </MenuItem_wrapper>
             </Menu.Item>
             <Menu.Item style={{ height: 'auto' }}>
               <MenuItem_wrapper>
-                <img
-                  src={process.env.PUBLIC_URL + '../../images/profile.png'}
-                />
                 <Link href='/profile'>
-                  <a>프로필</a>
+                  <>
+                    <img
+                      src={process.env.PUBLIC_URL + '../../images/profile.png'}
+                    />
+
+                    <a>프로필</a>
+                  </>
                 </Link>
               </MenuItem_wrapper>
             </Menu.Item>
             <Menu.Item style={{ height: 'auto' }}>
               <MenuItem_wrapper>
-                <img src={process.env.PUBLIC_URL + '../../images/search.jpg'} />
                 <Link href='/allpost'>
-                  <a>탐색</a>
+                  <>
+                    <img
+                      src={process.env.PUBLIC_URL + '../../images/search.jpg'}
+                    />
+
+                    <a>탐색</a>
+                  </>
                 </Link>
               </MenuItem_wrapper>
             </Menu.Item>
             <Menu.Item style={{ height: 'auto' }}>
               <MenuItem_wrapper>
-                <img src={process.env.PUBLIC_URL + '../../images/alarm.jpg'} />
                 <Link href='#none'>
-                  <a>알림</a>
+                  <>
+                    <img
+                      src={process.env.PUBLIC_URL + '../../images/alarm.jpg'}
+                    />
+
+                    <a>알림</a>
+                  </>
                 </Link>
               </MenuItem_wrapper>
             </Menu.Item>
             <Menu.Item style={{ height: 'auto', position: 'relative' }}>
               <MenuItem_wrapper>
-                <img
-                  src={process.env.PUBLIC_URL + '../../images/message.jpg'}
-                />
                 <Link href='#none'>
-                  <a>쪽지</a>
+                  <>
+                    <img
+                      src={process.env.PUBLIC_URL + '../../images/message.jpg'}
+                    />
+
+                    <a>쪽지</a>
+                  </>
                 </Link>
               </MenuItem_wrapper>
             </Menu.Item>
@@ -268,34 +318,31 @@ function AppLayout({ children }) {
                     <span className='b' />
                     <span className='c' />
                   </div>
-                  <span>더 보기</span>
+                  <span className='more'>더 보기</span>
                 </div>
               </MenuItem_wrapper>
             </Menu.Item>
           </Menu>
-        </LeftCol>
-        <Col
-          // xs={24}
-          // md={12}
-          style={{
-            background: 'yellow',
-          }}
-        >
+        </Col>
+        <Col md={11}>
           <div
             style={{ position: 'absolute', left: '0', top: '0', width: '100%' }}
           >
             {children}
           </div>
         </Col>
-        <Col xs={24} md={6}>
+        <Col md={9}>
           {/* target _blank는 보안 위협이 있어서 rel과 같이 사용 
           어떤창에서 열었는지에 대한 정보를  noreferrer noopener로 보안 위협 방지*/}
-          <SearchInput
-            enterButton
-            value={searchInput}
-            onChange={onChangeSerchInput}
-            onSearch={onSearch}
-          />
+          <SearchInputWrapper>
+            <Input.Search
+              enterButton
+              value={searchInput}
+              onChange={onChangeSerchInput}
+              onSearch={onSearch}
+            />
+            <div>아아</div>
+          </SearchInputWrapper>
         </Col>
       </Row>
     </div>
