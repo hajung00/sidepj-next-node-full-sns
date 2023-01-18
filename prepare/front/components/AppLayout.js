@@ -226,66 +226,60 @@ function AppLayout({ children }) {
           >
             <Menu.Item style={{ height: 'auto' }}>
               <MenuItem_wrapper>
-                <Link href='/main'>
-                  <>
-                    <img
-                      src={process.env.PUBLIC_URL + '../../images/home.jpg'}
-                    />
+                <>
+                  <img src={process.env.PUBLIC_URL + '../../images/home.jpg'} />
+                  <Link href='/main'>
                     <a>홈</a>
-                  </>
-                </Link>
+                  </Link>
+                </>
               </MenuItem_wrapper>
             </Menu.Item>
             <Menu.Item style={{ height: 'auto' }}>
               <MenuItem_wrapper>
-                <Link href='/profile'>
-                  <>
-                    <img
-                      src={process.env.PUBLIC_URL + '../../images/profile.png'}
-                    />
-
+                <>
+                  <img
+                    src={process.env.PUBLIC_URL + '../../images/profile.png'}
+                  />
+                  <Link href='/profile'>
                     <a>프로필</a>
-                  </>
-                </Link>
+                  </Link>
+                </>
               </MenuItem_wrapper>
             </Menu.Item>
             <Menu.Item style={{ height: 'auto' }}>
               <MenuItem_wrapper>
-                <Link href='/allpost'>
-                  <>
-                    <img
-                      src={process.env.PUBLIC_URL + '../../images/search.jpg'}
-                    />
-
+                <>
+                  <img
+                    src={process.env.PUBLIC_URL + '../../images/search.jpg'}
+                  />
+                  <Link href='/allpost'>
                     <a>탐색</a>
-                  </>
-                </Link>
+                  </Link>
+                </>
               </MenuItem_wrapper>
             </Menu.Item>
             <Menu.Item style={{ height: 'auto' }}>
               <MenuItem_wrapper>
-                <Link href='#none'>
-                  <>
-                    <img
-                      src={process.env.PUBLIC_URL + '../../images/alarm.jpg'}
-                    />
-
+                <>
+                  <img
+                    src={process.env.PUBLIC_URL + '../../images/alarm.jpg'}
+                  />
+                  <Link href='#none'>
                     <a>알림</a>
-                  </>
-                </Link>
+                  </Link>
+                </>
               </MenuItem_wrapper>
             </Menu.Item>
             <Menu.Item style={{ height: 'auto', position: 'relative' }}>
               <MenuItem_wrapper>
-                <Link href='#none'>
-                  <>
-                    <img
-                      src={process.env.PUBLIC_URL + '../../images/message.jpg'}
-                    />
-
+                <>
+                  <img
+                    src={process.env.PUBLIC_URL + '../../images/message.jpg'}
+                  />
+                  <Link href='#none'>
                     <a>쪽지</a>
-                  </>
-                </Link>
+                  </Link>
+                </>
               </MenuItem_wrapper>
             </Menu.Item>
             <Menu.Item
