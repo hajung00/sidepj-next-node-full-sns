@@ -7,6 +7,7 @@ export const initialState = {
   mainPosts: [],
   singlePost: null,
   imagePaths: [],
+  hashTag: [],
   accuseMessage: '',
   accuseMessageReset: false,
   likePostLoading: false,
@@ -47,6 +48,9 @@ export const initialState = {
   accusePostLoading: false,
   accusePostError: null,
   accusePostDone: false,
+  hashTagLoading: false,
+  hashTagError: null,
+  hashTagDone: false,
 };
 
 //action => 객체
@@ -115,6 +119,10 @@ export const ACCUSE_POST_REQUEST = 'ACCUSE_POST_REQUEST';
 export const ACCUSE_POST_SUCCESS = 'ACCUSE_POST_SUCCESS';
 export const ACCUSE_POST_FAILURE = 'ACCUSE_POST_FAILURE';
 
+export const LOAD_HASHTAG_REQUEST = 'LOAD_HASHTAG_REQUEST';
+export const LOAD_HASHTAG_SUCCESS = 'LOAD_HASHTAG_SUCCESS';
+export const LOAD_HASHTAG_FAILURE = 'LOAD_HASHTAG_FAILURE';
+
 export const ACCUSE_MESSAGE_REQUEST = 'ACCUSE_MESSAGE_REQUEST';
 
 export const addPost = (data) => ({
@@ -132,6 +140,19 @@ export const addComment = (data) => ({
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
+      case LOAD_HASHTAG_REQUEST:
+        draft.hashTagLoading = true;
+        draft.hashTagError = null;
+        draft.hashTagDone = false;
+        break;
+      case LOAD_HASHTAG_SUCCESS: {
+        draft.hashTag = action.data;
+      }
+      case LOAD_HASHTAG_FAILURE:
+        draft.hashTagLoading = false;
+        draft.hashTagError = action.error;
+        break;
+
       case ACCUSE_POST_REQUEST:
         draft.accusePostLoading = true;
         draft.accusePostError = null;

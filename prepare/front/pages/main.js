@@ -5,16 +5,14 @@ import AppLayout from '../components/AppLayout';
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  LOAD_POSTS_REQUEST,
-  LOAD_RELATIVE_POSTS_REQUEST,
-} from '../reducers/post';
+import { LOAD_RELATIVE_POSTS_REQUEST } from '../reducers/post';
 import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import wrapper from '../store/configureStore';
 
 const Main = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
+
   const {
     mainPosts,
     hasMorePosts,
@@ -51,16 +49,10 @@ const Main = () => {
       ) {
         if (hasMorePosts && !loadPostLoading) {
           const lastId = mainPosts[mainPosts.length - 1]?.id;
-          dispatch(
-            //   {
-            //   type: LOAD_POSTS_REQUEST,
-            //   lastId,
-            // },
-            {
-              type: LOAD_RELATIVE_POSTS_REQUEST,
-              lastId,
-            }
-          );
+          dispatch({
+            type: LOAD_RELATIVE_POSTS_REQUEST,
+            lastId,
+          });
         }
       }
     };

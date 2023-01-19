@@ -63,4 +63,20 @@ router.get('/:hashtag', async (req, res, next) => {
   }
 });
 
+//hashtag get
+router.get('/', async (req, res, next) => {
+  try {
+    const hashTag = await Hashtag.findAll({
+      limit: 3,
+      attributes: ['id', 'name'],
+    });
+    console.log(hashTag);
+    res.status(200).json(hashTag);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+  console.log(req);
+});
+
 module.exports = router;

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Menu, Input, Row, Col } from 'antd';
@@ -10,6 +10,7 @@ import { createGlobalStyle } from 'styled-components';
 import useInput from '../hooks/useInput';
 import Router from 'next/router';
 import { LOG_OUT_REQUEST } from '../reducers/user';
+import { LOAD_HASHTAG_REQUEST } from '../reducers/post';
 
 const SearchInputWrapper = styled.div`
   backgroundcolor: red;
@@ -192,6 +193,7 @@ const LogoutBtn = styled.button`
 function AppLayout({ children }) {
   // redux useSelector로 store에 저장된 데이터 가져오기
   const { me, logOutLoading } = useSelector((state) => state.user);
+  const { hashTag } = useSelector((state) => state.post);
   const [searchInput, onChangeSerchInput] = useInput('');
   const dispatch = useDispatch();
 
@@ -199,6 +201,10 @@ function AppLayout({ children }) {
     Router.push(`/hashtag/${searchInput}`);
   }, [searchInput]);
 
+  const onHashClick = useCallback((hash) => {
+    console.log('hash', hash);
+    Router.push(`/hashtag/${hash.name}`);
+  });
   const [openModal, setOpenModal] = useState(false);
 
   const onLogout = useCallback(() => {
@@ -208,6 +214,13 @@ function AppLayout({ children }) {
     Router.push('/');
   }, []);
 
+  useEffect(() => {
+    dispatch({
+      type: LOAD_HASHTAG_REQUEST,
+    });
+  }, []);
+
+  console.log(hashTag);
   return (
     <div>
       <Global />
@@ -335,7 +348,15 @@ function AppLayout({ children }) {
               onChange={onChangeSerchInput}
               onSearch={onSearch}
             />
-            <div>아아</div>
+            {hashTag.map((hash, i) => (
+              <div
+                onClick={() => {
+                  onHashClick(hash);
+                }}
+              >
+                #{hash.name}
+              </div>
+            ))}
           </SearchInputWrapper>
         </Col>
       </Row>

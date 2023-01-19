@@ -5,7 +5,10 @@ import { END } from 'redux-saga';
 import { useRouter } from 'next/router';
 
 import axios from 'axios';
-import { LOAD_HASHTAG_POSTS_REQUEST } from '../../reducers/post';
+import {
+  LOAD_HASHTAG_POSTS_REQUEST,
+  LOAD_HASHTAG_REQUEST,
+} from '../../reducers/post';
 import { LOAD_MY_INFO_REQUEST } from '../../reducers/user';
 import PostCard from '../../components/PostCard';
 import wrapper from '../../store/configureStore';
@@ -40,6 +43,12 @@ const Hashtag = () => {
       window.removeEventListener('scroll', onScroll);
     };
   }, [mainPosts.length, hasMorePosts, tag, loadPostsLoading]);
+
+  useEffect(() => {
+    dispatch({
+      type: LOAD_HASHTAG_REQUEST,
+    });
+  }, [tag]);
 
   return (
     <AppLayout>
@@ -111,10 +120,12 @@ export const getServerSideProps = wrapper.getServerSideProps(
     context.store.dispatch({
       type: LOAD_MY_INFO_REQUEST,
     });
+
     context.store.dispatch({
       type: LOAD_HASHTAG_POSTS_REQUEST,
       data: context.params.tag,
     });
+
     context.store.dispatch(END);
     await context.store.sagaTask.toPromise();
   }

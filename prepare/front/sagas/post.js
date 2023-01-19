@@ -57,6 +57,9 @@ import {
   ACCUSE_POST_SUCCESS,
   ACCUSE_POST_FAILURE,
   ACCUSE_MESSAGE_REQUEST,
+  LOAD_HASHTAG_REQUEST,
+  LOAD_HASHTAG_SUCCESS,
+  LOAD_HASHTAG_FAILURE,
 } from '../reducers/post';
 
 function* watchRetweet() {
@@ -121,6 +124,10 @@ function* watchAccusePost() {
 
 function* watchAccuseMessage() {
   yield takeLatest(ACCUSE_MESSAGE_REQUEST, accuseMessage);
+}
+
+function* watchLoadhashTag() {
+  yield takeLatest(LOAD_HASHTAG_REQUEST, loadHashTag);
 }
 
 // accusePost
@@ -431,6 +438,10 @@ function* likePost(action) {
 
 function* accuseMessage() {}
 
+function unlikePostAPI(data) {
+  return axios.delete(`/post/${data}/like`);
+}
+
 function* unlikePost(action) {
   try {
     const result = yield call(unlikePostAPI, action.data);
@@ -442,6 +453,26 @@ function* unlikePost(action) {
     console.error(err);
     yield put({
       type: UNLIKE_POST_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function loadHashTagAPI() {
+  return axios.get(`/hashtag`);
+}
+
+function* loadHashTag() {
+  try {
+    const result = yield call(loadHashTagAPI);
+    yield put({
+      type: LOAD_HASHTAG_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_HASHTAG_FAILURE,
       error: err.response.data,
     });
   }
@@ -465,5 +496,6 @@ export default function* postSaga() {
     fork(watchLoadRelativePosts),
     fork(watchAccusePost),
     fork(watchAccuseMessage),
+    fork(watchLoadhashTag),
   ]);
 }
