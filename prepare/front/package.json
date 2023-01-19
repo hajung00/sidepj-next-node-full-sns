@@ -21,6 +21,7 @@
     "immer": "^9.0.15",
     "moment": "^2.29.4",
     "next": "^9.5.5",
+    "next-images": "^1.8.4",
     "next-redux-wrapper": "^6.0.2",
     "prop-types": "^15.8.1",
     "react": "^16.14.0",

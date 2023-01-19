@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Menu, Input, Row, Col } from 'antd';
 import UserProfile from '../components/UserProfile';
-import LoginForm from '../components/LoginForm';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { createGlobalStyle } from 'styled-components';
@@ -13,12 +12,65 @@ import { LOG_OUT_REQUEST } from '../reducers/user';
 import { LOAD_HASHTAG_REQUEST } from '../reducers/post';
 
 const SearchInputWrapper = styled.div`
-  backgroundcolor: red;
   height: 100%;
+  min-width: 330px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 50px 60px;
+  margin: 30px 3%;
+  position: fixed;
+  --antd-wave-shadow-color: white !important;
+
+  .ant-input-group-wrapper {
+    background: lightgray;
+    height: 50px;
+    padding: 8px 10px;
+    border-radius: 30px;
+  }
+
+  .ant-input {
+    background-color: lightgray;
+    border: none;
+    margin-left: 10px;
+    width: 90%;
+    :active,
+    :focus {
+      border: none;
+      box-shadow: none;
+      border-color: gray !important;
+      border-bottom: 1px solid gray;
+    }
+  }
+
+  .ant-btn-primary {
+    background-color: lightgray !important;
+    border-color: lightgray !important;
+    background: lightgray !important;
+    box-shadow: 0 0 0 0;
+    :hover,
+    :active,
+    :focus {
+      background-color: lightgray !important;
+    }
+  }
+
+  span:nth-of-type(2) {
+    font-weight: 600;
+    background-color: #f2f2f2;
+    font-size: 18px;
+    display: inline-block;
+    width: 100%;
+    padding: 15px;
+    margin: 20px 0 0;
+    border-radius: 10px 10px 0px 0px;
+  }
+  span:nth-of-type(3) {
+    background-color: #f2f2f2;
+    display: inline-block;
+    width: 100%;
+    height: 30px;
+    border-radius: 0px 0px 10px 10px;
+  }
 `;
 
 const Global = createGlobalStyle`
@@ -29,8 +81,6 @@ const Global = createGlobalStyle`
   }
   .ant-col:first-child{
     padding-left: 0 !important;
- 
-    position: relative !important;
    
   }
   .ant-col:nth-child(2){
@@ -43,6 +93,12 @@ const Global = createGlobalStyle`
   
     position: relative !important;
    
+  }
+
+  .ant-col-md-4>.ant-card-bordered{
+    position: fixed;
+    transform: translateX(9px);
+    z-index: 4;
   }
 
 
@@ -68,8 +124,10 @@ const Global = createGlobalStyle`
   @media (max-width: 1200px ) and (min-width: 768px){
     
     .ant-col:first-child {
-     -webkit-flex: 0 0 90px;
-     
+    // -webkit-flex: 0 0 110px;
+     ul{
+      max-width:90px;
+     }
      ul li a{
      display:none;
      }
@@ -77,7 +135,11 @@ const Global = createGlobalStyle`
       display:none;
      }
     }
-
+    .ant-col-md-4>.ant-card-bordered{
+     
+      max-width:82px;
+     
+    }
     .ant-col-md-4 {
       width:0px;
     }
@@ -89,18 +151,26 @@ const Global = createGlobalStyle`
     }
     .ant-col:nth-child(2){
      min-width:583px;
-     margin-left:10%;
+     margin-left:8%;
     }
 
     .ant-col:last-child{
      display:none;
     }
+
+    .ant-col-md-4>.ant-card-bordered{
+      position: fixed;
+      transform: translateX(9px);
+      z-index: 4;
+    }
   }
 
   @media (max-width: 767px) {
     .ant-col:first-child {
-      -webkit-flex: 0 0 90px;
-      
+      // -webkit-flex: 0 0 110px;
+      ul{
+        max-width:90px;
+       }
       ul li a{
       display:none;
       }
@@ -108,13 +178,17 @@ const Global = createGlobalStyle`
        display:none;
       }
      }
- 
+     .ant-col-md-4>.ant-card-bordered{
+     
+      max-width:82px;
+     
+    }
      .ant-col-md-4 {
        width:0px;
      }
     .ant-col:nth-child(2){
      min-width:400px !important;
-     margin-left:5% !important;
+     margin-left:20% !important;
     }
     .ant-col:last-child{
       display:none;
@@ -190,6 +264,21 @@ const LogoutBtn = styled.button`
   }
 `;
 
+const HashList = styled.div`
+  background-color: #f2f2f2;
+  width: 100%;
+  padding: 17px;
+  font-size: 16px;
+  font-weight: 700;
+
+  :hover,
+  :focus {
+    background-color: #e2e2e2;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+`;
+
 function AppLayout({ children }) {
   // redux useSelector로 store에 저장된 데이터 가져오기
   const { me, logOutLoading } = useSelector((state) => state.user);
@@ -234,13 +323,14 @@ function AppLayout({ children }) {
           <Menu
             mode='vertical'
             style={{
-              padding: '80px 0',
+              padding: '150px 0',
+              position: 'fixed',
             }}
           >
             <Menu.Item style={{ height: 'auto' }}>
               <MenuItem_wrapper>
                 <>
-                  <img src={process.env.PUBLIC_URL + '../../images/home.jpg'} />
+                  <img src='images/alarm.jpg' />
                   <Link href='/main'>
                     <a>홈</a>
                   </Link>
@@ -348,15 +438,17 @@ function AppLayout({ children }) {
               onChange={onChangeSerchInput}
               onSearch={onSearch}
             />
+            <span>Trends for you</span>
             {hashTag.map((hash, i) => (
-              <div
+              <HashList
                 onClick={() => {
                   onHashClick(hash);
                 }}
               >
                 #{hash.name}
-              </div>
+              </HashList>
             ))}
+            <span />
           </SearchInputWrapper>
         </Col>
       </Row>
