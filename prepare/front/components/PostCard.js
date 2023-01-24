@@ -25,8 +25,14 @@ import {
 } from '../reducers/post';
 import FollowButton from './FollowButton';
 import EditContentModal from '../components/EditContentModal';
+import styled from 'styled-components';
 moment.locale('ko');
 
+const Pop_over = styled(Popover)`
+  :hover .Button {
+    background-color: red;
+  }
+`;
 function PostCard({ post }) {
   // 로그인 상태 확인 위해 user에 me:{id, password} 의 id를 가져온다
   // optional chaining연산자 : state.user.me && state.user.me.id를 state.user.me?.id
@@ -139,7 +145,7 @@ function PostCard({ post }) {
           //댓글 버튼 누르면 댓글부분 열리게
           <MessageOutlined key='comment' onClick={onToggleComment} />,
 
-          <Popover
+          <Pop_over
             key='more'
             content={
               <Button.Group>
@@ -150,8 +156,8 @@ function PostCard({ post }) {
                     <EditContentModal post={post} />
                     <Button
                       type='danger'
-                      onClick={onRemovePost}
-                      loading={removePostLoading}
+                      //onClick={onRemovePost}
+                      //loading={removePostLoading}
                     >
                       삭제
                     </Button>
@@ -163,7 +169,7 @@ function PostCard({ post }) {
             }
           >
             <EllipsisOutlined />
-          </Popover>,
+          </Pop_over>,
         ]}
         title={
           post.RetweetId ? `${post.User.nickname}님이 리트윗하셨습니다.` : null

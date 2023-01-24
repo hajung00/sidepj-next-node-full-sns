@@ -41,6 +41,10 @@ export const initialState = {
   uploadProfileImagesLoading: false, // removefollower 시도중
   uploadProfileImagesDone: false,
   uploadProfileImagesError: null,
+  loadAllUswerLoading: false,
+  loadAllUswerDone: false,
+  loadAllUswerError: null,
+  recommendFollowList: [],
 };
 
 // 오타 방지용(변수 선언)
@@ -92,6 +96,10 @@ export const UPLOAD_PROFILEIMAGES_REQUEST = 'UPLOAD_PROFILEIMAGES_REQUEST';
 export const UPLOAD_PROFILEIMAGES_SUCCESS = 'UPLOAD_PROFILEIMAGES_SUCCESS';
 export const UPLOAD_PROFILEIMAGES_FAILURE = 'UPLOAD_PROFILEIMAGES_FAILURE';
 
+export const LOAD_ALLUSER_REQUEST = 'LOAD_ALLUSER_REQUEST';
+export const LOAD_ALLUSER_SUCCESS = 'LOAD_ALLUSER_SUCCESS';
+export const LOAD_ALLUSER_FAILURE = 'LOAD_ALLUSER_FAILURE';
+
 // User에 내가 쓴 게시물 정보 들어있는데 post를 작성해 추가된것을 user에서 받아오기 위한 액션.
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
@@ -125,6 +133,23 @@ export const signUpRequestAction = (data) => {
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
+      case LOAD_ALLUSER_REQUEST:
+        draft.loadAllUswerLoading = true;
+        draft.loadAllUswerError = null;
+        draft.loadAllUswerDone = false;
+        break;
+
+      case LOAD_ALLUSER_SUCCESS:
+        draft.loadAllUswerLoading = false;
+        draft.loadAllUswerDone = true;
+        draft.recommendFollowList = action.data;
+        break;
+
+      case LOAD_ALLUSER_FAILURE:
+        draft.loadAllUswerLoading = false;
+        draft.loadAllUswerError = action.error;
+        break;
+
       case UPLOAD_PROFILEIMAGES_REQUEST:
         draft.uploadProfileImagesLoading = true;
         draft.uploadProfileImagesError = null;

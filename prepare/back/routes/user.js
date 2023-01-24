@@ -68,6 +68,46 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+// GET /user/unfollowlist
+router.get('/lists', isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await User.findAll({
+      attributes: ['id'],
+    });
+    const allUser = user.map((i) => i.id);
+    console.log('냥냥', allUser);
+    const followings = await User.findAll({
+      attributes: ['id'],
+      include: [
+        {
+          model: User,
+          as: 'Followers',
+          where: { id: req.user.id },
+        },
+      ],
+    });
+    const followList = followings.map((i) => i.id);
+    console.log('팔로우', followList);
+
+    const where = {
+      id: {
+        [Op.in]: allUser.filter((i, d) => !followList.includes(allUser[d])),
+      },
+    };
+    console.log('조건', where);
+    const list = await User.findAll({
+      where,
+      limit: 3,
+      attributes: ['id', 'nickname', 'email'],
+    });
+    console.log(list);
+    res.status(200).json(list);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 // POST /user/images
 router.post('/images', upload.array('image'), (req, res, next) => {
   console.log(req.files);

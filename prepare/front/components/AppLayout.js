@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { createGlobalStyle } from 'styled-components';
 import useInput from '../hooks/useInput';
 import Router from 'next/router';
-import { LOG_OUT_REQUEST } from '../reducers/user';
+import { LOG_OUT_REQUEST, LOAD_ALLUSER_REQUEST } from '../reducers/user';
 import { LOAD_HASHTAG_REQUEST } from '../reducers/post';
 
 const SearchInputWrapper = styled.div`
@@ -19,17 +19,17 @@ const SearchInputWrapper = styled.div`
   align-items: center;
   margin: 30px 3%;
   position: fixed;
-  --antd-wave-shadow-color: white !important;
+  --antd-wave-shadow-color: gray !important;
 
   .ant-input-group-wrapper {
-    background: lightgray;
+    background: #f2f2f2;
     height: 50px;
     padding: 8px 10px;
     border-radius: 30px;
   }
 
   .ant-input {
-    background-color: lightgray;
+    background-color: #f2f2f2;
     border: none;
     margin-left: 10px;
     width: 90%;
@@ -37,20 +37,22 @@ const SearchInputWrapper = styled.div`
     :focus {
       border: none;
       box-shadow: none;
-      border-color: gray !important;
+      border-color: #f2f2f2 !important;
       border-bottom: 1px solid gray;
     }
   }
 
   .ant-btn-primary {
-    background-color: lightgray !important;
-    border-color: lightgray !important;
-    background: lightgray !important;
+    background-color: #f2f2f2 !important;
+    border-color: #f2f2f2 !important;
+    background: #f2f2f2 !important;
     box-shadow: 0 0 0 0;
+    color: darkgrey;
+    font-size: 21px;
     :hover,
     :active,
     :focus {
-      background-color: lightgray !important;
+      background-color: #f2f2f2 !important;
     }
   }
 
@@ -278,10 +280,12 @@ const HashList = styled.div`
     cursor: pointer;
   }
 `;
-
+const RecommendFollow = styled.div``;
 function AppLayout({ children }) {
   // redux useSelector로 store에 저장된 데이터 가져오기
-  const { me, logOutLoading } = useSelector((state) => state.user);
+  const { me, logOutLoading, recommendFollowList } = useSelector(
+    (state) => state.user
+  );
   const { hashTag } = useSelector((state) => state.post);
   const [searchInput, onChangeSerchInput] = useInput('');
   const dispatch = useDispatch();
@@ -306,6 +310,13 @@ function AppLayout({ children }) {
   useEffect(() => {
     dispatch({
       type: LOAD_HASHTAG_REQUEST,
+    });
+  }, []);
+
+  // 이미 팔로우하는 아이디는 가져오니까 모든 유저 가져온 다음에 거기서 팔로우하는 아이디 빼줌
+  useEffect(() => {
+    dispatch({
+      type: LOAD_ALLUSER_REQUEST,
     });
   }, []);
 
@@ -450,6 +461,15 @@ function AppLayout({ children }) {
             ))}
             <span />
           </SearchInputWrapper>
+          <RecommendFollow>
+            <span>Who to follow</span>
+            {recommendFollowList.map((follow) => (
+              <>
+                <div>{follow.nickname}</div>
+                <div>{follow.email}</div>
+              </>
+            ))}
+          </RecommendFollow>
         </Col>
       </Row>
     </div>

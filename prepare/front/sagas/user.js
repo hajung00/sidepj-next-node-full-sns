@@ -37,6 +37,9 @@ import {
   UPLOAD_PROFILEIMAGES_REQUEST,
   UPLOAD_PROFILEIMAGES_SUCCESS,
   UPLOAD_PROFILEIMAGES_FAILURE,
+  LOAD_ALLUSER_REQUEST,
+  LOAD_ALLUSER_SUCCESS,
+  LOAD_ALLUSER_FAILURE,
 } from '../reducers/user';
 function* watchLoadUser() {
   yield takeLatest(LOAD_USER_REQUEST, loadUser);
@@ -74,6 +77,28 @@ function* watchProfile() {
 }
 function* watchLoadProfileImages() {
   yield takeLatest(UPLOAD_PROFILEIMAGES_REQUEST, loadProfileImages);
+}
+function* watchUnFollowList() {
+  yield takeLatest(LOAD_ALLUSER_REQUEST, unfollowList);
+}
+
+//
+function unfollowListAPI() {
+  return axios.get('/user/lists');
+}
+function* unfollowList() {
+  try {
+    const result = yield call(unfollowListAPI);
+    yield put({
+      type: LOAD_ALLUSER_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    yield put({
+      type: LOAD_ALLUSER_FAILURE,
+      error: err.response.data,
+    });
+  }
 }
 
 // loadProfileImages
@@ -328,5 +353,6 @@ export default function* userSaga() {
     fork(watchLoadFollowings),
     fork(watchRemoveFollower),
     fork(watchLoadProfileImages),
+    fork(watchUnFollowList),
   ]);
 }
