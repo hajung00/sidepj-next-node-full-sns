@@ -10,15 +10,15 @@ import useInput from '../hooks/useInput';
 import Router from 'next/router';
 import { LOG_OUT_REQUEST, LOAD_ALLUSER_REQUEST } from '../reducers/user';
 import { LOAD_HASHTAG_REQUEST } from '../reducers/post';
-
+import FollowlistComponent from './FollowlistComponent';
 const SearchInputWrapper = styled.div`
-  height: 100%;
   min-width: 330px;
+  max-width: 330px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 30px 3%;
-  position: fixed;
+  margin: 30px auto;
+  position: relative;
   --antd-wave-shadow-color: gray !important;
 
   .ant-input-group-wrapper {
@@ -72,6 +72,10 @@ const SearchInputWrapper = styled.div`
     width: 100%;
     height: 30px;
     border-radius: 0px 0px 10px 10px;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 11px 18px;
+    height: 50px;
   }
 `;
 
@@ -90,12 +94,12 @@ const Global = createGlobalStyle`
   
     position: relative !important;
   }
-  .ant-col:last-child{
-    padding-right: 0 !important;
-  
-    position: relative !important;
-   
-  }
+  // .ant-col:last-child{
+  //   position: fixed !important;
+  //   right: 3%;
+  //   top: 0;
+  //   width: 32%;
+  // }
 
   .ant-col-md-4>.ant-card-bordered{
     position: fixed;
@@ -280,7 +284,20 @@ const HashList = styled.div`
     cursor: pointer;
   }
 `;
-const RecommendFollow = styled.div``;
+const RecommendFollow = styled.div`
+  padding: 30px 44px;
+  span:nth-of-type(2) {
+    background-color: #f2f2f2;
+    display: inline-block;
+    width: 100%;
+    height: 30px;
+    border-radius: 0px 0px 10px 10px;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 11px 18px;
+    height: 50px;
+  }
+`;
 function AppLayout({ children }) {
   // redux useSelector로 store에 저장된 데이터 가져오기
   const { me, logOutLoading, recommendFollowList } = useSelector(
@@ -288,6 +305,26 @@ function AppLayout({ children }) {
   );
   const { hashTag } = useSelector((state) => state.post);
   const [searchInput, onChangeSerchInput] = useInput('');
+  const [showMore, setShowMore] = useState(false);
+
+  const showMorehandler = (name) => {
+    setShowMore(true);
+    console.log(showMore);
+    if (showMore && name === 'list') {
+      const lastId_list = recommendFollowList.length + 3;
+      dispatch({
+        type: LOAD_ALLUSER_REQUEST,
+        lastId_list,
+      });
+    } else if (showMore && name === 'hash') {
+      const lastId_hash = hashTag.length + 3;
+      dispatch({
+        type: LOAD_HASHTAG_REQUEST,
+        lastId_hash,
+      });
+    }
+  };
+
   const dispatch = useDispatch();
 
   const onSearch = useCallback(() => {
@@ -307,17 +344,27 @@ function AppLayout({ children }) {
     Router.push('/');
   }, []);
 
-  useEffect(() => {
-    dispatch({
-      type: LOAD_HASHTAG_REQUEST,
-    });
-  }, []);
+  // useEffect(() => {
+  //   // const lastId = 3;
+  //   dispatch({
+  //     type: LOAD_HASHTAG_REQUEST,
+  //     // lastId,
+  //   });
+  // }, []);
 
-  // 이미 팔로우하는 아이디는 가져오니까 모든 유저 가져온 다음에 거기서 팔로우하는 아이디 빼줌
   useEffect(() => {
+    const lastId_list = recommendFollowList.length;
+    const lastId_hash = hashTag.length;
     dispatch({
       type: LOAD_ALLUSER_REQUEST,
+      lastId_list,
     });
+    dispatch({
+      type: LOAD_HASHTAG_REQUEST,
+      lastId_hash,
+    });
+
+    setShowMore(true);
   }, []);
 
   console.log(hashTag);
@@ -459,16 +506,40 @@ function AppLayout({ children }) {
                 #{hash.name}
               </HashList>
             ))}
-            <span />
+            <span
+              onClick={() => {
+                showMorehandler('hash');
+              }}
+            >
+              show more...
+            </span>
           </SearchInputWrapper>
           <RecommendFollow>
-            <span>Who to follow</span>
+            <span
+              style={{
+                fontWeight: '600',
+                backgroundColor: '#f2f2f2',
+                fontSize: '18px',
+                display: 'inline-block',
+                width: '100%',
+                padding: '15px',
+                margin: '20px 0 0',
+                borderRadius: '10px 10px 0px 0px',
+              }}
+            >
+              Who to follow
+            </span>
             {recommendFollowList.map((follow) => (
-              <>
-                <div>{follow.nickname}</div>
-                <div>{follow.email}</div>
-              </>
+              <FollowlistComponent follow={follow} key={follow.email} />
             ))}
+            <span
+              onClick={() => {
+                showMorehandler('list');
+              }}
+            >
+              {' '}
+              show more...
+            </span>
           </RecommendFollow>
         </Col>
       </Row>

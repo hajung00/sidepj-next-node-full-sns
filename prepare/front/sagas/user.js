@@ -83,12 +83,13 @@ function* watchUnFollowList() {
 }
 
 //
-function unfollowListAPI() {
-  return axios.get('/user/lists');
+function unfollowListAPI(lastId_list) {
+  console.log('lastID', lastId_list);
+  return axios.get(`/user/lists?lastId=${lastId_list || 3}`);
 }
-function* unfollowList() {
+function* unfollowList(action) {
   try {
-    const result = yield call(unfollowListAPI);
+    const result = yield call(unfollowListAPI, action.lastId_list);
     yield put({
       type: LOAD_ALLUSER_SUCCESS,
       data: result.data,

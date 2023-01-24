@@ -73,12 +73,10 @@ router.get('/related', async (req, res, next) => {
         },
       ],
     });
-    console.log('related', followings);
     //팔로잉하고 있는 user의 id를 찾아야함.
     const where = {
       UserId: { [Op.in]: followings.map((v) => v.id) },
     };
-    console.log('related where', where);
     if (parseInt(req.query.lastId, 10)) {
       // 초기 로딩이 아닐 때
       where.id = { [Op.lt]: parseInt(req.query.lastId, 10) };

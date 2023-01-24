@@ -458,13 +458,13 @@ function* unlikePost(action) {
   }
 }
 
-function loadHashTagAPI() {
-  return axios.get(`/hashtag`);
+function loadHashTagAPI(lastId_hash) {
+  return axios.get(`/hashtag?lastId=${lastId_hash || 3}`);
 }
 
-function* loadHashTag() {
+function* loadHashTag(action) {
   try {
-    const result = yield call(loadHashTagAPI);
+    const result = yield call(loadHashTagAPI, action.lastId_hash);
     yield put({
       type: LOAD_HASHTAG_SUCCESS,
       data: result.data,

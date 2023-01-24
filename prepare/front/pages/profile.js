@@ -14,7 +14,8 @@ const fetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data);
 
 const Profile = () => {
-  const { me } = useSelector((state) => state.user);
+  const { me, unfollowDone } = useSelector((state) => state.user);
+
   const [followersLimit, setFollowersLimit] = useState(3);
   const [followingsLimit, setFollowingsLimit] = useState(3);
 
@@ -26,7 +27,7 @@ const Profile = () => {
     `http://localhost:3065/user/followings?limit=${followingsLimit}`,
     fetcher
   );
-
+  console.log(followersData, followingsData);
   useEffect(() => {
     if (!(me && me.id)) {
       Router.replace('/');
@@ -41,17 +42,16 @@ const Profile = () => {
     setFollowersLimit((prev) => prev + 3);
   }, []);
 
-  // 로그인 안했을 때 프로필 null
-  if (!me) {
-    return '내 정보 로딩중...';
-  }
+  // // 로그인 안했을 때 프로필 null
+  // if (!me) {
+  //   return '내 정보 로딩중...';
+  // }
 
   if (followerError || followingError) {
     console.error(followerError || followingError);
     return '팔로잉/팔로워 로딩 중 에러 발생';
   }
 
-  console.log(me);
   return (
     <>
       <Head>

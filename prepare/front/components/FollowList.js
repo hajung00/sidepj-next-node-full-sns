@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { List, Button, Card, Avatar } from 'antd';
 import { StopOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import { UNFOLLOW_REQUEST, REMOVE_FOLLOWER_REQUEST } from '../reducers/user';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 function FollowList({ header, data, onClickMore, loading }) {
   const dispatch = useDispatch();
+
   const onCancel = (id) => () => {
     if (header === '팔로잉') {
       dispatch({

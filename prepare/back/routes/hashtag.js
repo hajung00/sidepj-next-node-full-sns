@@ -66,8 +66,9 @@ router.get('/:hashtag', async (req, res, next) => {
 //hashtag get
 router.get('/', async (req, res, next) => {
   try {
+    console.log('해쉬', req.query.lastId);
     const hashTag = await Hashtag.findAll({
-      limit: 3,
+      limit: parseInt(req.query.lastId, 10),
       attributes: ['id', 'name'],
     });
     console.log(hashTag);
