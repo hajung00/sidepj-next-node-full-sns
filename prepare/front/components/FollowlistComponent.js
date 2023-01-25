@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Avatar, Card, Button } from 'antd';
 import Link from 'next/link';
 import styled from 'styled-components';
@@ -34,18 +34,22 @@ const CradWrapper = styled(Card)`
 
 function FollowlistComponent({ follow }) {
   const dispatch = useDispatch();
-  const { recommendFollowList } = useSelector((state) => state.user);
+  const { me, recommendFollowList } = useSelector((state) => state.user);
   const requestFollow = () => {
-    const lastId_list = recommendFollowList.length;
     dispatch({
       type: FOLLOW_REQUEST,
       data: follow.id,
     });
+  };
+
+  useEffect(() => {
+    const lastId_list = recommendFollowList.length;
     dispatch({
       type: LOAD_ALLUSER_REQUEST,
       lastId_list,
     });
-  };
+  }, [me.Followers, me.Followings]);
+
   return (
     <CradWrapper>
       <Card.Meta

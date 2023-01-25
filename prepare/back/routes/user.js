@@ -49,12 +49,12 @@ router.get('/', async (req, res, next) => {
           {
             model: User,
             as: 'Followers',
-            attributes: ['id'],
+            attributes: ['id', 'nickname'],
           },
           {
             model: User,
             as: 'Followings',
-            attributes: ['id'],
+            attributes: ['id', 'nickname'],
           },
         ],
       });
@@ -300,12 +300,16 @@ router.patch('/profile', upload.none(), isLoggedIn, async (req, res, next) => {
 // PATCH /user/1/follow
 router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => {
   try {
-    const user = await User.findOne({ where: { id: req.params.userId } });
+    const user = await User.findOne({
+      where: { id: req.params.userId },
+      attributes: ['id', 'nickname', 'image'],
+    });
+    console.log(user);
     if (!user) {
       res.status(403).send('존재하지 않는 회원입니다.');
     }
     await user.addFollowers(req.user.id);
-    res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
+    res.status(200).json(user);
   } catch (error) {
     console.error(error);
     next(error);

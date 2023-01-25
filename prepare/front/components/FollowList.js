@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 function FollowList({ header, data, onClickMore, loading }) {
   const dispatch = useDispatch();
-
+  console.log(data);
   const onCancel = (id) => () => {
     if (header === '팔로잉') {
       dispatch({

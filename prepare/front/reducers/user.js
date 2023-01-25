@@ -21,8 +21,8 @@ export const initialState = {
   changeNickNameDone: false,
   changeNickNameError: null,
   followLoading: false, // follow 시도중
-  followUpDone: false,
-  followUpError: null,
+  followDone: false,
+  followError: null,
   unfollowLoading: false, // unfollow 시도중
   unfollowDone: false,
   unfollowError: null,
@@ -212,7 +212,7 @@ const reducer = (state = initialState, action) => {
       case FOLLOW_SUCCESS:
         draft.followLoading = false;
         draft.followDone = true;
-        draft.me.Followings.push({ id: action.data.UserId });
+        draft.me.Followings.push(action.data);
         break;
 
       case FOLLOW_FAILURE:
