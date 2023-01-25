@@ -28,9 +28,14 @@ import EditContentModal from '../components/EditContentModal';
 import styled from 'styled-components';
 moment.locale('ko');
 
-const Pop_over = styled(Popover)`
-  :hover .Button {
-    background-color: red;
+const SetButton = styled(Button)`
+  --antd-wave-shadow-color: none;
+  :hover,
+  :active,
+  :focus {
+    background-color: gray;
+    color: white;
+    border: 1px solid gray;
   }
 `;
 function PostCard({ post }) {
@@ -145,7 +150,7 @@ function PostCard({ post }) {
           //댓글 버튼 누르면 댓글부분 열리게
           <MessageOutlined key='comment' onClick={onToggleComment} />,
 
-          <Pop_over
+          <Popover
             key='more'
             content={
               <Button.Group>
@@ -154,22 +159,21 @@ function PostCard({ post }) {
                 {id && post.User.id === id ? (
                   <>
                     <EditContentModal post={post} />
-                    <Button
-                      type='danger'
-                      //onClick={onRemovePost}
-                      //loading={removePostLoading}
+                    <SetButton
+                      onClick={onRemovePost}
+                      loading={removePostLoading}
                     >
                       삭제
-                    </Button>
+                    </SetButton>
                   </>
                 ) : (
-                  <Button onClick={onAccusePost}>신고</Button>
+                  <SetButton onClick={onAccusePost}>신고</SetButton>
                 )}
               </Button.Group>
             }
           >
             <EllipsisOutlined />
-          </Pop_over>,
+          </Popover>,
         ]}
         title={
           post.RetweetId ? `${post.User.nickname}님이 리트윗하셨습니다.` : null
