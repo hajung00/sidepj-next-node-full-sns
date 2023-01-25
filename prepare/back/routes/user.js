@@ -116,6 +116,7 @@ router.post('/images', upload.array('image'), (req, res, next) => {
 
 // GET /user/followers
 router.get('/followers', isLoggedIn, async (req, res, next) => {
+  console.log('didid0', req.query.followersLimit);
   try {
     const user = await User.findOne({ where: { id: req.user.id } });
     if (!user) {
@@ -134,6 +135,7 @@ router.get('/followers', isLoggedIn, async (req, res, next) => {
 // GET /user/followings
 router.get('/followings', isLoggedIn, async (req, res, next) => {
   try {
+    console.log('req', req.params.followingsLimit);
     const user = await User.findOne({ where: { id: req.user.id } });
     if (!user) {
       res.status(403).send('존재하지 않는 회원입니다.');

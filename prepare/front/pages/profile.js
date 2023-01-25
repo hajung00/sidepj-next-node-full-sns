@@ -13,24 +13,28 @@ import {
   LOAD_FOLLOWERS_REQUEST,
   LOAD_FOLLOWINGS_REQUEST,
 } from '../reducers/user';
-// const fetcher = (url) =>
-//   axios.get(url, { withCredentials: true }).then((result) => result.data);
+const fetcher = (url) =>
+  axios.get(url, { withCredentials: true }).then((result) => result.data);
 
 const Profile = () => {
   const { me } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [followersLimit, setFollowersLimit] = useState(3);
   const [followingsLimit, setFollowingsLimit] = useState(3);
 
   console.log('me', me);
-  useEffect(() => {
-    dispatch({
-      type: LOAD_FOLLOWERS_REQUEST,
-    });
-    dispatch({
-      type: LOAD_FOLLOWINGS_REQUEST,
-    });
-  }, [me.Followers, me.Followings]);
+  // 로그인하면서 이미 me.Followings,me.Followers에 팔로잉, 팔로우가 저장되어있음.
+  // useEffect(() => {
+  //   dispatch({
+  //     type: LOAD_FOLLOWERS_REQUEST,
+  //     followersLimit,
+  //   });
+  //   dispatch({
+  //     type: LOAD_FOLLOWINGS_REQUEST,
+  //     followingsLimit,
+  //   });
+  // }, []);
+
   // const { data: followersData, error: followerError } = useSWR(
   //   `http://localhost:3065/user/followers?limit=${followersLimit}`,
   //   fetcher
@@ -40,6 +44,7 @@ const Profile = () => {
   //   fetcher
   // );
   // console.log(followersData, followingsData);
+
   useEffect(() => {
     if (!(me && me.id)) {
       Router.replace('/');
@@ -54,10 +59,10 @@ const Profile = () => {
     setFollowersLimit((prev) => prev + 3);
   }, []);
 
-  // // 로그인 안했을 때 프로필 null
-  // if (!me) {
-  //   return '내 정보 로딩중...';
-  // }
+  // 로그인 안했을 때 프로필 null
+  if (!me) {
+    return '내 정보 로딩중...';
+  }
 
   // if (followerError || followingError) {
   //   console.error(followerError || followingError);
@@ -73,13 +78,13 @@ const Profile = () => {
         <UserProfile title={'프로필 수정'} />
         <FollowList
           header='팔로잉'
-          data={me.Followings}
+          data={me.Followings.slice(0, followingsLimit)}
           onClickMore={loadMoreFollwings}
           //loading={!followingsData && !followingError}
         />
         <FollowList
           header='팔로워'
-          data={me.Followers}
+          data={me.Followers.slice(0, followersLimit)}
           onClickMore={loadMoreFollwers}
           //loading={!followersData && !followerError}
         />

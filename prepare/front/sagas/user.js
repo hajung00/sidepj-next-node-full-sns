@@ -121,14 +121,14 @@ function* loadProfileImages(action) {
     });
   }
 }
-
 // loadFollowers
-function loadFollowersAPI(data) {
-  return axios.get('/user/followers', data);
+function loadFollowersAPI(followersLimit) {
+  console.log('followersLimit', followersLimit);
+  return axios.get(`/user/followers?limit=${followersLimit}`);
 }
 function* loadFollowers(action) {
   try {
-    const result = yield call(loadFollowersAPI, action.data);
+    const result = yield call(loadFollowersAPI, action.followersLimit);
     yield put({
       type: LOAD_FOLLOWERS_SUCCESS,
       data: result.data,
@@ -142,12 +142,14 @@ function* loadFollowers(action) {
 }
 
 // loadFollowings
-function loadFollowingsAPI(data) {
-  return axios.get('/user/followings', data);
+function loadFollowingsAPI(followingsLimit) {
+  console.log('followingsLimit', followingsLimit);
+
+  return axios.get(`/user/followings?limit=${followingsLimit}`);
 }
 function* loadFollowings(action) {
   try {
-    const result = yield call(loadFollowingsAPI, action.data);
+    const result = yield call(loadFollowingsAPI, action.followingsLimit);
     yield put({
       type: LOAD_FOLLOWINGS_SUCCESS,
       data: result.data,
