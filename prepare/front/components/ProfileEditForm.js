@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState, useRef } from 'react';
 import { Form, Avatar, Button, Modal, Input } from 'antd';
+import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import useInput from '../hooks/useInput';
 import {
@@ -7,6 +8,49 @@ import {
   UPLOAD_PROFILEIMAGES_REQUEST,
 } from '../reducers/user';
 
+const EditButton = styled(Button)`
+  --antd-wave-shadow-color: none;
+  background-color: black;
+  color: white;
+  border-radius: 20px;
+  width: 70px;
+  float: right;
+  border: 1px solid black;
+  :hover,
+  :active,
+  :focus {
+    border: 1px solid black;
+    color: black;
+    border-color: black;
+    background-color: #fff;
+  }
+`;
+
+const EditButton1 = styled(Button)`
+  --antd-wave-shadow-color: none;
+  background-color: white;
+  color: black;
+  border-radius: 20px;
+  width: 70px;
+  float: right;
+  border: 1px solid black;
+  margin-left: 10px;
+  :hover,
+  :active,
+  :focus {
+    border: 1px solid white;
+    color: white;
+    border-color: black;
+    background-color: black;
+  }
+`;
+
+const SetModal = styled(Modal)`
+  --antd-wave-shadow-color: none;
+  .ant-modal-footer {
+    height: 53px;
+  }
+`;
 const ProfileEditForm = () => {
   const style = useMemo(() => ({
     marginBottom: '20px',
@@ -67,15 +111,14 @@ const ProfileEditForm = () => {
 
   return (
     <>
-      <Button
-        type='primary'
+      <EditButton
         onClick={() => {
           setOpen(true);
         }}
       >
         수정
-      </Button>
-      <Modal
+      </EditButton>
+      <SetModal
         open={open}
         title='프로필 수정'
         onOk={onSubmit}
@@ -84,22 +127,21 @@ const ProfileEditForm = () => {
         }}
         visible={open}
         footer={[
-          <Button
+          <EditButton1
             key='back'
             onClick={() => {
               setOpen(false);
             }}
           >
             취소
-          </Button>,
-          <Button
+          </EditButton1>,
+          <EditButton
             key='submit'
-            type='primary'
             //loading={editContentLoading}
             onClick={onSubmit}
           >
             수정
-          </Button>,
+          </EditButton>,
         ]}
       >
         <Form style={style}>
@@ -132,7 +174,7 @@ const ProfileEditForm = () => {
             </Form.Item>
           </div>
         </Form>
-      </Modal>
+      </SetModal>
     </>
   );
 };
