@@ -68,15 +68,15 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-// GET /user/unfollowlist
+// GET /user/lists
 router.get('/lists', isLoggedIn, async (req, res, next) => {
   try {
-    console.log('이놈', req.query.lastId);
     const user = await User.findAll({
       attributes: ['id'],
     });
-    const allUser = user.map((i) => i.id);
-    console.log('냥냥', allUser);
+    let allUser = user.map((i) => i.id);
+    const me = req.user.id;
+    allUser = allUser.filter((id) => id !== me);
     const followings = await User.findAll({
       attributes: ['id'],
       include: [
@@ -94,8 +94,6 @@ router.get('/lists', isLoggedIn, async (req, res, next) => {
         [Op.in]: allUser.filter((i, d) => !followList.includes(allUser[d])),
       },
     };
-
-    // where.id = { [Op.lt]: parseInt(req.query.lastId, 10) };
 
     const list = await User.findAll({
       where,
