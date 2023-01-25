@@ -76,6 +76,11 @@ const SearchInputWrapper = styled.div`
     font-weight: 500;
     padding: 11px 18px;
     height: 50px;
+    :hover,
+    :focus,
+    :active {
+      cursor: pointer;
+    }
   }
 `;
 
@@ -134,7 +139,7 @@ const Global = createGlobalStyle`
      ul{
       max-width:90px;
      }
-     ul li a{
+     ul li a:nth-of-type(2){
      display:none;
      }
      ul li .more{
@@ -177,7 +182,7 @@ const Global = createGlobalStyle`
       ul{
         max-width:90px;
        }
-      ul li a{
+      ul li a:nth-of-type(2){
       display:none;
       }
       ul li .more{
@@ -285,7 +290,9 @@ const HashList = styled.div`
   }
 `;
 const RecommendFollow = styled.div`
-  padding: 30px 44px;
+  padding: 30px 42px;
+  min-width: 420px;
+  max-width: 420px;
   span:nth-of-type(2) {
     background-color: #f2f2f2;
     display: inline-block;
@@ -296,6 +303,11 @@ const RecommendFollow = styled.div`
     font-weight: 500;
     padding: 11px 18px;
     height: 50px;
+    :hover,
+    :focus,
+    :active {
+      cursor: pointer;
+    }
   }
 `;
 function AppLayout({ children }) {
@@ -388,7 +400,11 @@ function AppLayout({ children }) {
             <Menu.Item style={{ height: 'auto' }}>
               <MenuItem_wrapper>
                 <>
-                  <img src='images/alarm.jpg' />
+                  <Link href='/main'>
+                    <a>
+                      <img src='images/alarm.jpg' />
+                    </a>
+                  </Link>
                   <Link href='/main'>
                     <a>홈</a>
                   </Link>
@@ -398,9 +414,15 @@ function AppLayout({ children }) {
             <Menu.Item style={{ height: 'auto' }}>
               <MenuItem_wrapper>
                 <>
-                  <img
-                    src={process.env.PUBLIC_URL + '../../images/profile.png'}
-                  />
+                  <Link href='/profile'>
+                    <a>
+                      <img
+                        src={
+                          process.env.PUBLIC_URL + '../../images/profile.png'
+                        }
+                      />
+                    </a>
+                  </Link>
                   <Link href='/profile'>
                     <a>프로필</a>
                   </Link>
@@ -410,9 +432,13 @@ function AppLayout({ children }) {
             <Menu.Item style={{ height: 'auto' }}>
               <MenuItem_wrapper>
                 <>
-                  <img
-                    src={process.env.PUBLIC_URL + '../../images/search.jpg'}
-                  />
+                  <Link href='/allpost'>
+                    <a>
+                      <img
+                        src={process.env.PUBLIC_URL + '../../images/search.jpg'}
+                      />
+                    </a>
+                  </Link>
                   <Link href='/allpost'>
                     <a>탐색</a>
                   </Link>
@@ -422,9 +448,13 @@ function AppLayout({ children }) {
             <Menu.Item style={{ height: 'auto' }}>
               <MenuItem_wrapper>
                 <>
-                  <img
-                    src={process.env.PUBLIC_URL + '../../images/alarm.jpg'}
-                  />
+                  <Link href='#none'>
+                    <a>
+                      <img
+                        src={process.env.PUBLIC_URL + '../../images/alarm.jpg'}
+                      />
+                    </a>
+                  </Link>
                   <Link href='#none'>
                     <a>알림</a>
                   </Link>
@@ -434,9 +464,15 @@ function AppLayout({ children }) {
             <Menu.Item style={{ height: 'auto', position: 'relative' }}>
               <MenuItem_wrapper>
                 <>
-                  <img
-                    src={process.env.PUBLIC_URL + '../../images/message.jpg'}
-                  />
+                  <Link href='#none'>
+                    <a>
+                      <img
+                        src={
+                          process.env.PUBLIC_URL + '../../images/message.jpg'
+                        }
+                      />
+                    </a>
+                  </Link>
                   <Link href='#none'>
                     <a>쪽지</a>
                   </Link>
