@@ -5,12 +5,13 @@ import { LOG_OUT_REQUEST } from '../reducers/user';
 import Link from 'next/link';
 import Router from 'next/router';
 import ProfileEditForm from './ProfileEditForm';
+import { backUrl } from '../config/config';
 const UserProfile = ({ title, main }) => {
   const { me, logOutLoading, logOutDone } = useSelector((state) => state.user);
   const [src, setSrc] = useState('');
   useEffect(() => {
     if (me) {
-      setSrc(`http://localhost:3065/${me.image}`);
+      setSrc(`${backUrl}/${me.image}`);
     } else {
       setSrc('');
     }

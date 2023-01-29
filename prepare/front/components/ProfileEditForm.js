@@ -7,7 +7,7 @@ import {
   CHANGE_PROFILE_REQUEST,
   UPLOAD_PROFILEIMAGES_REQUEST,
 } from '../reducers/user';
-
+import { backUrl } from '../config/config';
 const EditButton = styled(Button)`
   --antd-wave-shadow-color: none;
   background-color: black;
@@ -64,7 +64,7 @@ const ProfileEditForm = () => {
 
   const [File, setFile] = useState('');
   const [Image, setImage] = useState(
-    me.image !== null ? `http://localhost:3065/${me.image}` : ''
+    me.image !== null ? `${backUrl}/${me.image}` : ''
   );
 
   const fileInput = useRef(null);
@@ -74,7 +74,7 @@ const ProfileEditForm = () => {
       setFile(e.target.files[0]);
     } else {
       //업로드 취소할 시
-      setImage(me.image !== null ? `http://localhost:3065/${me.image}` : '');
+      setImage(me.image !== null ? `${backUrl}/${me.image}` : '');
       return;
     }
     //화면에 프로필 사진 표시

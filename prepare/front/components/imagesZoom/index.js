@@ -10,7 +10,7 @@ import {
   CloseBtn,
   Indicator,
 } from './styles';
-
+import { backUrl } from '../../config/config';
 function ImagesZoom({ images, onClose }) {
   // 현재 슬라이드 위치
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -35,10 +35,7 @@ function ImagesZoom({ images, onClose }) {
           >
             {images.map((image) => (
               <ImgWrapper key={image.src}>
-                <img
-                  src={`http://localhost:3065/${image.src}`}
-                  alt={image.src}
-                />
+                <img src={`${backUrl}/${image.src}`} alt={image.src} />
               </ImgWrapper>
             ))}
           </Slider>
