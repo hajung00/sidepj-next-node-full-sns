@@ -116,11 +116,11 @@ const Signup = () => {
 
   // 제출했을 때, 비밀번호 같은지, check box(동의) 눌렀는지 확인
   const [request, setRequest] = useState(false);
-  const formData = new FormData();
+
   const onSubmit = () => {
     if (password !== passwordcheck) setPasswordError(true);
     if (!term) setTermError(true);
-
+    const formData = new FormData();
     profileImg.forEach((p) => {
       formData.append('image', p);
     });
