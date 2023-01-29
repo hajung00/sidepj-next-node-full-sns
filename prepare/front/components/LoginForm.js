@@ -15,7 +15,7 @@ import Router from 'next/router';
 
 const LoginFormWrapper = styled.div`
   width: 300px;
-  height: 80%;
+  height: 500px;
   padding-top: 5%;
   float: left;
 `;
@@ -64,7 +64,7 @@ function LoginForm() {
   return (
     <LoginFormWrapper>
       <FormWrapper onFinish={onSubmitForm}>
-        <h1>Node Brid</h1>
+        <h1>Login</h1>
         <div>
           <label htmlFor='user-id' type='email'>
             이메일

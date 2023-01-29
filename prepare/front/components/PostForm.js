@@ -38,6 +38,7 @@ const PostWrapper = styled.div`
     }
   }
   button:nth-of-type(2) {
+    --antd-wave-shadow-color: none;
     float: right;
     background-color: gray;
     margin-top: 5px;

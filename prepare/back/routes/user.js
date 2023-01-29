@@ -243,7 +243,7 @@ router.post(
   isNotLoggedIn,
 
   async (req, res, next) => {
-    console.log(req.body);
+    console.log('req.body', req.body);
     try {
       const exUser = await User.findOne({
         where: {

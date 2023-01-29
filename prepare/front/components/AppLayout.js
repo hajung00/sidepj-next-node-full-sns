@@ -290,9 +290,9 @@ const HashList = styled.div`
   }
 `;
 const RecommendFollow = styled.div`
-  padding: 30px 42px;
-  min-width: 420px;
-  max-width: 420px;
+  margin: 30px auto;
+  min-width: 330px;
+  max-width: 330px;
   span:nth-of-type(2) {
     background-color: #f2f2f2;
     display: inline-block;
@@ -402,7 +402,7 @@ function AppLayout({ children }) {
                 <>
                   <Link href='/main'>
                     <a>
-                      <img src='images/alarm.jpg' />
+                      <img src='images/home.jpg' />
                     </a>
                   </Link>
                   <Link href='/main'>

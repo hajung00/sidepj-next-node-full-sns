@@ -122,12 +122,12 @@ export const logoutRequestAction = (data) => {
 };
 
 // 회원가입 액션
-export const signUpRequestAction = (data) => {
-  return {
-    type: SIGN_UP_REQUEST,
-    data,
-  };
-};
+// export const signUpRequestAction = (data) => {
+//   return {
+//     type: SIGN_UP_REQUEST,
+//     data,
+//   };
+// };
 
 // reducer
 const reducer = (state = initialState, action) => {
