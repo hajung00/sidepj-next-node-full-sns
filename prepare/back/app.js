@@ -37,7 +37,7 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'hajungsns.com', 'http://43.201.8.17'],
+    origin: ['http://localhost:3000', 'http://hajungsns.com'],
     credentials: true, //cookie 전달 허용
   })
 );
@@ -56,6 +56,11 @@ app.use(
     saveUninitialized: false,
     resave: false,
     secret: process.env.COOKIE_SECRET,
+    cookie: {
+      httpOnlyL: true,
+      secure: false,
+      domain: process.env.NODE_ENV === 'production' && '.hajungsns.com',
+    },
   })
 );
 app.use(passport.initialize());
