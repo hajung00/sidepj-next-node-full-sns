@@ -4,9 +4,9 @@ import { all, fork } from 'redux-saga/effects';
 // effects 앞에 yield를 주로 붙여주는데 이는 테스트 하기 위함.
 import userSaga from './user';
 import postSaga from './post';
-
+import { backUrl } from '../config/config';
 import axios from 'axios';
-axios.defaults.baseURL = 'http://localhost:3065';
+axios.defaults.baseURL = { backUrl };
 axios.defaults.withCredentials = true;
 
 export default function* rootSaga() {
