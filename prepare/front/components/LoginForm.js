@@ -58,7 +58,7 @@ function LoginForm() {
     console.log(email, password);
     dispatch(loginRequestAction({ email, password })); // redux useDispatch로 로그인 액션 실행
     if (logInDone && me);
-    Router.push('/main');
+    // Router.push('/main');
   }, [email, password]);
 
   return (

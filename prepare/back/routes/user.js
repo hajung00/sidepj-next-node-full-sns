@@ -58,6 +58,7 @@ router.get('/', async (req, res, next) => {
           },
         ],
       });
+      console.log(fullUserWithoutPassword);
       res.status(200).json(fullUserWithoutPassword);
     } else {
       res.status(200).json(null);
@@ -192,7 +193,7 @@ router.get('/:userId', async (req, res, next) => {
 });
 
 // 로그인
-router.post('/login', (req, res, next) => {
+router.post('/login', isNotLoggedIn, (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {
       console.error(err);

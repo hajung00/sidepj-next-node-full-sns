@@ -11,6 +11,7 @@ import Router from 'next/router';
 import { LOG_OUT_REQUEST, LOAD_ALLUSER_REQUEST } from '../reducers/user';
 import { LOAD_HASHTAG_REQUEST } from '../reducers/post';
 import FollowlistComponent from './FollowlistComponent';
+import LoginForm from './LoginForm';
 const SearchInputWrapper = styled.div`
   min-width: 330px;
   max-width: 330px;
@@ -378,8 +379,8 @@ function AppLayout({ children }) {
 
     setShowMore(true);
   }, []);
-
-  console.log(hashTag);
+  console.log('me', me);
+  console.log('hash', hashTag);
   return (
     <div>
       <Global />
@@ -388,7 +389,7 @@ function AppLayout({ children }) {
       {/* gutter: column사이의 간격 */}
       <Row gutter={50}>
         <Col md={4}>
-          {' '}
+          <LoginForm />{' '}
           {me ? <UserProfile main={true} /> : <Link href='/'>로그인 필요</Link>}
           <Menu
             mode='vertical'
