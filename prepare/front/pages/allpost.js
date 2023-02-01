@@ -24,11 +24,13 @@ const AllPosts = () => {
     accuseMessage,
   } = useSelector((state) => state.post);
   useEffect(() => {
-    const lastId = 0;
-    dispatch({
-      type: LOAD_POSTS_REQUEST,
-      lastId,
-    });
+    if (me) {
+      const lastId = 0;
+      dispatch({
+        type: LOAD_POSTS_REQUEST,
+        lastId,
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -96,9 +98,9 @@ const AllPosts = () => {
 //     context.store.dispatch({
 //       type: LOAD_MY_INFO_REQUEST,
 //     });
-//     context.store.dispatch({
-//       type: LOAD_POSTS_REQUEST,
-//     });
+//     // context.store.dispatch({
+//     //   type: LOAD_POSTS_REQUEST,
+//     // });
 //     context.store.dispatch(END);
 //     await context.store.sagaTask.toPromise();
 //   }

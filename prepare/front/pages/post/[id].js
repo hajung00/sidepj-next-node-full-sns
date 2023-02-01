@@ -8,11 +8,13 @@ import wrapper from '../../store/configureStore';
 import PostCard from '../../components/PostCard';
 import { useSelector } from 'react-redux';
 import Head from 'next/head';
+import { useEffect } from 'react';
 
 const Post = () => {
   const router = useRouter();
   const { id } = router.query;
   const { singlePost } = useSelector((state) => state.post);
+
   return (
     <AppLayout>
       <Head>
@@ -25,13 +27,9 @@ const Post = () => {
         <meta property='og:description' content={singlePost.content} />
         <meta
           property='og:image'
-          content={
-            singlePost.Images[0]
-              ? singlePost.Images[0].src
-              : 'https://nodebird.com/favicon.ico'
-          }
+          content={singlePost.Images[0] ? singlePost.Images[0].src : ''}
         />
-        <meta property='og:url' content={`https://nodebrid.com/post/${id}`} />
+        <meta property='og:url' content={`https://hajungsns.com/post/${id}`} />
       </Head>
       <PostCard post={singlePost} />
     </AppLayout>

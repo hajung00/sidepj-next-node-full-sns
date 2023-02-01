@@ -403,12 +403,12 @@ function AppLayout({ children }) {
             <Menu.Item style={{ height: 'auto' }}>
               <MenuItem_wrapper>
                 <>
-                  <Link href='/main'>
+                  <Link href='/'>
                     <a>
                       <img src='images/home.jpg' />
                     </a>
                   </Link>
-                  <Link href='/main'>
+                  <Link href='/'>
                     <a>홈</a>
                   </Link>
                 </>

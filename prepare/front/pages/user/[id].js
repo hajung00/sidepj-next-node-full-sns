@@ -23,6 +23,14 @@ const User = () => {
   const { userInfo } = useSelector((state) => state.user);
   console.log(userInfo);
   useEffect(() => {
+    if (userInfo) {
+      dispatch({
+        type: LOAD_USER_POSTS_REQUEST,
+        data: context.params.id,
+      });
+    }
+  }, []);
+  useEffect(() => {
     const onScroll = () => {
       if (
         window.scrollY + document.documentElement.clientHeight >
@@ -67,7 +75,10 @@ const User = () => {
             property='og:image'
             content='https://nodebird.com/favicon.ico'
           /> */}
-          <meta property='og:url' content={`https://nodebird.com/user/${id}`} />
+          <meta
+            property='og:url'
+            content={`https://hajungsns.com/user/${id}`}
+          />
         </Head>
       )}
       {userInfo ? (
@@ -118,10 +129,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     if (context.req && cookie) {
       axios.defaults.headers.Cookie = cookie;
     }
-    context.store.dispatch({
-      type: LOAD_USER_POSTS_REQUEST,
-      data: context.params.id,
-    });
+
     context.store.dispatch({
       type: LOAD_MY_INFO_REQUEST,
     });
@@ -129,6 +137,10 @@ export const getServerSideProps = wrapper.getServerSideProps(
       type: LOAD_USER_REQUEST,
       data: context.params.id,
     });
+    // context.store.dispatch({
+    //   type: LOAD_USER_POSTS_REQUEST,
+    //   data: context.params.id,
+    // });
     context.store.dispatch(END);
     await context.store.sagaTask.toPromise();
     return { props: {} };
