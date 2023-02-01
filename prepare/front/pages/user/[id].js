@@ -11,7 +11,6 @@ import { LOAD_MY_INFO_REQUEST, LOAD_USER_REQUEST } from '../../reducers/user';
 import PostCard from '../../components/PostCard';
 import wrapper from '../../store/configureStore';
 import AppLayout from '../../components/AppLayout';
-import { backUrl } from '../../config/config';
 
 const User = () => {
   const dispatch = useDispatch();
@@ -21,7 +20,7 @@ const User = () => {
     (state) => state.post
   );
   const { userInfo } = useSelector((state) => state.user);
-
+  console.log(userInfo);
   useEffect(() => {
     const onScroll = () => {
       if (
@@ -67,10 +66,7 @@ const User = () => {
             property='og:image'
             content='https://nodebird.com/favicon.ico'
           /> */}
-          <meta
-            property='og:url'
-            content={`https://hajungsns.com/user/${id}`}
-          />
+          <meta property='og:url' content={`https://nodebird.com/user/${id}`} />
         </Head>
       )}
       {userInfo ? (
@@ -96,9 +92,11 @@ const User = () => {
           <Card.Meta
             avatar={
               <Avatar
-              // src={
-              //   userInfo.image !== null ? `${backUrl}/${userInfo.image}` : ''
-              // }
+                src={
+                  userInfo.image !== null
+                    ? `http://localhost:3065/${userInfo.image}`
+                    : ''
+                }
               >
                 {userInfo.nickname[0]}
               </Avatar>
@@ -134,7 +132,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
     });
     context.store.dispatch(END);
     await context.store.sagaTask.toPromise();
-    console.log('getState', context.store.getState().post.mainPosts);
     return { props: {} };
   }
 );

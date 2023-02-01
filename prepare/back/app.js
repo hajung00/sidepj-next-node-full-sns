@@ -13,8 +13,6 @@ const passport = require('passport');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const app = express();
-const hpp = require('hpp');
-const helmet = require('helmet');
 const path = require('path');
 dotenv.config();
 
@@ -27,33 +25,14 @@ db.sequelize
 
 passportConfig();
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(morgan('combined'));
-  app.use(hpp());
-  app.use(helmet());
-  app.use(
-    cors({
-      origin: 'http://hajungsns.com',
-      credentials: true, //cookie 전달 허용
-    })
-  );
-} else {
-  app.use(morgan('dev'));
-  app.use(
-    cors({
-      origin: true,
-      credentials: true, //cookie 전달 허용
-    })
-  );
-}
-
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'http://hajungsns.com'],
+    origin: 'http://localhost:3000',
     credentials: true, //cookie 전달 허용
   })
 );
 
+app.use(morgan('dev'));
 // front에서 받아온 데이터를 req.body에 넣어줌
 app.use('/', express.static(path.join(__dirname, 'uploads')));
 app.use(express.json());
@@ -68,11 +47,6 @@ app.use(
     saveUninitialized: false,
     resave: false,
     secret: process.env.COOKIE_SECRET,
-    cookie: {
-      httpOnlyL: true,
-      secure: false,
-      domain: process.env.NODE_ENV === 'production' && '.hajungsns.com',
-    },
   })
 );
 app.use(passport.initialize());
@@ -87,6 +61,6 @@ app.use('/posts', postsRouter);
 app.use('/user', userRouter);
 app.use('/hashtag', hashtagRouter);
 
-app.listen(80, () => {
+app.listen(3065, () => {
   console.log('서버 실행중!');
 });

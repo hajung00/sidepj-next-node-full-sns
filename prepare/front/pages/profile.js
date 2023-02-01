@@ -1,93 +1,95 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import Head from 'next/head';
-import { useSelector } from 'react-redux';
-import Router from 'next/router';
-import { END } from 'redux-saga';
-import axios from 'axios';
-import useSWR from 'swr';
-
 import AppLayout from '../components/AppLayout';
+import Head from 'next/head';
+import ProfileEditForm from '../components/ProfileEditForm';
 import FollowList from '../components/FollowList';
+import { useSelector, useDispatch } from 'react-redux';
+import Router from 'next/router';
 import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
-import wrapper from '../store/configureStore';
-
+import useSWR from 'swr';
+import axios from 'axios';
+import UserProfile from '../components/UserProfile';
+import {
+  LOAD_FOLLOWERS_REQUEST,
+  LOAD_FOLLOWINGS_REQUEST,
+} from '../reducers/user';
 const fetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data);
 
 const Profile = () => {
-  const [followingsLimit, setFollowingsLimit] = useState(3);
-  const [followersLimit, setFollowersLimit] = useState(3);
-  const { data: followingsData, error: followingError } = useSWR(
-    `http://localhost:3065/user/followings?limit=${followingsLimit}`,
-    fetcher
-  );
-  const { data: followersData, error: followerError } = useSWR(
-    `http://localhost:3065/user/followers?limit=${followersLimit}`,
-    fetcher
-  );
   const { me } = useSelector((state) => state.user);
+  // const dispatch = useDispatch();
+  const [followersLimit, setFollowersLimit] = useState(3);
+  const [followingsLimit, setFollowingsLimit] = useState(3);
+
+  console.log('me', me);
+  // 로그인하면서 이미 me.Followings,me.Followers에 팔로잉, 팔로우가 저장되어있음.
+  // useEffect(() => {
+  //   dispatch({
+  //     type: LOAD_FOLLOWERS_REQUEST,
+  //     followersLimit,
+  //   });
+  //   dispatch({
+  //     type: LOAD_FOLLOWINGS_REQUEST,
+  //     followingsLimit,
+  //   });
+  // }, []);
+
+  // const { data: followersData, error: followerError } = useSWR(
+  //   `http://localhost:3065/user/followers?limit=${followersLimit}`,
+  //   fetcher
+  // );
+  // const { data: followingsData, error: followingError } = useSWR(
+  //   `http://localhost:3065/user/followings?limit=${followingsLimit}`,
+  //   fetcher
+  // );
+  // console.log(followersData, followingsData);
 
   useEffect(() => {
     if (!(me && me.id)) {
-      Router.push('/');
+      Router.replace('/');
     }
   }, [me && me.id]);
 
-  const loadMoreFollowers = useCallback(() => {
-    setFollowersLimit((prev) => prev + 3);
-  }, []);
-
-  const loadMoreFollowings = useCallback(() => {
+  const loadMoreFollwings = useCallback(() => {
     setFollowingsLimit((prev) => prev + 3);
   }, []);
 
-  if (followerError || followingError) {
-    console.error(followerError || followingError);
-    return '팔로잉/팔로워 로딩 중 에러가 발생했습니다.';
-  }
+  const loadMoreFollwers = useCallback(() => {
+    setFollowersLimit((prev) => prev + 3);
+  }, []);
 
+  // 로그인 안했을 때 프로필 null
   if (!me) {
     return '내 정보 로딩중...';
   }
+
+  // if (followerError || followingError) {
+  //   console.error(followerError || followingError);
+  //   return '팔로잉/팔로워 로딩 중 에러 발생';
+  // }
+
   return (
     <>
       <Head>
-        <title>내 프로필 | NodeBird</title>
+        <title>내 프로필</title>
       </Head>
       <AppLayout>
+        <UserProfile title={'프로필 수정'} />
         <FollowList
           header='팔로잉'
-          data={followingsData}
-          onClickMore={loadMoreFollowings}
-          loading={!followingError && !followingsData}
+          data={me.Followings.slice(0, followingsLimit)}
+          onClickMore={loadMoreFollwings}
+          //loading={!followingsData && !followingError}
         />
         <FollowList
           header='팔로워'
-          data={followersData}
-          onClickMore={loadMoreFollowers}
-          loading={!followerError && !followersData}
+          data={me.Followers.slice(0, followersLimit)}
+          onClickMore={loadMoreFollwers}
+          //loading={!followersData && !followerError}
         />
       </AppLayout>
     </>
   );
 };
-
-export const getServerSideProps = wrapper.getServerSideProps(
-  async (context) => {
-    console.log('getServerSideProps start');
-    console.log(context.req.headers);
-    const cookie = context.req ? context.req.headers.cookie : '';
-    axios.defaults.headers.Cookie = '';
-    if (context.req && cookie) {
-      axios.defaults.headers.Cookie = cookie;
-    }
-    context.store.dispatch({
-      type: LOAD_MY_INFO_REQUEST,
-    });
-    context.store.dispatch(END);
-    console.log('getServerSideProps end');
-    await context.store.sagaTask.toPromise();
-  }
-);
-
 export default Profile;

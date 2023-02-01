@@ -3,8 +3,8 @@ const router = express.Router();
 const { Op } = require('sequelize');
 const { Post, User, Image, Comment, Hashtag } = require('../models');
 
-// GET /tag
-router.get('/:tag', async (req, res, next) => {
+// GET /hashtag
+router.get('/:hashtag', async (req, res, next) => {
   try {
     const where = {};
     if (parseInt(req.query.lastId, 10)) {
@@ -14,10 +14,11 @@ router.get('/:tag', async (req, res, next) => {
     const posts = await Post.findAll({
       where,
       limit: 10,
+      order: [['createdAt', 'DESC']],
       include: [
         {
           model: Hashtag,
-          where: { name: decodeURIComponent(req.params.tag) },
+          where: { name: decodeURIComponent(req.params.hashtag) },
         },
         {
           model: User,
@@ -27,8 +28,16 @@ router.get('/:tag', async (req, res, next) => {
           model: Image,
         },
         {
-          model: User,
-          through: 'Like',
+          model: Comment,
+          include: [
+            {
+              model: User,
+              attributes: ['id', 'nickname'],
+            },
+          ],
+        },
+        {
+          model: User, // 좋아요 누른 사람
           as: 'Likers',
           attributes: ['id'],
         },
@@ -47,28 +56,28 @@ router.get('/:tag', async (req, res, next) => {
         },
       ],
     });
-    res.json(posts);
-  } catch (e) {
-    console.error(e);
-    next(e);
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error(error);
+    next(error);
   }
 });
 
 //hashtag get
-// router.get('/', async (req, res, next) => {
-//   try {
-//     console.log('해쉬', req.query.lastId);
-//     const hashTag = await Hashtag.findAll({
-//       limit: parseInt(req.query.lastId, 10),
-//       attributes: ['id', 'name'],
-//     });
-//     console.log(hashTag);
-//     res.status(200).json(hashTag);
-//   } catch (error) {
-//     console.error(error);
-//     next(error);
-//   }
-//   console.log(req);
-// });
+router.get('/', async (req, res, next) => {
+  try {
+    console.log('해쉬', req.query.lastId);
+    const hashTag = await Hashtag.findAll({
+      limit: parseInt(req.query.lastId, 10),
+      attributes: ['id', 'name'],
+    });
+    console.log(hashTag);
+    res.status(200).json(hashTag);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+  console.log(req);
+});
 
 module.exports = router;
