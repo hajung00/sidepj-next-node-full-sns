@@ -13,21 +13,30 @@ import {
 import Router from 'next/router';
 import Link from 'next/link';
 
+const MainImage = styled.div`
+  width: 50%;
+  height: 100%;
+  float: left;
+  background-image: url(images/login_back.png);
+  background-size: cover;
+  background-position: center;
+`;
+
 const ErrorMessage = styled.div`
   color: red;
 `;
 
 const SignupPageWrapper = styled.div`
   width: 100%;
-  height: 730px;
+  height: 745px;
   float: left;
 `;
 const SignUpFormWrapper = styled.div`
   width: 50%;
   height: 80%;
   float: left;
-  padding-left: 10%;
-  padding-top: 8%;
+  padding-left: 14%;
+  padding-top: 4%;
   font-family: sans-serif;
   font-weight: bold;
 `;
@@ -107,23 +116,32 @@ const Signup = () => {
   }, [me && me.id]);
 
   // 제출했을 때, 비밀번호 같은지, check box(동의) 눌렀는지 확인
-  const onSubmit = useCallback(() => {
+  const [request, setRequest] = useState(false);
+  const formData = new FormData();
+  const onSubmit = () => {
     if (password !== passwordcheck) setPasswordError(true);
     if (!term) setTermError(true);
 
-    const formData = new FormData();
     profileImg.forEach((p) => {
       formData.append('image', p);
     });
     formData.append('email', email);
     formData.append('password', password);
     formData.append('nickname', nickname);
-
-    return dispatch({
+    setRequest(true);
+    console.log(request);
+    if (request) {
+      console.log('액션실행');
+      requestAction(formData);
+    }
+  };
+  const requestAction = (formData) => {
+    console.log(request, formData);
+    dispatch({
       type: SIGN_UP_REQUEST,
       data: formData,
     });
-  }, [email, password, passwordcheck, term, profileImg]);
+  };
 
   const onChange = useCallback((e) => {
     if (e.target.files[0]) {
@@ -157,22 +175,16 @@ const Signup = () => {
 
   return (
     <SignupPageWrapper>
-      <div style={{ width: '50%', height: '100%', float: 'left' }}>
-        <img
-          alt='node-brid'
-          src='images/login_back.png'
-          style={{ width: '100%', height: '100%' }}
-        />
-      </div>
+      <MainImage />
       <SignUpFormWrapper>
         <Head>
-          <title>회원가입 | NodeBird</title>
+          <title>회원가입</title>
         </Head>
 
         {/* 가입하기 버튼 누르면 submit되어 onFinish 실행 */}
 
         <FormWrapper onFinish={onSubmit}>
-          <h1>Node Brid</h1>
+          <h1>Signup</h1>
           <InputWrapper>
             <label htmlFor='user-email'>프로필 사진</label>
             <div>

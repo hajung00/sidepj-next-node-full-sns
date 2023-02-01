@@ -9,7 +9,7 @@ function NodeBird({ Component }) {
     <>
       <Head>
         <meta charSet='_utf-8' />
-        <title>NodeBird</title>
+        <title>full-sns</title>
       </Head>
       <Component />
     </>
