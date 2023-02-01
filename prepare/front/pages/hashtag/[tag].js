@@ -72,9 +72,12 @@ const Hashtag = () => {
           />
           <meta
             property='og:image'
-            content='https://nodebird.com/favicon.ico'
+            content='https://hajungsns.com/favicon.ico'
           />
-          <meta property='og:url' content={`https://nodebird.com/user/${id}`} />
+          <meta
+            property='og:url'
+            content={`https://hajungsns.com/user/${id}`}
+          />
         </Head>
       )}
       {userInfo ? (
@@ -124,6 +127,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     context.store.dispatch({
       type: LOAD_HASHTAG_POSTS_REQUEST,
       data: context.params.tag,
+      lastId: 0,
     });
 
     context.store.dispatch(END);
