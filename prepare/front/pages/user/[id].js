@@ -21,15 +21,7 @@ const User = () => {
     (state) => state.post
   );
   const { userInfo } = useSelector((state) => state.user);
-  console.log(userInfo);
-  useEffect(() => {
-    if (userInfo) {
-      dispatch({
-        type: LOAD_USER_POSTS_REQUEST,
-        data: context.params.id,
-      });
-    }
-  }, []);
+
   useEffect(() => {
     const onScroll = () => {
       if (
@@ -104,9 +96,9 @@ const User = () => {
           <Card.Meta
             avatar={
               <Avatar
-                src={
-                  userInfo.image !== null ? `${backUrl}/${userInfo.image}` : ''
-                }
+              // src={
+              //   userInfo.image !== null ? `${backUrl}/${userInfo.image}` : ''
+              // }
               >
                 {userInfo.nickname[0]}
               </Avatar>
@@ -129,7 +121,10 @@ export const getServerSideProps = wrapper.getServerSideProps(
     if (context.req && cookie) {
       axios.defaults.headers.Cookie = cookie;
     }
-
+    context.store.dispatch({
+      type: LOAD_USER_POSTS_REQUEST,
+      data: context.params.id,
+    });
     context.store.dispatch({
       type: LOAD_MY_INFO_REQUEST,
     });
@@ -137,12 +132,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
       type: LOAD_USER_REQUEST,
       data: context.params.id,
     });
-    // context.store.dispatch({
-    //   type: LOAD_USER_POSTS_REQUEST,
-    //   data: context.params.id,
-    // });
     context.store.dispatch(END);
     await context.store.sagaTask.toPromise();
+    console.log('getState', context.store.getState().post.mainPosts);
     return { props: {} };
   }
 );

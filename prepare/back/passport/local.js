@@ -1,7 +1,8 @@
-const passport = require('passport'); //인증관련 미들웨어
+const passport = require('passport');
 const { Strategy: LocalStrategy } = require('passport-local');
-const { User } = require('../models');
 const bcrypt = require('bcrypt');
+const { User } = require('../models');
+
 module.exports = () => {
   passport.use(
     new LocalStrategy(
@@ -15,7 +16,7 @@ module.exports = () => {
             where: { email },
           });
           if (!user) {
-            return done(null, false, { reason: '존재하지 않는 이메일입니다.' });
+            return done(null, false, { reason: '존재하지 않는 이메일입니다!' });
           }
           const result = await bcrypt.compare(password, user.password);
           if (result) {
