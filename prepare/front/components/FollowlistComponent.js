@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { FOLLOW_REQUEST } from '../reducers/user';
 import { LOAD_ALLUSER_REQUEST } from '../reducers/user';
+import { backUrl } from '../config/config';
 const CradWrapper = styled(Card)`
   position: relative;
   background-color: #f2f2f2;
@@ -55,7 +56,7 @@ function FollowlistComponent({ follow }) {
         avatar={
           <Link href={`/user/${follow.id}`}>
             <a>
-              <Avatar src={`http://localhost:3065/${follow.image}`}>
+              <Avatar src={`${backUrl}/${follow.image}`}>
                 {follow.nickname[0]}
               </Avatar>
             </a>

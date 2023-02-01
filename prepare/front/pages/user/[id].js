@@ -11,7 +11,7 @@ import { LOAD_MY_INFO_REQUEST, LOAD_USER_REQUEST } from '../../reducers/user';
 import PostCard from '../../components/PostCard';
 import wrapper from '../../store/configureStore';
 import AppLayout from '../../components/AppLayout';
-
+import { backUrl } from '../../config/config';
 const User = () => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -93,9 +93,7 @@ const User = () => {
             avatar={
               <Avatar
                 src={
-                  userInfo.image !== null
-                    ? `http://localhost:3065/${userInfo.image}`
-                    : ''
+                  userInfo.image !== null ? `${backUrl}/${userInfo.image}` : ''
                 }
               >
                 {userInfo.nickname[0]}

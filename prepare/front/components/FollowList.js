@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { UNFOLLOW_REQUEST, REMOVE_FOLLOWER_REQUEST } from '../reducers/user';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
-
+import { backUrl } from '../config/config';
 const EditButton = styled(Button)`
   --antd-wave-shadow-color: none;
   background-color: white;
@@ -77,11 +77,7 @@ function FollowList({ header, data, onClickMore, loading }) {
           <Card
             actions={[<StopOutlined key='stop' onClick={onCancel(item.id)} />]}
           >
-            <Avatar
-              src={
-                item.image != null ? `http://localhost:3065/${item.image}` : ''
-              }
-            >
+            <Avatar src={item.image != null ? `${backUrl}/${item.image}` : ''}>
               {item.nickname[0]}
             </Avatar>
             <Card.Meta description={item.nickname} />

@@ -9,7 +9,7 @@ import {
 } from '../reducers/post';
 import useInput from '../hooks/useInput';
 import styled from 'styled-components';
-
+import { backUrl } from '../config/config';
 const Header = styled.div`
   font-size: 18px;
   font-weight: 600;
@@ -143,11 +143,7 @@ function PostForm() {
         </PostWrapper>
         {imagePaths.map((y, i) => (
           <div key={y} style={{ display: 'inline-block' }}>
-            <img
-              src={`http://localhost:3065/${y}`}
-              style={{ width: '200px' }}
-              alt={y}
-            />
+            <img src={`${backUrl}/${y}`} style={{ width: '200px' }} alt={y} />
             <div>
               <Button
                 onClick={onRemoveImage(i)}

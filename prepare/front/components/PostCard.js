@@ -26,6 +26,7 @@ import {
 import FollowButton from './FollowButton';
 import EditContentModal from '../components/EditContentModal';
 import styled from 'styled-components';
+import { backUrl } from '../config/config';
 moment.locale('ko');
 
 const SetButton = styled(Button)`
@@ -199,7 +200,7 @@ function PostCard({ post }) {
                     <Avatar
                       src={
                         post.Retweet.User.image !== null
-                          ? `http://localhost:3065/${post.Retweet.User.image}`
+                          ? `${backUrl}/${post.Retweet.User.image}`
                           : ''
                       }
                     >
@@ -225,7 +226,7 @@ function PostCard({ post }) {
                     <Avatar
                       src={
                         post.User.image !== null
-                          ? `http://localhost:3065/${post.User.image}`
+                          ? `${backUrl}/${post.User.image}`
                           : ''
                       }
                     >
@@ -262,7 +263,7 @@ function PostCard({ post }) {
                         <Avatar
                           src={
                             item.User.image != null
-                              ? `http://localhost:3065/${item.User.image}`
+                              ? `${backUrl}/${item.User.image}`
                               : ''
                           }
                         >

@@ -13,6 +13,8 @@ const passport = require('passport');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const app = express();
+const hpp = require('hpp');
+const helmet = require('helmet');
 const path = require('path');
 dotenv.config();
 
@@ -25,9 +27,17 @@ db.sequelize
 
 passportConfig();
 
+if (process.env.NODE_ENV === 'production') {
+  app.use(morgan('combined'));
+  app.use(hpp());
+  app.use(helmet());
+} else {
+  app.use(morgan('dev'));
+}
+
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'hajungsns.com'],
     credentials: true, //cookie 전달 허용
   })
 );
