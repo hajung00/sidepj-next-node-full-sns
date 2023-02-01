@@ -13,11 +13,13 @@ const Main = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
   useEffect(() => {
-    const lastId = 0;
-    dispatch({
-      type: LOAD_RELATIVE_POSTS_REQUEST,
-      lastId,
-    });
+    if (me) {
+      const lastId = 0;
+      dispatch({
+        type: LOAD_RELATIVE_POSTS_REQUEST,
+        lastId,
+      });
+    }
   }, []);
   const {
     mainPosts,

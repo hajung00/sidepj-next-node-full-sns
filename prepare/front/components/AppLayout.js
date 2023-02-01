@@ -366,16 +366,18 @@ function AppLayout({ children }) {
   // }, []);
 
   useEffect(() => {
-    const lastId_list = recommendFollowList.length;
-    const lastId_hash = hashTag.length;
-    dispatch({
-      type: LOAD_ALLUSER_REQUEST,
-      lastId_list,
-    });
-    dispatch({
-      type: LOAD_HASHTAG_REQUEST,
-      lastId_hash,
-    });
+    if (me) {
+      const lastId_list = recommendFollowList.length;
+      const lastId_hash = hashTag.length;
+      dispatch({
+        type: LOAD_ALLUSER_REQUEST,
+        lastId_list,
+      });
+      dispatch({
+        type: LOAD_HASHTAG_REQUEST,
+        lastId_hash,
+      });
+    }
 
     setShowMore(true);
   }, []);
