@@ -12,7 +12,13 @@ import LoginForm from '../components/LoginForm';
 const Main = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
-
+  useEffect(() => {
+    const lastId = 0;
+    dispatch({
+      type: LOAD_RELATIVE_POSTS_REQUEST,
+      lastId,
+    });
+  }, []);
   const {
     mainPosts,
     hasMorePosts,
@@ -40,7 +46,6 @@ const Main = () => {
     }
   }, [accuseMessage]);
 
-  console.log('me/', me);
   // scroll
   useEffect(() => {
     const onScroll = () => {
@@ -87,9 +92,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
     context.store.dispatch({
       type: LOAD_MY_INFO_REQUEST,
     });
-    context.store.dispatch({
-      type: LOAD_RELATIVE_POSTS_REQUEST,
-    });
+    // context.store.dispatch({
+    //   type: LOAD_RELATIVE_POSTS_REQUEST,
+    // });
     context.store.dispatch(END);
     await context.store.sagaTask.toPromise();
   }

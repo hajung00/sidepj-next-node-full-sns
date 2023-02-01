@@ -164,7 +164,9 @@ function* loadFollowings(action) {
 
 // loadmyInfo
 function loadmyInfoAPI() {
-  return axios.get('/user');
+  return axios.get('/user', {
+    withCredentials: true,
+  });
 }
 function* loadmyInfo() {
   try {
