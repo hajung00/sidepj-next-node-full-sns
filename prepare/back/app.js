@@ -31,8 +31,20 @@ if (process.env.NODE_ENV === 'production') {
   app.use(morgan('combined'));
   app.use(hpp());
   app.use(helmet());
+  app.use(
+    cors({
+      origin: 'http://hajungsns.com',
+      credentials: true, //cookie 전달 허용
+    })
+  );
 } else {
   app.use(morgan('dev'));
+  app.use(
+    cors({
+      origin: true,
+      credentials: true, //cookie 전달 허용
+    })
+  );
 }
 
 app.use(
