@@ -18,14 +18,16 @@ const fetcher = (url) =>
 
 const Profile = () => {
   const { me } = useSelector((state) => state.user);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [followersLimit, setFollowersLimit] = useState(3);
   const [followingsLimit, setFollowingsLimit] = useState(3);
+
   useEffect(() => {
     dispatch({
       type: LOAD_MY_INFO_REQUEST,
     });
-  }, []);
+  }, [me]);
+
   console.log('me', me);
   // 로그인하면서 이미 me.Followings,me.Followers에 팔로잉, 팔로우가 저장되어있음.
   // useEffect(() => {

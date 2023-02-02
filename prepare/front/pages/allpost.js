@@ -42,6 +42,12 @@ const AllPosts = () => {
     }
   }, [accuseMessage]);
 
+  useEffect(() => {
+    dispatch({
+      type: LOAD_POSTS_REQUEST,
+    });
+  }, [mainPosts]);
+
   // scroll
   useEffect(() => {
     const onScroll = () => {

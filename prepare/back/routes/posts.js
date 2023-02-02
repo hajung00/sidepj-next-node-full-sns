@@ -2,6 +2,7 @@ const express = require('express');
 const { Post, User, Image, Comment, Hashtag } = require('../models');
 const { Op } = require('sequelize');
 const router = express.Router();
+const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 // GET /posts
 router.get('/unrelated', async (req, res, next) => {
   try {
@@ -61,7 +62,7 @@ router.get('/unrelated', async (req, res, next) => {
   }
 });
 
-router.get('/related', async (req, res, next) => {
+router.get('/related', isLoggedIn, async (req, res, next) => {
   try {
     const followings = await User.findAll({
       attributes: ['id'],

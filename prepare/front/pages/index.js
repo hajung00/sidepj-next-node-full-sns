@@ -44,7 +44,8 @@ const Main = () => {
     dispatch({
       type: LOAD_MY_INFO_REQUEST,
     });
-  }, []);
+  }, [me]);
+
   if (me) {
     dispatch({
       type: LOAD_RELATIVE_POSTS_REQUEST,
