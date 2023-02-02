@@ -50,7 +50,7 @@ const Main = () => {
         type: LOAD_RELATIVE_POSTS_REQUEST,
       });
     }
-  }, [me]);
+  }, [me, hasMorePosts, loadPostLoading, mainPosts]);
 
   // scroll
   useEffect(() => {
