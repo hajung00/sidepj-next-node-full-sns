@@ -8,7 +8,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { createGlobalStyle } from 'styled-components';
 import useInput from '../hooks/useInput';
 import Router from 'next/router';
-import { LOG_OUT_REQUEST, LOAD_ALLUSER_REQUEST } from '../reducers/user';
+import {
+  LOG_OUT_REQUEST,
+  LOAD_ALLUSER_REQUEST,
+  LOAD_MY_INFO_REQUEST,
+} from '../reducers/user';
 import { LOAD_HASHTAG_REQUEST } from '../reducers/post';
 import FollowlistComponent from './FollowlistComponent';
 import LoginForm from './LoginForm';
@@ -305,7 +309,7 @@ function AppLayout({ children }) {
   const showMorehandler = (name) => {
     setShowMore(true);
     console.log(showMore);
-    if (showMore && name === 'list') {
+    if (showMore && name === 'list' && me) {
       const lastId_list = recommendFollowList.length + 3;
       dispatch({
         type: LOAD_ALLUSER_REQUEST,
@@ -339,21 +343,22 @@ function AppLayout({ children }) {
     Router.push('/');
   }, []);
 
-  // useEffect(() => {
-  //   // const lastId = 3;
-  //   dispatch({
-  //     type: LOAD_HASHTAG_REQUEST,
-  //     // lastId,
-  //   });
-  // }, []);
+  useEffect(() => {
+    dispatch({
+      type: LOAD_MY_INFO_REQUEST,
+    });
+  }, []);
 
   useEffect(() => {
     const lastId_list = recommendFollowList.length;
     const lastId_hash = hashTag.length;
-    dispatch({
-      type: LOAD_ALLUSER_REQUEST,
-      lastId_list,
-    });
+    if (me) {
+      dispatch({
+        type: LOAD_ALLUSER_REQUEST,
+        lastId_list,
+      });
+    }
+
     dispatch({
       type: LOAD_HASHTAG_REQUEST,
       lastId_hash,
