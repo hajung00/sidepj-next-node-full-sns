@@ -9,7 +9,7 @@ import { backUrl } from '../config/config';
 const UserProfile = ({ title, main }) => {
   const { me, logOutLoading, logOutDone } = useSelector((state) => state.user);
   const [src, setSrc] = useState('');
-
+  const dispatch = useDispatch();
   useEffect(() => {
     dispatch({
       type: LOAD_MY_INFO_REQUEST,
