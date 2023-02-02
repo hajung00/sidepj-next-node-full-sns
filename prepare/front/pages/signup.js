@@ -71,11 +71,11 @@ const Signup = () => {
   const [passwordcheck, setChangePasswordCheck] = useState('');
   const [passwordError, setPasswordError] = useState(false);
 
-  const fileInput = useRef(null);
-  const [File, setFile] = useState('');
-  const [Image, setImage] = useState(
-    'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
-  );
+  // const fileInput = useRef(null);
+  // const [File, setFile] = useState('');
+  // const [Image, setImage] = useState(
+  //   'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+  // );
 
   const onChangePasswordCheck = useCallback(
     (e) => {
@@ -117,11 +117,12 @@ const Signup = () => {
 
   // 제출했을 때, 비밀번호 같은지, check box(동의) 눌렀는지 확인
   const [request, setRequest] = useState(false);
-  const formData = new FormData();
+
   const onSubmit = () => {
     if (password !== passwordcheck) setPasswordError(true);
     if (!term) setTermError(true);
 
+    const formData = new FormData();
     profileImg.forEach((p) => {
       formData.append('image', p);
     });
@@ -143,35 +144,35 @@ const Signup = () => {
     });
   };
 
-  const onChange = useCallback((e) => {
-    if (e.target.files[0]) {
-      setFile(e.target.files[0]);
-    } else {
-      //업로드 취소할 시
-      setImage(
-        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
-      );
-      return;
-    }
-    //화면에 프로필 사진 표시
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        setImage(reader.result);
-      }
-    };
-    reader.readAsDataURL(e.target.files[0]);
+  // const onChange = useCallback((e) => {
+  //   if (e.target.files[0]) {
+  //     setFile(e.target.files[0]);
+  //   } else {
+  //     //업로드 취소할 시
+  //     setImage(
+  //       'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+  //     );
+  //     return;
+  //   }
+  //   //화면에 프로필 사진 표시
+  //   const reader = new FileReader();
+  //   reader.onload = () => {
+  //     if (reader.readyState === 2) {
+  //       setImage(reader.result);
+  //     }
+  //   };
+  //   reader.readAsDataURL(e.target.files[0]);
 
-    console.log('images', e.target.files);
-    const imageFormData = new FormData(); // FormData 를 이용해 Mulitpart 형식 전송
-    [].forEach.call(e.target.files, (f) => {
-      imageFormData.append('image', f);
-    });
-    dispatch({
-      type: UPLOAD_PROFILEIMAGES_REQUEST,
-      data: imageFormData,
-    });
-  }, []);
+  //   console.log('images', e.target.files);
+  //   const imageFormData = new FormData(); // FormData 를 이용해 Mulitpart 형식 전송
+  //   [].forEach.call(e.target.files, (f) => {
+  //     imageFormData.append('image', f);
+  //   });
+  //   dispatch({
+  //     type: UPLOAD_PROFILEIMAGES_REQUEST,
+  //     data: imageFormData,
+  //   });
+  // }, []);
 
   return (
     <SignupPageWrapper>
