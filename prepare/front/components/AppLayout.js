@@ -349,7 +349,7 @@ function AppLayout({ children }) {
         type: LOAD_MY_INFO_REQUEST,
       });
     }
-  }, [me]);
+  }, []);
 
   useEffect(() => {
     const lastId_list = recommendFollowList.length;
