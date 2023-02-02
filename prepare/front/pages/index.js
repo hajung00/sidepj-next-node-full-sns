@@ -40,6 +40,17 @@ const Main = () => {
     }
   }, [accuseMessage]);
 
+  useEffect(() => {
+    dispatch({
+      type: LOAD_MY_INFO_REQUEST,
+    });
+  }, []);
+  if (me) {
+    dispatch({
+      type: LOAD_RELATIVE_POSTS_REQUEST,
+    });
+  }
+
   // scroll
   useEffect(() => {
     const onScroll = () => {
@@ -76,25 +87,25 @@ const Main = () => {
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(
-  async (context) => {
-    const cookie = context.req ? context.req.headers.cookie : '';
-    axios.defaults.headers.Cookie = '';
-    if (context.req && cookie) {
-      axios.defaults.headers.Cookie = cookie;
-    }
-    context.store.dispatch({
-      type: LOAD_MY_INFO_REQUEST,
-    });
-    context.store.dispatch({
-      type: LOAD_RELATIVE_POSTS_REQUEST,
-    });
+// export const getServerSideProps = wrapper.getServerSideProps(
+//   async (context) => {
+//     const cookie = context.req ? context.req.headers.cookie : '';
+//     axios.defaults.headers.Cookie = '';
+//     if (context.req && cookie) {
+//       axios.defaults.headers.Cookie = cookie;
+//     }
+//     context.store.dispatch({
+//       type: LOAD_MY_INFO_REQUEST,
+//     });
+//     context.store.dispatch({
+//       type: LOAD_RELATIVE_POSTS_REQUEST,
+//     });
 
-    // context.store.dispatch({
-    //   type: LOAD_POSTS_REQUEST,
-    // });
-    context.store.dispatch(END);
-    await context.store.sagaTask.toPromise();
-  }
-);
+//     // context.store.dispatch({
+//     //   type: LOAD_POSTS_REQUEST,
+//     // });
+//     context.store.dispatch(END);
+//     await context.store.sagaTask.toPromise();
+//   }
+// );
 export default Main;
