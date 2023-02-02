@@ -41,10 +41,14 @@ const Main = () => {
   }, [accuseMessage]);
 
   useEffect(() => {
-    dispatch({
-      type: LOAD_MY_INFO_REQUEST,
-    });
+    if (me) {
+      dispatch({
+        type: LOAD_MY_INFO_REQUEST,
+      });
+    }
+  }, [me]);
 
+  useEffect(() => {
     if (me) {
       dispatch({
         type: LOAD_RELATIVE_POSTS_REQUEST,
