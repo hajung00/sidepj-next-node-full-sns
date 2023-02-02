@@ -298,38 +298,38 @@ function AppLayout({ children }) {
   const { me, logOutLoading, recommendFollowList } = useSelector(
     (state) => state.user
   );
-  const { hashTag } = useSelector((state) => state.post);
-  const [searchInput, onChangeSerchInput] = useInput('');
-  const [showMore, setShowMore] = useState(false);
+  // const { hashTag } = useSelector((state) => state.post);
+  // const [searchInput, onChangeSerchInput] = useInput('');
+  // const [showMore, setShowMore] = useState(false);
 
-  const showMorehandler = (name) => {
-    setShowMore(true);
-    console.log(showMore);
-    if (showMore && name === 'list') {
-      const lastId_list = recommendFollowList.length + 3;
-      dispatch({
-        type: LOAD_ALLUSER_REQUEST,
-        lastId_list,
-      });
-    } else if (showMore && name === 'hash') {
-      const lastId_hash = hashTag.length + 3;
-      dispatch({
-        type: LOAD_HASHTAG_REQUEST,
-        lastId_hash,
-      });
-    }
-  };
+  // const showMorehandler = (name) => {
+  //   setShowMore(true);
+  //   console.log(showMore);
+  //   if (showMore && name === 'list') {
+  //     const lastId_list = recommendFollowList.length + 3;
+  //     dispatch({
+  //       type: LOAD_ALLUSER_REQUEST,
+  //       lastId_list,
+  //     });
+  //   } else if (showMore && name === 'hash') {
+  //     const lastId_hash = hashTag.length + 3;
+  //     dispatch({
+  //       type: LOAD_HASHTAG_REQUEST,
+  //       lastId_hash,
+  //     });
+  //   }
+  // };
 
   const dispatch = useDispatch();
 
-  const onSearch = useCallback(() => {
-    Router.push(`/hashtag/${searchInput}`);
-  }, [searchInput]);
+  // const onSearch = useCallback(() => {
+  //   Router.push(`/hashtag/${searchInput}`);
+  // }, [searchInput]);
 
-  const onHashClick = useCallback((hash) => {
-    console.log('hash', hash);
-    Router.push(`/hashtag/${hash.name}`);
-  });
+  // const onHashClick = useCallback((hash) => {
+  //   console.log('hash', hash);
+  //   Router.push(`/hashtag/${hash.name}`);
+  // });
   const [openModal, setOpenModal] = useState(false);
 
   const onLogout = useCallback(() => {
@@ -347,20 +347,20 @@ function AppLayout({ children }) {
   //   });
   // }, []);
 
-  useEffect(() => {
-    const lastId_list = recommendFollowList.length;
-    const lastId_hash = hashTag.length;
-    dispatch({
-      type: LOAD_ALLUSER_REQUEST,
-      lastId_list,
-    });
-    dispatch({
-      type: LOAD_HASHTAG_REQUEST,
-      lastId_hash,
-    });
+  // useEffect(() => {
+  //   const lastId_list = recommendFollowList.length;
+  //   const lastId_hash = hashTag.length;
+  //   dispatch({
+  //     type: LOAD_ALLUSER_REQUEST,
+  //     lastId_list,
+  //   });
+  //   dispatch({
+  //     type: LOAD_HASHTAG_REQUEST,
+  //     lastId_hash,
+  //   });
 
-    setShowMore(true);
-  }, []);
+  //   setShowMore(true);
+  // }, []);
 
   console.log(hashTag);
   return (
@@ -508,7 +508,7 @@ function AppLayout({ children }) {
         <Col md={9}>
           {/* target _blank는 보안 위협이 있어서 rel과 같이 사용 
           어떤창에서 열었는지에 대한 정보를  noreferrer noopener로 보안 위협 방지*/}
-          <SearchInputWrapper>
+          {/* <SearchInputWrapper>
             <Input.Search
               enterButton
               value={searchInput}
@@ -559,7 +559,7 @@ function AppLayout({ children }) {
               {' '}
               show more...
             </span>
-          </RecommendFollow>
+          </RecommendFollow> */}
         </Col>
       </Row>
     </div>
