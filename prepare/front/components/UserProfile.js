@@ -1,7 +1,7 @@
 import { Avatar, Card, Button } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { LOG_OUT_REQUEST } from '../reducers/user';
+import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import Link from 'next/link';
 import Router from 'next/router';
 import ProfileEditForm from './ProfileEditForm';
@@ -9,6 +9,13 @@ import { backUrl } from '../config/config';
 const UserProfile = ({ title, main }) => {
   const { me, logOutLoading, logOutDone } = useSelector((state) => state.user);
   const [src, setSrc] = useState('');
+
+  useEffect(() => {
+    dispatch({
+      type: LOAD_MY_INFO_REQUEST,
+    });
+  }, []);
+
   useEffect(() => {
     if (me) {
       setSrc(`${backUrl}/${me.image}`);

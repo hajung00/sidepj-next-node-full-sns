@@ -365,7 +365,7 @@ function AppLayout({ children }) {
     });
 
     setShowMore(true);
-  }, []);
+  }, [me]);
 
   console.log(hashTag);
   return (

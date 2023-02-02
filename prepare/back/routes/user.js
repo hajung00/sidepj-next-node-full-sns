@@ -269,10 +269,22 @@ router.post(
 );
 
 // POST /logout
-router.post('/logout', isLoggedIn, (req, res) => {
-  req.logout();
-  req.session.destroy();
-  res.send('ok');
+router.post('/logout', isLoggedIn, async (req, res, next) => {
+  try {
+    await User.update(
+      {
+        connectIP: ' ',
+      },
+      {
+        where: { id: req.user.id },
+      }
+    );
+    req.session.destroy();
+    res.send('ok');
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
 });
 
 // PATCH /user/profile
