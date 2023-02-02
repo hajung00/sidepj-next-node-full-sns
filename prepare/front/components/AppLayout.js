@@ -305,6 +305,7 @@ function AppLayout({ children }) {
   const { hashTag } = useSelector((state) => state.post);
   const [searchInput, onChangeSerchInput] = useInput('');
   const [showMore, setShowMore] = useState(false);
+  const dispatch = useDispatch();
 
   const showMorehandler = (name) => {
     setShowMore(true);
@@ -324,8 +325,6 @@ function AppLayout({ children }) {
     }
   };
 
-  const dispatch = useDispatch();
-
   const onSearch = useCallback(() => {
     Router.push(`/hashtag/${searchInput}`);
   }, [searchInput]);
@@ -344,10 +343,12 @@ function AppLayout({ children }) {
   }, []);
 
   useEffect(() => {
-    dispatch({
-      type: LOAD_MY_INFO_REQUEST,
-    });
-  }, []);
+    if (me) {
+      dispatch({
+        type: LOAD_MY_INFO_REQUEST,
+      });
+    }
+  }, [me]);
 
   useEffect(() => {
     const lastId_list = recommendFollowList.length;

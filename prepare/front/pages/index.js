@@ -46,7 +46,7 @@ const Main = () => {
         type: LOAD_MY_INFO_REQUEST,
       });
     }
-  }, [me]);
+  }, []);
 
   useEffect(() => {
     if (me) {
@@ -54,7 +54,7 @@ const Main = () => {
         type: LOAD_RELATIVE_POSTS_REQUEST,
       });
     }
-  }, [me, hasMorePosts, loadPostLoading, mainPosts]);
+  }, [hasMorePosts, loadPostLoading, mainPosts]);
 
   // scroll
   useEffect(() => {
