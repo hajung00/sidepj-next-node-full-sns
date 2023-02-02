@@ -46,7 +46,7 @@ const AllPosts = () => {
     dispatch({
       type: LOAD_POSTS_REQUEST,
     });
-  }, [mainPosts]);
+  }, [mainPosts, hasMorePosts, loadPostLoading]);
 
   // scroll
   useEffect(() => {
