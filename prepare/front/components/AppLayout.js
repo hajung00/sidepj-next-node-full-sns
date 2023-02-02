@@ -307,23 +307,23 @@ function AppLayout({ children }) {
   const [showMore, setShowMore] = useState(false);
   const dispatch = useDispatch();
 
-  const showMorehandler = (name) => {
-    setShowMore(true);
-    console.log(showMore);
-    if (showMore && name === 'list' && me) {
-      const lastId_list = recommendFollowList.length + 3;
-      dispatch({
-        type: LOAD_ALLUSER_REQUEST,
-        lastId_list,
-      });
-    } else if (showMore && name === 'hash') {
-      const lastId_hash = hashTag.length + 3;
-      dispatch({
-        type: LOAD_HASHTAG_REQUEST,
-        lastId_hash,
-      });
-    }
-  };
+  // const showMorehandler = (name) => {
+  //   setShowMore(true);
+  //   console.log(showMore);
+  //   if (showMore && name === 'list' && me) {
+  //     const lastId_list = recommendFollowList.length + 3;
+  //     dispatch({
+  //       type: LOAD_ALLUSER_REQUEST,
+  //       lastId_list,
+  //     });
+  //   } else if (showMore && name === 'hash') {
+  //     const lastId_hash = hashTag.length + 3;
+  //     dispatch({
+  //       type: LOAD_HASHTAG_REQUEST,
+  //       lastId_hash,
+  //     });
+  //   }
+  // };
 
   const onSearch = useCallback(() => {
     Router.push(`/hashtag/${searchInput}`);
@@ -342,33 +342,33 @@ function AppLayout({ children }) {
     Router.push('/');
   }, []);
 
-  useEffect(() => {
-    if (me) {
-      dispatch({
-        type: LOAD_MY_INFO_REQUEST,
-      });
-    }
-  }, [me]);
+  // useEffect(() => {
+  //   if (me) {
+  //     dispatch({
+  //       type: LOAD_MY_INFO_REQUEST,
+  //     });
+  //   }
+  // }, [me]);
 
-  useEffect(() => {
-    const lastId_list = recommendFollowList.length;
-    const lastId_hash = hashTag.length;
-    if (me) {
-      dispatch({
-        type: LOAD_ALLUSER_REQUEST,
-        lastId_list,
-      });
-    }
+  // useEffect(() => {
+  //   const lastId_list = recommendFollowList.length;
+  //   const lastId_hash = hashTag.length;
+  //   if (me) {
+  //     dispatch({
+  //       type: LOAD_ALLUSER_REQUEST,
+  //       lastId_list,
+  //     });
+  //   }
 
-    dispatch({
-      type: LOAD_HASHTAG_REQUEST,
-      lastId_hash,
-    });
+  //   dispatch({
+  //     type: LOAD_HASHTAG_REQUEST,
+  //     lastId_hash,
+  //   });
 
-    setShowMore(true);
-  }, [me]);
+  //   setShowMore(true);
+  // }, [me]);
 
-  console.log(hashTag);
+  // console.log(hashTag);
   return (
     <div>
       <Global />
@@ -509,10 +509,10 @@ function AppLayout({ children }) {
             {children}
           </div>
         </Col>
-        <Col md={9}>
+        {/* <Col md={9}>
           {/* target _blank는 보안 위협이 있어서 rel과 같이 사용 
           어떤창에서 열었는지에 대한 정보를  noreferrer noopener로 보안 위협 방지*/}
-          <SearchInputWrapper>
+        {/* <SearchInputWrapper>
             <Input.Search
               enterButton
               value={searchInput}
@@ -564,7 +564,7 @@ function AppLayout({ children }) {
               show more...
             </span>
           </RecommendFollow>
-        </Col>
+        </Col> */}
       </Row>
     </div>
   );
