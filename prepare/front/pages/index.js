@@ -40,6 +40,14 @@ const Main = () => {
     }
   }, [accuseMessage]);
 
+  useEffect(() => {
+    if (me) {
+      dispatch({
+        type: LOAD_RELATIVE_POSTS_REQUEST,
+      });
+    }
+  }, [me]);
+
   console.log('me/', me);
   // scroll
   useEffect(() => {
@@ -70,7 +78,7 @@ const Main = () => {
         {me && <PostForm />}
         {/* 작성글이 있으면 보여줌 */}
         {mainPosts.map((post) => (
-          <PostCard key={post.id} post={post} />
+          <PostCard post={post} />
         ))}
       </AppLayout>
     </>
@@ -87,9 +95,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
     context.store.dispatch({
       type: LOAD_MY_INFO_REQUEST,
     });
-    context.store.dispatch({
-      type: LOAD_RELATIVE_POSTS_REQUEST,
-    });
+    // context.store.dispatch({
+    //   type: LOAD_RELATIVE_POSTS_REQUEST,
+    // });
     context.store.dispatch(END);
     await context.store.sagaTask.toPromise();
   }

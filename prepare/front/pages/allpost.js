@@ -76,8 +76,8 @@ const AllPosts = () => {
         {/* 로그인해야 게시물 작성 가능 */}
         {me && <PostForm />}
         {/* 작성글이 있으면 보여줌 */}
-        {mainPosts.map((post) => (
-          <PostCard key={post.id} post={post} />
+        {mainPosts.map((post, i) => (
+          <PostCard post={post} />
         ))}
       </AppLayout>
     </>
@@ -91,7 +91,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
     if (context.req && cookie) {
       axios.defaults.headers.Cookie = cookie;
     }
-
     context.store.dispatch({
       type: LOAD_MY_INFO_REQUEST,
     });

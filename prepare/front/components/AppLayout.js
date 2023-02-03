@@ -523,7 +523,6 @@ function AppLayout({ children }) {
             <span>Trends for you</span>
             {hashTag.map((hash, i) => (
               <HashList
-                key={hash.id}
                 onClick={() => {
                   onHashClick(hash);
                 }}

@@ -49,6 +49,7 @@ function PostCard({ post }) {
   const { removePostLoading, accuseMessageReset, accuseMessage } = useSelector(
     (state) => state.post
   );
+  console.log(me);
   const [src, setSrc] = useState('');
   const [src_1, setSrc_1] = useState('');
   useEffect(() => {
