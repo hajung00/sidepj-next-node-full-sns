@@ -28,30 +28,24 @@ db.sequelize
 passportConfig();
 
 if (process.env.NODE_ENV === 'production') {
-  app.set('trust proxy', 1);
   app.use(morgan('combined'));
   app.use(hpp());
+  app.use(helmet());
   app.use(
-    helmet({
-      crossOriginResourcePolicy: false,
+    cors({
+      origin: 'http://hajungsns.com',
+      credentials: true, //cookie 전달 허용
     })
   );
 } else {
   app.use(morgan('dev'));
-  // app.use(
-  //   cors({
-  //     origin: true,
-  //     credentials: true, //cookie 전달 허용
-  //   })
-  // );
+  app.use(
+    cors({
+      origin: true,
+      credentials: true, //cookie 전달 허용
+    })
+  );
 }
-
-app.use(
-  cors({
-    origin: 'http://hajungsns.com',
-    credentials: true, //cookie 전달 허용
-  })
-);
 
 // front에서 받아온 데이터를 req.body에 넣어줌
 app.use('/', express.static(path.join(__dirname, 'uploads')));
@@ -67,7 +61,6 @@ app.use(
     saveUninitialized: false,
     resave: false,
     secret: process.env.COOKIE_SECRET,
-    proxy: true,
     cookie: {
       httpOnly: true,
       secure: true,
