@@ -77,9 +77,7 @@ const Main = () => {
         {/* 로그인해야 게시물 작성 가능 */}
         {me && <PostForm />}
         {/* 작성글이 있으면 보여줌 */}
-        {mainPosts.map((post) => (
-          <PostCard post={post} />
-        ))}
+        {me && mainPosts.map((post) => <PostCard post={post} />)}
       </AppLayout>
     </>
   );

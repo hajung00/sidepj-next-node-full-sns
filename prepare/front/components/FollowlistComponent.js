@@ -51,21 +51,21 @@ function FollowlistComponent({ follow }) {
     });
   };
 
-  useEffect(() => {
-    dispatch({
-      type: LOAD_MY_INFO_REQUEST,
-    });
-  }, []);
+  // useEffect(() => {
+  //   dispatch({
+  //     type: LOAD_MY_INFO_REQUEST,
+  //   });
+  // }, []);
 
-  useEffect(() => {
-    if (me) {
-      const lastId_list = recommendFollowList.length;
-      dispatch({
-        type: LOAD_ALLUSER_REQUEST,
-        lastId_list,
-      });
-    }
-  }, [me.Followers, me.Followings]);
+  // useEffect(() => {
+  //   if (me) {
+  //     const lastId_list = recommendFollowList.length;
+  //     dispatch({
+  //       type: LOAD_ALLUSER_REQUEST,
+  //       lastId_list,
+  //     });
+  //   }
+  // }, []);
 
   return (
     <CradWrapper>

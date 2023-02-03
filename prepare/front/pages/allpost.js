@@ -42,12 +42,6 @@ const AllPosts = () => {
     }
   }, [accuseMessage]);
 
-  // useEffect(() => {
-  //   dispatch({
-  //     type: LOAD_POSTS_REQUEST,
-  //   });
-  // }, [mainPosts, hasMorePosts, loadPostLoading]);
-
   // scroll
   useEffect(() => {
     const onScroll = () => {
@@ -76,9 +70,7 @@ const AllPosts = () => {
         {/* 로그인해야 게시물 작성 가능 */}
         {me && <PostForm />}
         {/* 작성글이 있으면 보여줌 */}
-        {mainPosts.map((post, i) => (
-          <PostCard post={post} />
-        ))}
+        {me && mainPosts.map((post, i) => <PostCard post={post} />)}
       </AppLayout>
     </>
   );

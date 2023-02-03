@@ -339,7 +339,6 @@ function AppLayout({ children }) {
     dispatch({
       type: LOG_OUT_REQUEST,
     });
-
     Router.push('/');
   }, []);
 
@@ -553,9 +552,10 @@ function AppLayout({ children }) {
             >
               Who to follow
             </span>
-            {recommendFollowList.map((follow) => (
-              <FollowlistComponent follow={follow} key={follow.email} />
-            ))}
+            {recommendFollowList &&
+              recommendFollowList.map((follow) => (
+                <FollowlistComponent follow={follow} key={follow.email} />
+              ))}
             <span
               onClick={() => {
                 showMorehandler('list');
