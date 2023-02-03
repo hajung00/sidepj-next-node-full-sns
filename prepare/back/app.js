@@ -69,8 +69,8 @@ app.use(
     secret: process.env.COOKIE_SECRET,
     proxy: true,
     cookie: {
-      httpOnlyL: true,
-      secure: false,
+      httpOnly: true,
+      secure: true,
       domain: process.env.NODE_ENV === 'production' && '.hajungsns.com',
     },
   })
