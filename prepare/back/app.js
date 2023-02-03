@@ -31,21 +31,16 @@ if (process.env.NODE_ENV === 'production') {
   app.use(morgan('combined'));
   app.use(hpp());
   app.use(helmet());
-  app.use(
-    cors({
-      origin: 'http://hajungsns.com',
-      credentials: true, //cookie 전달 허용
-    })
-  );
 } else {
   app.use(morgan('dev'));
-  app.use(
-    cors({
-      origin: true,
-      credentials: true, //cookie 전달 허용
-    })
-  );
 }
+
+app.use(
+  cors({
+    origin: ['http://localhost:3000', 'http://hajungsns.com'],
+    credentials: true, //cookie 전달 허용
+  })
+);
 
 // front에서 받아온 데이터를 req.body에 넣어줌
 app.use('/', express.static(path.join(__dirname, 'uploads')));
@@ -63,7 +58,7 @@ app.use(
     secret: process.env.COOKIE_SECRET,
     cookie: {
       httpOnly: true,
-      secure: true,
+      secure: false,
       domain: process.env.NODE_ENV === 'production' && '.hajungsns.com',
     },
   })
