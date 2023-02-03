@@ -110,7 +110,7 @@ router.get('/:postId', async (req, res, next) => {
           include: [
             {
               model: User,
-              attributes: ['id', 'nickname'],
+              attributes: ['id', 'nickname', 'image'],
             },
             {
               model: Image,
@@ -119,12 +119,12 @@ router.get('/:postId', async (req, res, next) => {
         },
         {
           model: User,
-          attributes: ['id', 'nickname'],
+          attributes: ['id', 'nickname', 'image'],
         },
         {
           model: User,
           as: 'Likers',
-          attributes: ['id', 'nickname'],
+          attributes: ['id', 'nickname', 'image'],
         },
         {
           model: Image,
@@ -134,7 +134,7 @@ router.get('/:postId', async (req, res, next) => {
           include: [
             {
               model: User,
-              attributes: ['id', 'nickname'],
+              attributes: ['id', 'nickname', 'image'],
             },
           ],
         },

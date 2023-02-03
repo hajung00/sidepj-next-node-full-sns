@@ -26,7 +26,7 @@ const Hashtag = () => {
   useEffect(() => {
     const onScroll = () => {
       if (
-        window.scrollY + document.documentElement.clientHeight >
+        window.pageYOffset + document.documentElement.clientHeight >
         document.documentElement.scrollHeight - 300
       ) {
         if (hasMorePosts && !loadPostsLoading) {
@@ -70,11 +70,14 @@ const Hashtag = () => {
             property='og:description'
             content={`${userInfo.nickname}님의 게시글`}
           />
-          <meta
+          {/* <meta
             property='og:image'
             content='https://nodebird.com/favicon.ico'
+          /> */}
+          <meta
+            property='og:url'
+            content={`https://hajungsns.com/user/${id}`}
           />
-          <meta property='og:url' content={`https://nodebird.com/user/${id}`} />
         </Head>
       )}
       {userInfo ? (

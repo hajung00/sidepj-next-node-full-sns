@@ -4,7 +4,7 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { FOLLOW_REQUEST } from '../reducers/user';
-import { LOAD_ALLUSER_REQUEST } from '../reducers/user';
+import { LOAD_ALLUSER_REQUEST, LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import { backUrl } from '../config/config';
 const CradWrapper = styled(Card)`
   position: relative;
@@ -43,11 +43,19 @@ function FollowlistComponent({ follow }) {
   };
 
   useEffect(() => {
-    const lastId_list = recommendFollowList.length;
     dispatch({
-      type: LOAD_ALLUSER_REQUEST,
-      lastId_list,
+      type: LOAD_MY_INFO_REQUEST,
     });
+  }, []);
+
+  useEffect(() => {
+    if (me) {
+      const lastId_list = recommendFollowList.length;
+      dispatch({
+        type: LOAD_ALLUSER_REQUEST,
+        lastId_list,
+      });
+    }
   }, [me.Followers, me.Followings]);
 
   return (

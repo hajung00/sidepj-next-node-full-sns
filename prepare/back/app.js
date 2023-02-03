@@ -61,11 +61,11 @@ app.use(
     saveUninitialized: false,
     resave: false,
     secret: process.env.COOKIE_SECRET,
-    cookie: {
-      httpOnlyL: true,
-      secure: false,
-      domain: process.env.NODE_ENV === 'production' && '.hajungsns.com',
-    },
+    // cookie: {
+    //   httpOnlyL: true,
+    //   secure: false,
+    //   domain: process.env.NODE_ENV === 'production' && '.hajungsns.com',
+    // },
   })
 );
 app.use(passport.initialize());
@@ -80,6 +80,6 @@ app.use('/posts', postsRouter);
 app.use('/user', userRouter);
 app.use('/hashtag', hashtagRouter);
 
-app.listen(80, () => {
+app.listen(3065, () => {
   console.log('서버 실행중!');
 });

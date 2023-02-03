@@ -40,27 +40,27 @@ const Main = () => {
     }
   }, [accuseMessage]);
 
-  useEffect(() => {
-    if (me) {
-      dispatch({
-        type: LOAD_MY_INFO_REQUEST,
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (me) {
+  //     dispatch({
+  //       type: LOAD_MY_INFO_REQUEST,
+  //     });
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    if (me) {
-      dispatch({
-        type: LOAD_RELATIVE_POSTS_REQUEST,
-      });
-    }
-  }, [hasMorePosts, loadPostLoading, mainPosts]);
+  // useEffect(() => {
+  //   if (me) {
+  //     dispatch({
+  //       type: LOAD_RELATIVE_POSTS_REQUEST,
+  //     });
+  //   }
+  // }, [hasMorePosts, loadPostLoading, mainPosts]);
 
   // scroll
   useEffect(() => {
     const onScroll = () => {
       if (
-        window.scrollY + document.documentElement.clientHeight >
+        window.pageYOffset + document.documentElement.clientHeight >
         document.documentElement.scrollHeight - 300
       ) {
         if (hasMorePosts && !loadPostLoading) {
@@ -92,25 +92,21 @@ const Main = () => {
   );
 };
 
-// export const getServerSideProps = wrapper.getServerSideProps(
-//   async (context) => {
-//     const cookie = context.req ? context.req.headers.cookie : '';
-//     axios.defaults.headers.Cookie = '';
-//     if (context.req && cookie) {
-//       axios.defaults.headers.Cookie = cookie;
-//     }
-//     context.store.dispatch({
-//       type: LOAD_MY_INFO_REQUEST,
-//     });
-//     context.store.dispatch({
-//       type: LOAD_RELATIVE_POSTS_REQUEST,
-//     });
-
-//     // context.store.dispatch({
-//     //   type: LOAD_POSTS_REQUEST,
-//     // });
-//     context.store.dispatch(END);
-//     await context.store.sagaTask.toPromise();
-//   }
-// );
+export const getServerSideProps = wrapper.getServerSideProps(
+  async (context) => {
+    const cookie = context.req ? context.req.headers.cookie : '';
+    axios.defaults.headers.Cookie = '';
+    if (context.req && cookie) {
+      axios.defaults.headers.Cookie = cookie;
+    }
+    context.store.dispatch({
+      type: LOAD_MY_INFO_REQUEST,
+    });
+    context.store.dispatch({
+      type: LOAD_RELATIVE_POSTS_REQUEST,
+    });
+    context.store.dispatch(END);
+    await context.store.sagaTask.toPromise();
+  }
+);
 export default Main;

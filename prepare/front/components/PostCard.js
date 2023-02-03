@@ -49,7 +49,14 @@ function PostCard({ post }) {
   const { removePostLoading, accuseMessageReset, accuseMessage } = useSelector(
     (state) => state.post
   );
-
+  const [src, setSrc] = useState('');
+  useEffect(() => {
+    if (me) {
+      setSrc(`${backUrl}/${post.User.image}`);
+    } else {
+      setSrc('');
+    }
+  }, []);
   // 좋아요 부분 눌렀을 때 토글
   const onLike = useCallback(() => {
     if (!id) {
@@ -223,15 +230,7 @@ function PostCard({ post }) {
               avatar={
                 <Link href={`/user/${post.User.id}`}>
                   <a>
-                    <Avatar
-                      src={
-                        post.User.image !== null
-                          ? `${backUrl}/${post.User.image}`
-                          : ''
-                      }
-                    >
-                      {post.User.nickname[0]}
-                    </Avatar>
+                    <Avatar src={src}>{post.User.nickname[0]}</Avatar>
                   </a>
                 </Link>
               }
