@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Avatar, Card, Button } from 'antd';
 import Link from 'next/link';
 import styled from 'styled-components';
@@ -35,6 +35,15 @@ const CradWrapper = styled(Card)`
 function FollowlistComponent({ follow }) {
   const dispatch = useDispatch();
   const { me, recommendFollowList } = useSelector((state) => state.user);
+  const [src, setSrc] = useState('');
+  useEffect(() => {
+    if (me) {
+      setSrc(`${backUrl}/${follow.image}`);
+    } else {
+      setSrc('');
+    }
+  }, []);
+
   const requestFollow = () => {
     dispatch({
       type: FOLLOW_REQUEST,
@@ -64,9 +73,8 @@ function FollowlistComponent({ follow }) {
         avatar={
           <Link href={`/user/${follow.id}`}>
             <a>
-              <Avatar src={`${backUrl}/${follow.image}`}>
-                {follow.nickname[0]}
-              </Avatar>
+              {/* <Avatar src={src}>{follow.nickname[0]}</Avatar> */}
+              <Avatar>{follow.nickname[0]}</Avatar>
             </a>
           </Link>
         }

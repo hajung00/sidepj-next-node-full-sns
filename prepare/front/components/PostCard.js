@@ -50,13 +50,24 @@ function PostCard({ post }) {
     (state) => state.post
   );
   const [src, setSrc] = useState('');
+  const [src_1, setSrc_1] = useState('');
   useEffect(() => {
-    if (me) {
+    if (post.User.image !== null) {
       setSrc(`${backUrl}/${post.User.image}`);
     } else {
       setSrc('');
     }
   }, []);
+
+  useEffect(() => {
+    if (post.RetweetId && post.Retweet) {
+      if (post.Retweet.User.image !== null) {
+        setSrc_1(`${backUrl}/${post.Retweet.User.image}`);
+      } else {
+        setSrc_1('');
+      }
+    }
+  });
   // 좋아요 부분 눌렀을 때 토글
   const onLike = useCallback(() => {
     if (!id) {
@@ -204,15 +215,8 @@ function PostCard({ post }) {
               avatar={
                 <Link href={`/user/${post.Retweet.User.id}`}>
                   <a>
-                    <Avatar
-                      src={
-                        post.Retweet.User.image !== null
-                          ? `${backUrl}/${post.Retweet.User.image}`
-                          : ''
-                      }
-                    >
-                      {post.Retweet.User.nickname[0]}
-                    </Avatar>
+                    <Avatar>{post.Retweet.User.nickname[0]}</Avatar>
+                    {/* <Avatar src={src_1}>{post.Retweet.User.nickname[0]}</Avatar> */}
                   </a>
                 </Link>
               }
@@ -230,7 +234,8 @@ function PostCard({ post }) {
               avatar={
                 <Link href={`/user/${post.User.id}`}>
                   <a>
-                    <Avatar src={src}>{post.User.nickname[0]}</Avatar>
+                    {/* <Avatar src={src}>{post.User.nickname[0]}</Avatar> */}
+                    <Avatar>{post.User.nickname[0]}</Avatar>
                   </a>
                 </Link>
               }
@@ -259,15 +264,8 @@ function PostCard({ post }) {
                   avatar={
                     <Link href={`/user/${item.User.id}`}>
                       <a>
-                        <Avatar
-                          src={
-                            item.User.image != null
-                              ? `${backUrl}/${item.User.image}`
-                              : ''
-                          }
-                        >
-                          {item.User.nickname[0]}
-                        </Avatar>
+                        {/* <Avatar src={src}>{item.User.nickname[0]}</Avatar> */}
+                        <Avatar>{item.User.nickname[0]}</Avatar>
                       </a>
                     </Link>
                   }
