@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { LOAD_RELATIVE_POSTS_REQUEST } from '../reducers/post';
 import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import wrapper from '../store/configureStore';
-
+import LoginForm from '../components/LoginForm';
 const Main = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
@@ -40,27 +40,12 @@ const Main = () => {
     }
   }, [accuseMessage]);
 
-  // useEffect(() => {
-  //   if (me) {
-  //     dispatch({
-  //       type: LOAD_MY_INFO_REQUEST,
-  //     });
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   if (me) {
-  //     dispatch({
-  //       type: LOAD_RELATIVE_POSTS_REQUEST,
-  //     });
-  //   }
-  // }, [hasMorePosts, loadPostLoading, mainPosts]);
-
+  console.log('me/', me);
   // scroll
   useEffect(() => {
     const onScroll = () => {
       if (
-        window.pageYOffset + document.documentElement.clientHeight >
+        window.scrollY + document.documentElement.clientHeight >
         document.documentElement.scrollHeight - 300
       ) {
         if (hasMorePosts && !loadPostLoading) {

@@ -1,28 +1,22 @@
 {
-    "parser":"babel-eslint",
+    "parser": "@babel/eslint-parser",
 
     "parserOptions": {
         "ecmaVersion": 2020,
         "sourceType": "module",
         "ecmaFeatures": {
-            "jsx":true
-        }
+            "jsx": true
+    }
     },
 
     "env": {
         "browser": true,
         "node": true,
         "es6": true
-    },
+      },
 
-    "extends":[
-        "airbnb"
-    ],
-    "plugins": [
-        "import",
-        "react-hooks",
-        "jsx-a11y"
-    ],
+    "extends": ["airbnb", "react-app"],
+    "plugins": ["import", "react-hooks", "jsx-a11y"], 
     
     "rules": {
         "jsx-a11y/label-has-associated-control": "off",

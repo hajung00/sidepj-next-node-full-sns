@@ -18,7 +18,7 @@ const loggerMiddleware =
   };
 
 // store는 state랑 reducer 포함
-function configureStore() {
+const configureStore = () => {
   const sagaMiddleware = createSagaMiddleware();
   const middlewares = [sagaMiddleware, loggerMiddleware];
   // enhancer로 미들웨어 설정
@@ -29,7 +29,7 @@ function configureStore() {
   const store = createStore(reducer, enhancer);
   store.sagaTask = sagaMiddleware.run(rootSaga);
   return store;
-}
+};
 
 const wrapper = createWrapper(configureStore, {
   debug: process.env.NODE_ENV === 'development',
