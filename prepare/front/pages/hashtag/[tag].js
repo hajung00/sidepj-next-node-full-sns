@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Card } from 'antd';
 import { END } from 'redux-saga';
 import { useRouter } from 'next/router';
-
+import Head from 'next/head';
 import axios from 'axios';
 import {
   LOAD_HASHTAG_POSTS_REQUEST,

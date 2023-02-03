@@ -47,7 +47,7 @@ function LoginForm() {
   const dispatch = useDispatch();
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
-
+  console.log(me);
   useEffect(() => {
     if (logInError) {
       alert(logInError);
@@ -57,8 +57,6 @@ function LoginForm() {
   const onSubmitForm = useCallback(() => {
     console.log(email, password);
     dispatch(loginRequestAction({ email, password })); // redux useDispatch로 로그인 액션 실행
-    if (logInDone && me);
-    Router.push('/main');
   }, [email, password]);
 
   return (
