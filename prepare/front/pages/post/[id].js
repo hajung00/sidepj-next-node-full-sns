@@ -8,12 +8,14 @@ import wrapper from '../../store/configureStore';
 import PostCard from '../../components/PostCard';
 import { useSelector } from 'react-redux';
 import Head from 'next/head';
+import { useEffect } from 'react';
 
 const Post = () => {
   const router = useRouter();
   const { id } = router.query;
   const { singlePost } = useSelector((state) => state.post);
   console.log(singlePost);
+
   return (
     <AppLayout>
       <Head>
