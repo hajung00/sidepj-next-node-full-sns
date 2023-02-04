@@ -16,44 +16,44 @@ import AppLayout from '../../components/AppLayout';
 import Head from 'next/head';
 
 const Hashtag = () => {
-  const dispatch = useDispatch();
-  const router = useRouter();
-  const { tag } = router.query;
-  const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector(
-    (state) => state.post
-  );
-  const { userInfo } = useSelector((state) => state.user);
+  // const dispatch = useDispatch();
+  // const router = useRouter();
+  // const { tag } = router.query;
+  // const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector(
+  //   (state) => state.post
+  // );
+  // const { userInfo } = useSelector((state) => state.user);
 
-  useEffect(() => {
-    const onScroll = () => {
-      if (
-        window.pageYOffset + document.documentElement.clientHeight >
-        document.documentElement.scrollHeight - 300
-      ) {
-        if (hasMorePosts && !loadPostsLoading) {
-          dispatch({
-            type: LOAD_HASHTAG_POSTS_REQUEST,
-            lastId: mainPosts[mainPosts.length - 1]?.id,
-            data: tag,
-          });
-        }
-      }
-    };
-    window.addEventListener('scroll', onScroll);
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-    };
-  }, [mainPosts.length, hasMorePosts, tag, loadPostsLoading]);
+  // useEffect(() => {
+  //   const onScroll = () => {
+  //     if (
+  //       window.pageYOffset + document.documentElement.clientHeight >
+  //       document.documentElement.scrollHeight - 300
+  //     ) {
+  //       if (hasMorePosts && !loadPostsLoading) {
+  //         dispatch({
+  //           type: LOAD_HASHTAG_POSTS_REQUEST,
+  //           lastId: mainPosts[mainPosts.length - 1]?.id,
+  //           data: tag,
+  //         });
+  //       }
+  //     }
+  //   };
+  //   window.addEventListener('scroll', onScroll);
+  //   return () => {
+  //     window.removeEventListener('scroll', onScroll);
+  //   };
+  // }, [mainPosts.length, hasMorePosts, tag, loadPostsLoading]);
 
-  useEffect(() => {
-    dispatch({
-      type: LOAD_HASHTAG_REQUEST,
-    });
-  }, [tag]);
+  // useEffect(() => {
+  //   dispatch({
+  //     type: LOAD_HASHTAG_REQUEST,
+  //   });
+  // }, [tag]);
 
   return (
     <AppLayout>
-      {userInfo && (
+      {/* {userInfo && (
         <Head>
           <title>
             {userInfo.nickname}
@@ -105,31 +105,31 @@ const Hashtag = () => {
       ) : null}
       {mainPosts.map((c) => (
         <PostCard post={c} />
-      ))}
+      ))} */}
     </AppLayout>
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(
-  async (context) => {
-    const cookie = context.req ? context.req.headers.cookie : '';
-    axios.defaults.headers.Cookie = '';
-    if (context.req && cookie) {
-      axios.defaults.headers.Cookie = cookie;
-    }
-    context.store.dispatch({
-      type: LOAD_MY_INFO_REQUEST,
-    });
+// export const getServerSideProps = wrapper.getServerSideProps(
+//   async (context) => {
+//     const cookie = context.req ? context.req.headers.cookie : '';
+//     axios.defaults.headers.Cookie = '';
+//     if (context.req && cookie) {
+//       axios.defaults.headers.Cookie = cookie;
+//     }
+//     context.store.dispatch({
+//       type: LOAD_MY_INFO_REQUEST,
+//     });
 
-    context.store.dispatch({
-      type: LOAD_HASHTAG_POSTS_REQUEST,
-      data: context.params.tag,
-      lastId: 0,
-    });
+//     context.store.dispatch({
+//       type: LOAD_HASHTAG_POSTS_REQUEST,
+//       data: context.params.tag,
+//       lastId: 0,
+//     });
 
-    context.store.dispatch(END);
-    await context.store.sagaTask.toPromise();
-  }
-);
+//     context.store.dispatch(END);
+//     await context.store.sagaTask.toPromise();
+//   }
+// );
 
 export default Hashtag;
