@@ -66,7 +66,10 @@ const User = () => {
             property='og:image'
             content='https://nodebird.com/favicon.ico'
           /> */}
-          <meta property='og:url' content={`https://nodebird.com/user/${id}`} />
+          <meta
+            property='og:url'
+            content={`https://hajungsns.com/user/${id}`}
+          />
         </Head>
       )}
       {userInfo ? (

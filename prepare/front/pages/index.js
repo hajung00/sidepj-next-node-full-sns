@@ -5,7 +5,7 @@ import wrapper from '../store/configureStore';
 import axios from 'axios';
 import { END } from 'redux-saga';
 import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Router from 'next/router';
 
 const LoginWrapper = styled.div`
@@ -32,6 +32,7 @@ const LoginSubWrapper = styled.div`
 
 const Login = () => {
   const { logInDone, me } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (me) {
@@ -68,7 +69,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
     context.store.dispatch({
       type: LOAD_MY_INFO_REQUEST,
     });
-
     context.store.dispatch(END);
     await context.store.sagaTask.toPromise();
   }
