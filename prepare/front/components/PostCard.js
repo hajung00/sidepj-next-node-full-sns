@@ -22,6 +22,7 @@ import {
   REMOVE_COMMENT_REQUEST,
   ACCUSE_POST_REQUEST,
   ACCUSE_MESSAGE_REQUEST,
+  LOAD_RELATIVE_POSTS_REQUEST,
 } from '../reducers/post';
 import FollowButton from './FollowButton';
 import EditContentModal from '../components/EditContentModal';
@@ -97,15 +98,19 @@ function PostCard({ post }) {
 
   // 삭제 버튼 누를때 post삭제
   const dispatch = useDispatch();
-  const onRemovePost = useCallback(() => {
-    if (!id) {
-      return alert('로그인이 필요합니다.');
-    }
-    return dispatch({
-      type: REMOVE_POST_REQUEST,
-      data: post.id,
-    });
-  }, [id]);
+  const onRemovePost = useCallback(
+    (postid) => {
+      if (!id) {
+        return alert('로그인이 필요합니다.');
+      }
+      console.log('게시글 삭제', id);
+      return dispatch({
+        type: REMOVE_POST_REQUEST,
+        data: postid,
+      });
+    },
+    [id]
+  );
 
   const onRetweet = useCallback(() => {
     if (!id) {
@@ -180,7 +185,9 @@ function PostCard({ post }) {
                   <>
                     <EditContentModal post={post} />
                     <SetButton
-                      onClick={onRemovePost}
+                      onClick={() => {
+                        onRemovePost(post.id);
+                      }}
                       loading={removePostLoading}
                     >
                       삭제

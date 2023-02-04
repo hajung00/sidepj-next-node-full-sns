@@ -377,7 +377,7 @@ function AppLayout({ children }) {
       {/* gutter: column사이의 간격 */}
       <Row gutter={50}>
         <Col md={4}>
-          {me ? <UserProfile main={true} /> : <Link href='/'>로그인 필요</Link>}
+          {me ? <UserProfile main={true} /> : <div></div>}
           <Menu
             mode='vertical'
             style={{
