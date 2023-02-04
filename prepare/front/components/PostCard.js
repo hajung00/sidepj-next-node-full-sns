@@ -124,13 +124,13 @@ function PostCard({ post }) {
 
   //댓글 삭제
   const removeComment = useCallback(
-    (i) => {
+    (itemId) => {
       if (!id) {
         return alert('해당 댓글을 삭제할 수 없습니다.');
       }
       return dispatch({
         type: REMOVE_COMMENT_REQUEST,
-        data: { postId: post.id, userId: id },
+        data: { commentId: itemId, userId: id },
       });
     },
     [id]
