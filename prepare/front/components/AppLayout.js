@@ -389,7 +389,11 @@ function AppLayout({ children }) {
               <MenuItem_wrapper>
                 <>
                   <Link href='/main'>
-                    <a>{/* <img src='images/home.jpg' /> */}</a>
+                    <a>
+                      <img
+                        src={process.env.PUBLIC_URL + '../../images/home.jpg'}
+                      />
+                    </a>
                   </Link>
                   <Link href='/main'>
                     <a>홈</a>
@@ -402,11 +406,11 @@ function AppLayout({ children }) {
                 <>
                   <Link href='/profile'>
                     <a>
-                      {/* <img
+                      <img
                         src={
                           process.env.PUBLIC_URL + '../../images/profile.png'
                         }
-                      /> */}
+                      />
                     </a>
                   </Link>
                   <Link href='/profile'>
@@ -420,9 +424,9 @@ function AppLayout({ children }) {
                 <>
                   <Link href='/allpost'>
                     <a>
-                      {/* <img
+                      <img
                         src={process.env.PUBLIC_URL + '../../images/search.jpg'}
-                      /> */}
+                      />
                     </a>
                   </Link>
                   <Link href='/allpost'>
@@ -436,9 +440,9 @@ function AppLayout({ children }) {
                 <>
                   <Link href='#none'>
                     <a>
-                      {/* <img
+                      <img
                         src={process.env.PUBLIC_URL + '../../images/alarm.jpg'}
-                      /> */}
+                      />
                     </a>
                   </Link>
                   <Link href='#none'>
@@ -452,11 +456,11 @@ function AppLayout({ children }) {
                 <>
                   <Link href='#none'>
                     <a>
-                      {/* <img
+                      <img
                         src={
                           process.env.PUBLIC_URL + '../../images/message.jpg'
                         }
-                      /> */}
+                      />
                     </a>
                   </Link>
                   <Link href='#none'>
