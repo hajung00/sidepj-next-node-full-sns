@@ -8,7 +8,6 @@ export const initialState = {
   singlePost: null,
   imagePaths: [],
   hashTag: [],
-  hashTagPosts: [],
   accuseMessage: '',
   accuseMessageReset: false,
   likePostLoading: false,
@@ -290,13 +289,6 @@ const reducer = (state = initialState, action) => {
       case REMOVE_IMAGE:
         draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
         break;
-
-      // case LOAD_HASHTAG_POSTS_SUCCESS:
-      //   draft.loadPostsLoading = false;
-      //   draft.loadPostsDone = true;
-      //   draft.hashTagPosts = action.data;
-      //   draft.hasMorePosts = action.data.length === 10;
-      //   break;
 
       case LOAD_USER_POSTS_REQUEST:
       case LOAD_HASHTAG_POSTS_REQUEST:

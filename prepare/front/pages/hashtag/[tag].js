@@ -22,7 +22,7 @@ const Hashtag = () => {
   const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector(
     (state) => state.post
   );
-  const { userInfo, me } = useSelector((state) => state.user);
+  const { userInfo } = useSelector((state) => state.user);
 
   useEffect(() => {
     const onScroll = () => {
@@ -46,73 +46,60 @@ const Hashtag = () => {
   }, [mainPosts.length, hasMorePosts, tag, loadPostsLoading]);
 
   useEffect(() => {
-    // console.log('tag', tag);
-    // dispatch({
-    //   type: LOAD_HASHTAG_POSTS_REQUEST,
-    //   data: tag,
-    //   lastId: 0,
-    // });
     dispatch({
       type: LOAD_HASHTAG_REQUEST,
     });
   }, [tag]);
 
-  // useEffect(() => {
-  //   dispatch({
-  //     type: LOAD_MY_INFO_REQUEST,
-  //   });
-  //   console.log('LOAD_HASHTAG_POSTS_REQUEST');
-  //   dispatch({
-  //     type: LOAD_HASHTAG_POSTS_REQUEST,
-  //     data: tag,
-  //     lastId: 0,
-  //   });
-  //   dispatch({
-  //     type: LOAD_HASHTAG_REQUEST,
-  //   });
-  // }, []);
-
   return (
     <AppLayout>
-      {tag && (
+      {userInfo && (
         <Head>
-          <title>해시태그 {tag}의 글</title>
-          <meta name='description' content={`${tag}의 게시글`} />
-          <meta property='og:title' content={`${tag}의 게시글`} />
-          <meta property='og:description' content={`${tag}의 게시글`} />
-          {/* <meta
-            property='og:image'
-            content='https://hajungsns.com/favicon.ico'
-          /> */}
+          <title>
+            {userInfo.nickname}
+            님의 글
+          </title>
+          <meta
+            name='description'
+            content={`${userInfo.nickname}님의 게시글`}
+          />
+          <meta
+            property='og:title'
+            content={`${userInfo.nickname}님의 게시글`}
+          />
+          <meta
+            property='og:description'
+            content={`${userInfo.nickname}님의 게시글`}
+          />
           <meta
             property='og:url'
-            content={`https://hajungsns.com/hashtag/${tag}`}
+            content={`https://hajungsns.com/user/${id}`}
           />
         </Head>
       )}
-      {me ? (
+      {userInfo ? (
         <Card
           actions={[
             <div key='twit'>
               짹짹
               <br />
-              {me.Posts.length}
+              {userInfo.Posts}
             </div>,
             <div key='following'>
               팔로잉
               <br />
-              {me.Followings.length}
+              {userInfo.Followings}
             </div>,
             <div key='follower'>
               팔로워
               <br />
-              {me.Followers.length}
+              {userInfo.Followers}
             </div>,
           ]}
         >
           <Card.Meta
-            avatar={<Avatar>{me.nickname[0]}</Avatar>}
-            title={me.nickname}
+            avatar={<Avatar>{userInfo.nickname[0]}</Avatar>}
+            title={userInfo.nickname}
           />
         </Card>
       ) : null}
@@ -142,7 +129,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
     context.store.dispatch(END);
     await context.store.sagaTask.toPromise();
-    return { props: {} };
   }
 );
 
