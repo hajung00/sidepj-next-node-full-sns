@@ -19,7 +19,7 @@ const Hashtag = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { tag } = router.query;
-  const { hashTagPosts, hasMorePosts, loadPostsLoading } = useSelector(
+  const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector(
     (state) => state.post
   );
   const { userInfo, me } = useSelector((state) => state.user);
@@ -27,13 +27,13 @@ const Hashtag = () => {
   useEffect(() => {
     const onScroll = () => {
       if (
-        window.scrollY + document.documentElement.clientHeight >
+        window.pageYOffset + document.documentElement.clientHeight >
         document.documentElement.scrollHeight - 300
       ) {
         if (hasMorePosts && !loadPostsLoading) {
           dispatch({
             type: LOAD_HASHTAG_POSTS_REQUEST,
-            lastId: hashTagPosts[hashTagPosts.length - 1]?.id,
+            lastId: mainPosts[mainPosts.length - 1]?.id,
             data: tag,
           });
         }
@@ -43,34 +43,34 @@ const Hashtag = () => {
     return () => {
       window.removeEventListener('scroll', onScroll);
     };
-  }, [hashTagPosts.length, hasMorePosts, tag, loadPostsLoading]);
+  }, [mainPosts.length, hasMorePosts, tag, loadPostsLoading]);
 
   useEffect(() => {
-    console.log('tag', tag);
-    dispatch({
-      type: LOAD_HASHTAG_POSTS_REQUEST,
-      data: tag,
-      lastId: 0,
-    });
+    // console.log('tag', tag);
+    // dispatch({
+    //   type: LOAD_HASHTAG_POSTS_REQUEST,
+    //   data: tag,
+    //   lastId: 0,
+    // });
     dispatch({
       type: LOAD_HASHTAG_REQUEST,
     });
   }, [tag]);
 
-  useEffect(() => {
-    dispatch({
-      type: LOAD_MY_INFO_REQUEST,
-    });
-    console.log('LOAD_HASHTAG_POSTS_REQUEST');
-    dispatch({
-      type: LOAD_HASHTAG_POSTS_REQUEST,
-      data: tag,
-      lastId: 0,
-    });
-    dispatch({
-      type: LOAD_HASHTAG_REQUEST,
-    });
-  }, []);
+  // useEffect(() => {
+  //   dispatch({
+  //     type: LOAD_MY_INFO_REQUEST,
+  //   });
+  //   console.log('LOAD_HASHTAG_POSTS_REQUEST');
+  //   dispatch({
+  //     type: LOAD_HASHTAG_POSTS_REQUEST,
+  //     data: tag,
+  //     lastId: 0,
+  //   });
+  //   dispatch({
+  //     type: LOAD_HASHTAG_REQUEST,
+  //   });
+  // }, []);
 
   return (
     <AppLayout>
@@ -116,7 +116,7 @@ const Hashtag = () => {
           />
         </Card>
       ) : null}
-      {hashTagPosts.map((c) => (
+      {mainPosts.map((c) => (
         <PostCard post={c} />
       ))}
     </AppLayout>
