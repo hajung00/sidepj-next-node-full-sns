@@ -297,6 +297,10 @@ const RecommendFollow = styled.div`
     }
   }
 `;
+
+const env = process.env;
+env.PUBLIC_URL = env.PUBLIC_URL || '';
+
 function AppLayout({ children }) {
   // redux useSelector로 store에 저장된 데이터 가져오기
   const { me, logOutLoading, recommendFollowList } = useSelector(
@@ -390,9 +394,7 @@ function AppLayout({ children }) {
                 <>
                   <Link href='/main'>
                     <a>
-                      <img
-                        src={process.env.PUBLIC_URL + '../../images/home.jpg'}
-                      />
+                      <img src={process.env.PUBLIC_URL + '/images/home.jpg'} />
                     </a>
                   </Link>
                   <Link href='/main'>
@@ -407,9 +409,7 @@ function AppLayout({ children }) {
                   <Link href='/profile'>
                     <a>
                       <img
-                        src={
-                          process.env.PUBLIC_URL + '../../images/profile.png'
-                        }
+                        src={process.env.PUBLIC_URL + '/images/profile.png'}
                       />
                     </a>
                   </Link>
@@ -425,7 +425,7 @@ function AppLayout({ children }) {
                   <Link href='/allpost'>
                     <a>
                       <img
-                        src={process.env.PUBLIC_URL + '../../images/search.jpg'}
+                        src={process.env.PUBLIC_URL + '/images/search.jpg'}
                       />
                     </a>
                   </Link>
@@ -440,9 +440,7 @@ function AppLayout({ children }) {
                 <>
                   <Link href='#none'>
                     <a>
-                      <img
-                        src={process.env.PUBLIC_URL + '../../images/alarm.jpg'}
-                      />
+                      <img src={process.env.PUBLIC_URL + '/images/alarm.jpg'} />
                     </a>
                   </Link>
                   <Link href='#none'>
@@ -457,9 +455,7 @@ function AppLayout({ children }) {
                   <Link href='#none'>
                     <a>
                       <img
-                        src={
-                          process.env.PUBLIC_URL + '../../images/message.jpg'
-                        }
+                        src={process.env.PUBLIC_URL + '/images/message.jpg'}
                       />
                     </a>
                   </Link>

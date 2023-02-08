@@ -16,96 +16,109 @@ import AppLayout from '../../components/AppLayout';
 import Head from 'next/head';
 
 const Hashtag = () => {
-  // const dispatch = useDispatch();
-  // const router = useRouter();
-  // const { tag } = router.query;
-  // const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector(
-  //   (state) => state.post
-  // );
-  // const { userInfo } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const { tag } = router.query;
+  const { hashTagPosts, mainPosts, hasMorePosts, loadPostsLoading } =
+    useSelector((state) => state.post);
+  const { userInfo, me } = useSelector((state) => state.user);
 
-  // useEffect(() => {
-  //   const onScroll = () => {
-  //     if (
-  //       window.pageYOffset + document.documentElement.clientHeight >
-  //       document.documentElement.scrollHeight - 300
-  //     ) {
-  //       if (hasMorePosts && !loadPostsLoading) {
-  //         dispatch({
-  //           type: LOAD_HASHTAG_POSTS_REQUEST,
-  //           lastId: mainPosts[mainPosts.length - 1]?.id,
-  //           data: tag,
-  //         });
-  //       }
-  //     }
-  //   };
-  //   window.addEventListener('scroll', onScroll);
-  //   return () => {
-  //     window.removeEventListener('scroll', onScroll);
-  //   };
-  // }, [mainPosts.length, hasMorePosts, tag, loadPostsLoading]);
+  useEffect(() => {
+    const onScroll = () => {
+      if (
+        window.pageYOffset + document.documentElement.clientHeight >
+        document.documentElement.scrollHeight - 300
+      ) {
+        if (hasMorePosts && !loadPostsLoading) {
+          dispatch({
+            type: LOAD_HASHTAG_POSTS_REQUEST,
+            lastId: hashTagPosts[hashTagPosts.length - 1]?.id,
+            data: tag,
+          });
+        }
+      }
+    };
+    window.addEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, [hashTagPosts.length, hasMorePosts, tag, loadPostsLoading]);
 
-  // useEffect(() => {
-  //   dispatch({
-  //     type: LOAD_HASHTAG_REQUEST,
-  //   });
-  // }, [tag]);
+  useEffect(() => {
+    console.log('tag', tag);
+    dispatch({
+      type: LOAD_HASHTAG_POSTS_REQUEST,
+      data: tag,
+      lastId: 0,
+    });
+    dispatch({
+      type: LOAD_HASHTAG_REQUEST,
+    });
+  }, [tag]);
 
+  useEffect(() => {
+    dispatch({
+      type: LOAD_MY_INFO_REQUEST,
+    });
+    console.log('LOAD_HASHTAG_POSTS_REQUEST');
+    dispatch({
+      type: LOAD_HASHTAG_POSTS_REQUEST,
+      data: tag,
+      lastId: 0,
+    });
+    dispatch({
+      type: LOAD_HASHTAG_REQUEST,
+    });
+  }, []);
   return (
     <AppLayout>
-      {/* {userInfo && (
+      {me && (
         <Head>
           <title>
-            {userInfo.nickname}
+            {me.nickname}
             님의 글
           </title>
-          <meta
-            name='description'
-            content={`${userInfo.nickname}님의 게시글`}
-          />
-          <meta
-            property='og:title'
-            content={`${userInfo.nickname}님의 게시글`}
-          />
+          <meta name='description' content={`${me.nickname}님의 게시글`} />
+          <meta property='og:title' content={`${me.nickname}님의 게시글`} />
           <meta
             property='og:description'
-            content={`${userInfo.nickname}님의 게시글`}
+            content={`${me.nickname}님의 게시글`}
           />
           <meta
             property='og:url'
-            content={`https://hajungsns.com/user/${id}`}
+            content={`https://hajungsns.com/user/${me.id}`}
           />
         </Head>
       )}
-      {userInfo ? (
+      {me ? (
         <Card
           actions={[
             <div key='twit'>
               짹짹
               <br />
-              {userInfo.Posts}
+              {me.Posts.length}
             </div>,
             <div key='following'>
               팔로잉
               <br />
-              {userInfo.Followings}
+              {me.Followings.length}
             </div>,
             <div key='follower'>
               팔로워
               <br />
-              {userInfo.Followers}
+              {me.Followers.length}
             </div>,
           ]}
         >
           <Card.Meta
-            avatar={<Avatar>{userInfo.nickname[0]}</Avatar>}
-            title={userInfo.nickname}
+            avatar={<Avatar>{me.nickname[0]}</Avatar>}
+            title={me.nickname}
           />
         </Card>
       ) : null}
-      {mainPosts.map((c) => (
+      {hashTagPosts.map((c) => (
         <PostCard post={c} />
-      ))} */}
+      ))}
     </AppLayout>
   );
 };
