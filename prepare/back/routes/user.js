@@ -49,12 +49,12 @@ router.get('/', async (req, res, next) => {
           {
             model: User,
             as: 'Followers',
-            attributes: ['id', 'nickname'],
+            attributes: ['id', 'nickname', 'image'],
           },
           {
             model: User,
             as: 'Followings',
-            attributes: ['id', 'nickname'],
+            attributes: ['id', 'nickname', 'image'],
           },
         ],
       });

@@ -63,6 +63,7 @@ const AllPosts = () => {
       window.removeEventListener('scroll', onScroll);
     };
   }, [hasMorePosts, loadPostLoading, mainPosts]);
+  console.log(mainPosts);
 
   return (
     <>

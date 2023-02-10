@@ -50,16 +50,8 @@ function PostCard({ post }) {
   const { removePostLoading, accuseMessageReset, accuseMessage } = useSelector(
     (state) => state.post
   );
-  console.log(me);
-  const [src, setSrc] = useState('');
+  //console.log(me);
   const [src_1, setSrc_1] = useState('');
-  useEffect(() => {
-    if (post.User.image !== null) {
-      setSrc(`${backUrl}/${post.User.image}`);
-    } else {
-      setSrc('');
-    }
-  }, []);
 
   useEffect(() => {
     if (post.RetweetId && post.Retweet) {
@@ -223,8 +215,7 @@ function PostCard({ post }) {
               avatar={
                 <Link href={`/user/${post.Retweet.User.id}`}>
                   <a>
-                    <Avatar>{post.Retweet.User.nickname[0]}</Avatar>
-                    {/* <Avatar src={src_1}>{post.Retweet.User.nickname[0]}</Avatar> */}
+                    <Avatar src={src_1}>{post.Retweet.User.nickname[0]}</Avatar>
                   </a>
                 </Link>
               }
@@ -242,8 +233,15 @@ function PostCard({ post }) {
               avatar={
                 <Link href={`/user/${post.User.id}`}>
                   <a>
-                    {/* <Avatar src={src}>{post.User.nickname[0]}</Avatar> */}
-                    <Avatar>{post.User.nickname[0]}</Avatar>
+                    <Avatar
+                      src={
+                        post.User.image
+                          ? `${backUrl}/${post.User.image}`
+                          : 'null'
+                      }
+                    >
+                      {post.User.nickname[0]}
+                    </Avatar>
                   </a>
                 </Link>
               }
@@ -272,8 +270,7 @@ function PostCard({ post }) {
                   avatar={
                     <Link href={`/user/${item.User.id}`}>
                       <a>
-                        {/* <Avatar src={src}>{item.User.nickname[0]}</Avatar> */}
-                        <Avatar>{item.User.nickname[0]}</Avatar>
+                        <Avatar src={src}>{item.User.nickname[0]}</Avatar>
                       </a>
                     </Link>
                   }

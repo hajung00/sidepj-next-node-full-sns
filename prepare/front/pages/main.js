@@ -41,14 +41,17 @@ const Main = () => {
   }, [accuseMessage]);
 
   useEffect(() => {
-    if (me) {
-      dispatch({
-        type: LOAD_RELATIVE_POSTS_REQUEST,
-      });
-    }
-  }, [me]);
+    console.log('다시');
+    dispatch({
+      type: LOAD_MY_INFO_REQUEST,
+    });
+    dispatch({
+      type: LOAD_RELATIVE_POSTS_REQUEST,
+    });
+  }, [me.Followings.length]);
 
   console.log('me/', me);
+  console.log(mainPosts);
   // scroll
   useEffect(() => {
     const onScroll = () => {
@@ -93,9 +96,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
     context.store.dispatch({
       type: LOAD_MY_INFO_REQUEST,
     });
-    // context.store.dispatch({
-    //   type: LOAD_RELATIVE_POSTS_REQUEST,
-    // });
+    context.store.dispatch({
+      type: LOAD_RELATIVE_POSTS_REQUEST,
+    });
     context.store.dispatch(END);
     await context.store.sagaTask.toPromise();
   }

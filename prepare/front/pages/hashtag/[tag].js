@@ -8,6 +8,7 @@ import axios from 'axios';
 import {
   LOAD_HASHTAG_POSTS_REQUEST,
   LOAD_HASHTAG_REQUEST,
+  LOAD_POSTS_REQUEST,
 } from '../../reducers/post';
 import { LOAD_MY_INFO_REQUEST } from '../../reducers/user';
 import PostCard from '../../components/PostCard';
@@ -22,6 +23,27 @@ const Hashtag = () => {
   const { hashTagPosts, mainPosts, hasMorePosts, loadPostsLoading } =
     useSelector((state) => state.post);
   const { userInfo, me } = useSelector((state) => state.user);
+  console.log(mainPosts);
+
+  useEffect(() => {
+    if (hasMorePosts < mainPosts.length) {
+      if (hasMorePosts && !loadPostsLoading) {
+        const lastId = mainPosts[mainPosts.length - 1]?.id;
+        dispatch({
+          type: LOAD_POSTS_REQUEST,
+          lastId,
+        });
+      }
+    }
+  }, [hasMorePosts, loadPostsLoading, mainPosts]);
+
+  useEffect(() => {
+    dispatch({
+      type: LOAD_HASHTAG_POSTS_REQUEST,
+      lastId: 0,
+      data: tag,
+    });
+  }, [mainPosts]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -56,20 +78,6 @@ const Hashtag = () => {
     });
   }, [tag]);
 
-  useEffect(() => {
-    dispatch({
-      type: LOAD_MY_INFO_REQUEST,
-    });
-    console.log('LOAD_HASHTAG_POSTS_REQUEST');
-    dispatch({
-      type: LOAD_HASHTAG_POSTS_REQUEST,
-      data: tag,
-      lastId: 0,
-    });
-    dispatch({
-      type: LOAD_HASHTAG_REQUEST,
-    });
-  }, []);
   return (
     <AppLayout>
       {me && (
@@ -123,26 +131,28 @@ const Hashtag = () => {
   );
 };
 
-// export const getServerSideProps = wrapper.getServerSideProps(
-//   async (context) => {
-//     const cookie = context.req ? context.req.headers.cookie : '';
-//     axios.defaults.headers.Cookie = '';
-//     if (context.req && cookie) {
-//       axios.defaults.headers.Cookie = cookie;
-//     }
-//     context.store.dispatch({
-//       type: LOAD_MY_INFO_REQUEST,
-//     });
+export const getServerSideProps = wrapper.getServerSideProps(
+  async (context) => {
+    const cookie = context.req ? context.req.headers.cookie : '';
+    axios.defaults.headers.Cookie = '';
+    if (context.req && cookie) {
+      axios.defaults.headers.Cookie = cookie;
+    }
+    context.store.dispatch({
+      type: LOAD_MY_INFO_REQUEST,
+    });
 
-//     context.store.dispatch({
-//       type: LOAD_HASHTAG_POSTS_REQUEST,
-//       data: context.params.tag,
-//       lastId: 0,
-//     });
-
-//     context.store.dispatch(END);
-//     await context.store.sagaTask.toPromise();
-//   }
-// );
+    context.store.dispatch({
+      type: LOAD_HASHTAG_POSTS_REQUEST,
+      data: context.params.tag,
+      lastId: 0,
+    });
+    context.store.dispatch({
+      type: LOAD_POSTS_REQUEST,
+    });
+    context.store.dispatch(END);
+    await context.store.sagaTask.toPromise();
+  }
+);
 
 export default Hashtag;

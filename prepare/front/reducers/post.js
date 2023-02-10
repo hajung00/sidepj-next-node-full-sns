@@ -383,7 +383,9 @@ const reducer = (state = initialState, action) => {
 
       case ADD_COMMENT_SUCCESS: {
         const post = draft.mainPosts.find((y) => y.id === action.data.PostId);
+        console.log('전', post.Comments.length, action.data);
         post.Comments.unshift(action.data);
+        console.log('후', post.Comments.length, action.data);
         draft.addCommentLoading = false;
         draft.addCommentDone = true;
         break;

@@ -51,30 +51,13 @@ function FollowlistComponent({ follow }) {
     });
   };
 
-  // useEffect(() => {
-  //   dispatch({
-  //     type: LOAD_MY_INFO_REQUEST,
-  //   });
-  // }, []);
-
-  // useEffect(() => {
-  //   if (me) {
-  //     const lastId_list = recommendFollowList.length;
-  //     dispatch({
-  //       type: LOAD_ALLUSER_REQUEST,
-  //       lastId_list,
-  //     });
-  //   }
-  // }, []);
-
   return (
     <CradWrapper>
       <Card.Meta
         avatar={
           <Link href={`/user/${follow.id}`}>
             <a>
-              {/* <Avatar src={src}>{follow.nickname[0]}</Avatar> */}
-              <Avatar>{follow.nickname[0]}</Avatar>
+              <Avatar src={src}>{follow.nickname[0]}</Avatar>
             </a>
           </Link>
         }
