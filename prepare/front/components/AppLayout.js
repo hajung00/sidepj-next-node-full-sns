@@ -346,14 +346,6 @@ function AppLayout({ children }) {
     Router.push('/');
   }, []);
 
-  // useEffect(() => {
-  //   if (me) {
-  //     dispatch({
-  //       type: LOAD_MY_INFO_REQUEST,
-  //     });
-  //   }
-  // }, []);
-
   useEffect(() => {
     const lastId_list = recommendFollowList.length;
     const lastId_hash = hashTag.length;
@@ -370,7 +362,7 @@ function AppLayout({ children }) {
     });
 
     setShowMore(true);
-  }, [me]);
+  }, [me, hashTag.length]);
 
   console.log(hashTag);
   return (

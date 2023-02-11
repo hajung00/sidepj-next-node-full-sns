@@ -63,24 +63,30 @@ function PostCard({ post }) {
     }
   });
   // 좋아요 부분 눌렀을 때 토글
-  const onLike = useCallback(() => {
-    if (!id) {
-      return alert('로그인이 필요합니다.');
-    }
-    return dispatch({
-      type: LIKE_POST_REQUEST,
-      data: post.id,
-    });
-  }, [id]);
-  const onUnLike = useCallback(() => {
-    if (!id) {
-      return alert('로그인이 필요합니다.');
-    }
-    return dispatch({
-      type: UNLIKE_POST_REQUEST,
-      data: post.id,
-    });
-  }, [id]);
+  const onLike = useCallback(
+    (postId) => {
+      if (!id) {
+        return alert('로그인이 필요합니다.');
+      }
+      return dispatch({
+        type: LIKE_POST_REQUEST,
+        data: postId,
+      });
+    },
+    [id]
+  );
+  const onUnLike = useCallback(
+    (postId) => {
+      if (!id) {
+        return alert('로그인이 필요합니다.');
+      }
+      return dispatch({
+        type: UNLIKE_POST_REQUEST,
+        data: postId,
+      });
+    },
+    [id]
+  );
 
   // 댓글 부분 눌렀을 때 토글
   const [commentFormOpened, setCommentFormOpened] = useState(false);
@@ -158,10 +164,17 @@ function PostCard({ post }) {
             <HeartTwoTone
               key='heart'
               twoToneColor='#eb2f96'
-              onClick={onUnLike}
+              onClick={() => {
+                onUnLike(post.id);
+              }}
             />
           ) : (
-            <HeartOutlined key='heart' onClick={onLike} />
+            <HeartOutlined
+              key='heart'
+              onClick={() => {
+                onLike(post.id);
+              }}
+            />
           ),
 
           //댓글 버튼 누르면 댓글부분 열리게
@@ -233,15 +246,11 @@ function PostCard({ post }) {
               avatar={
                 <Link href={`/user/${post.User.id}`}>
                   <a>
-                    <Avatar
-                      src={
-                        post.User.image
-                          ? `${backUrl}/${post.User.image}`
-                          : 'null'
-                      }
-                    >
-                      {post.User.nickname[0]}
-                    </Avatar>
+                    {post.User.image ? (
+                      <Avatar src={`${backUrl}/${post.User.image}`}></Avatar>
+                    ) : (
+                      <Avatar>{post.User.nickname[0]}</Avatar>
+                    )}
                   </a>
                 </Link>
               }
@@ -270,7 +279,15 @@ function PostCard({ post }) {
                   avatar={
                     <Link href={`/user/${item.User.id}`}>
                       <a>
-                        <Avatar src={src}>{item.User.nickname[0]}</Avatar>
+                        <Avatar
+                          src={
+                            item.User.image
+                              ? `${backUrl}/${item.User.image}`
+                              : ''
+                          }
+                        >
+                          {item.User.nickname[0]}
+                        </Avatar>
                       </a>
                     </Link>
                   }

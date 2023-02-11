@@ -72,13 +72,13 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
           include: [
             {
               model: User,
-              attributes: ['id', 'nickname'],
+              attributes: ['id', 'nickname', 'image'],
             },
           ],
         },
         {
           model: User,
-          attributes: ['id', 'nickname'],
+          attributes: ['id', 'nickname', 'image'],
         },
         {
           model: User,
@@ -197,7 +197,7 @@ router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {
           include: [
             {
               model: User,
-              attributes: ['id', 'nickname'],
+              attributes: ['id', 'nickname', 'image'],
             },
             {
               model: Image,
@@ -206,7 +206,7 @@ router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {
         },
         {
           model: User,
-          attributes: ['id', 'nickname'],
+          attributes: ['id', 'nickname', 'image'],
         },
         {
           model: Image,
@@ -216,7 +216,7 @@ router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {
           include: [
             {
               model: User,
-              attributes: ['id', 'nickname'],
+              attributes: ['id', 'nickname', 'image'],
             },
           ],
         },
