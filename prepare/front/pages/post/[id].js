@@ -67,7 +67,7 @@ const Post = () => {
         <meta property='og:description' content={singlePost.content} />
         <meta
           property='og:image'
-          content={singlePost.Images[0] ? singlePost.Images.src[0] : ''}
+          content={singlePost.Images[0] ? singlePost.Images.src : ''}
         />
         <meta property='og:url' content={`https://hajungsns.com/post/${id}`} />
       </Head>
