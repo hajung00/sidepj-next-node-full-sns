@@ -15,6 +15,7 @@ import PostCard from '../../components/PostCard';
 import wrapper from '../../store/configureStore';
 import AppLayout from '../../components/AppLayout';
 import Head from 'next/head';
+import { backUrl } from '../../config/config';
 
 const Hashtag = () => {
   const dispatch = useDispatch();
@@ -119,7 +120,13 @@ const Hashtag = () => {
           ]}
         >
           <Card.Meta
-            avatar={<Avatar>{me.nickname[0]}</Avatar>}
+            avatar={
+              me.image ? (
+                <Avatar src={`${backUrl}/${me.image}`}></Avatar>
+              ) : (
+                <Avatar>{me.nickname[0]}</Avatar>
+              )
+            }
             title={me.nickname}
           />
         </Card>

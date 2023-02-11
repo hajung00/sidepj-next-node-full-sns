@@ -35,14 +35,6 @@ const CradWrapper = styled(Card)`
 function FollowlistComponent({ follow }) {
   const dispatch = useDispatch();
   const { me, recommendFollowList } = useSelector((state) => state.user);
-  const [src, setSrc] = useState('');
-  useEffect(() => {
-    if (me) {
-      setSrc(`${backUrl}/${follow.image}`);
-    } else {
-      setSrc('');
-    }
-  }, []);
 
   const requestFollow = () => {
     dispatch({
@@ -57,7 +49,11 @@ function FollowlistComponent({ follow }) {
         avatar={
           <Link href={`/user/${follow.id}`}>
             <a>
-              <Avatar src={src}>{follow.nickname[0]}</Avatar>
+              {follow.image ? (
+                <Avatar src={`${backUrl}/${follow.image}`}></Avatar>
+              ) : (
+                <Avatar>{follow.nickname[0]}</Avatar>
+              )}
             </a>
           </Link>
         }

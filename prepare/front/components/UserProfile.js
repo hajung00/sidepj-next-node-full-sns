@@ -33,7 +33,11 @@ const UserProfile = ({ title, main }) => {
             avatar={
               <Link href={`/user/${me.id}`}>
                 <a>
-                  <Avatar src={src}>{me.nickname[0]}</Avatar>
+                  {me.image ? (
+                    <Avatar src={`${backUrl}/${me.image}`}></Avatar>
+                  ) : (
+                    <Avatar>{me.nickname[0]}</Avatar>
+                  )}
                 </a>
               </Link>
             }
@@ -77,7 +81,11 @@ const UserProfile = ({ title, main }) => {
             avatar={
               <Link href={`/user/${me.id}`}>
                 <a>
-                  <Avatar src={src}>{me.nickname[0]}</Avatar>
+                  {me.image ? (
+                    <Avatar src={`${backUrl}/${me.image}`}></Avatar>
+                  ) : (
+                    <Avatar>{me.nickname[0]}</Avatar>
+                  )}
                 </a>
               </Link>
             }

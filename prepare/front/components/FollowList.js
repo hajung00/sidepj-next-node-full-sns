@@ -77,9 +77,12 @@ function FollowList({ header, data, onClickMore, loading }) {
           <Card
             actions={[<StopOutlined key='stop' onClick={onCancel(item.id)} />]}
           >
-            <Avatar src={item.image != null ? `${backUrl}/${item.image}` : ''}>
-              {item.nickname[0]}
-            </Avatar>
+            {item.image ? (
+              <Avatar src={`${backUrl}/${item.image}`}></Avatar>
+            ) : (
+              <Avatar>{item.nickname[0]}</Avatar>
+            )}
+
             <Card.Meta description={item.nickname} />
           </Card>
         </List.Item>

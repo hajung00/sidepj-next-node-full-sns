@@ -51,17 +51,7 @@ function PostCard({ post }) {
     (state) => state.post
   );
   //console.log(me);
-  const [src_1, setSrc_1] = useState('');
 
-  useEffect(() => {
-    if (post.RetweetId && post.Retweet) {
-      if (post.Retweet.User.image !== null) {
-        setSrc_1(`${backUrl}/${post.Retweet.User.image}`);
-      } else {
-        setSrc_1('');
-      }
-    }
-  });
   // 좋아요 부분 눌렀을 때 토글
   const onLike = useCallback(
     (postId) => {
@@ -228,7 +218,13 @@ function PostCard({ post }) {
               avatar={
                 <Link href={`/user/${post.Retweet.User.id}`}>
                   <a>
-                    <Avatar src={src_1}>{post.Retweet.User.nickname[0]}</Avatar>
+                    {post.Retweet.User.image ? (
+                      <Avatar
+                        src={`${backUrl}/${post.Retweet.User.image}`}
+                      ></Avatar>
+                    ) : (
+                      <Avatar>{post.Retweet.User.nickname[0]}</Avatar>
+                    )}
                   </a>
                 </Link>
               }
@@ -279,15 +275,13 @@ function PostCard({ post }) {
                   avatar={
                     <Link href={`/user/${item.User.id}`}>
                       <a>
-                        <Avatar
-                          src={
-                            item.User.image
-                              ? `${backUrl}/${item.User.image}`
-                              : ''
-                          }
-                        >
-                          {item.User.nickname[0]}
-                        </Avatar>
+                        {item.User.image ? (
+                          <Avatar
+                            src={`${backUrl}/${item.User.image}`}
+                          ></Avatar>
+                        ) : (
+                          <Avatar>{item.User.nickname[0]}</Avatar>
+                        )}
                       </a>
                     </Link>
                   }

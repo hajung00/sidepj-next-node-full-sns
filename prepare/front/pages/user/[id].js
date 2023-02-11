@@ -94,13 +94,11 @@ const User = () => {
         >
           <Card.Meta
             avatar={
-              <Avatar
-                src={
-                  userInfo.image !== null ? `${backUrl}/${userInfo.image}` : ''
-                }
-              >
-                {userInfo.nickname[0]}
-              </Avatar>
+              userInfo.image ? (
+                <Avatar src={`${backUrl}/${userInfo.image}`}></Avatar>
+              ) : (
+                <Avatar>{userInfo.nickname[0]}</Avatar>
+              )
             }
             title={userInfo.nickname}
           />
