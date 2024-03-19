@@ -40,15 +40,6 @@ const Main = () => {
     }
   }, [accuseMessage]);
 
-  // useEffect(() => {
-  //   console.log('다시');
-  //   dispatch({
-  //     type: LOAD_RELATIVE_POSTS_REQUEST,
-  //   });
-  // }, [me.Followings.length]);
-
-  console.log('me/', me);
-  console.log(mainPosts);
   // scroll
   useEffect(() => {
     const onScroll = () => {

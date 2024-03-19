@@ -37,7 +37,8 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'http://hajungsns.com'],
+    origin: true,
+    // origin: ['http://localhost:3000', 'http://hajungsns.com'],
     credentials: true, //cookie 전달 허용
   })
 );
@@ -51,16 +52,26 @@ app.use(express.urlencoded({ extended: true }));
 // cookie: 로그인 되면 백앤드 서버에서 브라우저로 정보 전달해주는데 비밀번호 그냥 보내면 해킹에 취약해 랜덤한 문자열 생성
 // session: 백앤드 user의 전체 데이터(nickname, id, email ,,,)
 app.use(cookieParser(process.env.COOKIE_SECRET));
+
+// app.use(
+//   session({
+//     saveUninitialized: false,
+//     resave: false,
+//     secret: process.env.COOKIE_SECRET,
+//     proxy: true,
+//     cookie: {
+//       httpOnly: true,
+//       secure: false,
+//       domain: process.env.NODE_ENV === 'production' && '.hajungsns.com',
+//     },
+//   })
+// );
+
 app.use(
   session({
     saveUninitialized: false,
     resave: false,
     secret: process.env.COOKIE_SECRET,
-    cookie: {
-      httpOnly: true,
-      secure: false,
-      domain: process.env.NODE_ENV === 'production' && '.hajungsns.com',
-    },
   })
 );
 app.use(passport.initialize());
@@ -75,6 +86,6 @@ app.use('/posts', postsRouter);
 app.use('/user', userRouter);
 app.use('/hashtag', hashtagRouter);
 
-app.listen(80, () => {
+app.listen(3065, () => {
   console.log('서버 실행중!');
 });

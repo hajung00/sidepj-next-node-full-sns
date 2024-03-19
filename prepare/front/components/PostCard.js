@@ -139,6 +139,11 @@ function PostCard({ post }) {
   });
 
   console.log(accuseMessageReset, accuseMessage);
+  console.log(
+    post,
+    post.createdAt,
+    moment(post.createdAt).format('YYYY.MM.DD')
+  );
 
   return (
     <div style={{ marginBottom: '20px' }}>
@@ -211,7 +216,7 @@ function PostCard({ post }) {
             }
           >
             <div style={{ float: 'right' }}>
-              {moment(post.createAt).format('YYYY.MM.DD')}
+              {moment(post.createdAt).format('YYYY.MM.DD')}
             </div>
 
             <Card.Meta
@@ -236,7 +241,7 @@ function PostCard({ post }) {
         ) : (
           <>
             <div style={{ float: 'right' }}>
-              {moment(post.createAt).format('YYYY.MM.DD')}
+              {moment(post.createdAt).format('YYYY.MM.DD')}
             </div>
             <Card.Meta
               avatar={

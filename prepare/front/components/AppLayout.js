@@ -107,8 +107,9 @@ const Global = createGlobalStyle`
   // }
   .ant-col-md-4>.ant-card-bordered{
     position: fixed;
-    transform: translateX(9px);
+    transform: translateX(-1px);
     z-index: 4;
+    
   }
   .ant-menu-item-selected, .ant-menu-item-active{
     img {
@@ -133,7 +134,7 @@ const Global = createGlobalStyle`
     .ant-col:first-child {
     // -webkit-flex: 0 0 110px;
      ul{
-      max-width:90px;
+      max-width:80px !important;
      }
      ul li a:nth-of-type(2){
      display:none;
@@ -143,9 +144,15 @@ const Global = createGlobalStyle`
      }
     }
     .ant-col-md-4>.ant-card-bordered{
-     
-      max-width:82px;
-     
+      transform: translateX(0px)!important;
+      max-width:80px !important;;
+      
+      .ant-card-meta-avatar{
+        padding: 0;
+      }
+      .ant-card-meta-detail{
+        display:none;
+      }
     }
     .ant-col-md-4 {
       width:0px;
@@ -158,7 +165,7 @@ const Global = createGlobalStyle`
     }
     .ant-col:nth-child(2){
      min-width:583px;
-     margin-left:8%;
+    //  margin-left:8%;
     }
     .ant-col:last-child{
      display:none;
@@ -173,7 +180,7 @@ const Global = createGlobalStyle`
     .ant-col:first-child {
       // -webkit-flex: 0 0 110px;
       ul{
-        max-width:90px;
+        max-width:60px;
        }
       ul li a:nth-of-type(2){
       display:none;
@@ -183,8 +190,8 @@ const Global = createGlobalStyle`
       }
      }
      .ant-col-md-4>.ant-card-bordered{
-     
-      max-width:82px;
+      transform: translateX(-9px);
+      max-width:69px;
      
     }
      .ant-col-md-4 {
@@ -198,6 +205,28 @@ const Global = createGlobalStyle`
       display:none;
   }
 `;
+
+const ColCustom = styled(Col)`
+  .main-contents {
+    @media (max-width: 1024px) {
+      left: 12% !important;
+    }
+  }
+  .main-contents {
+    @media (max-width: 1200px) and (min-width: 768px) {
+      position: absolute;
+      left: 0 !important;
+      top: 0;
+      width: 100%;
+    }
+    @media (max-width: 767px) {
+      position: absolute;
+      left: 2% !important;
+      top: 0;
+      width: 94.5%;
+    }
+  }
+`;
 const MenuItem_wrapper = styled.div`
   img {
     width: 26px;
@@ -207,6 +236,12 @@ const MenuItem_wrapper = styled.div`
   font-size: 17px;
   font-weight: 600;
   margin: 10px 20px;
+  @media (max-width: 1200px) and (min-width: 768px) {
+    margin: 10px 14px;
+  }
+  @media (max-width: 767px) {
+    margin: 11px 3px;
+  }
   // 더보기 버튼
   div div {
     width: 23px;
@@ -493,13 +528,9 @@ function AppLayout({ children }) {
             </Menu.Item>
           </Menu>
         </Col>
-        <Col md={11}>
-          <div
-            style={{ position: 'absolute', left: '0', top: '0', width: '100%' }}
-          >
-            {children}
-          </div>
-        </Col>
+        <ColCustom md={11}>
+          <div className='main-contents'>{children}</div>
+        </ColCustom>
         <Col md={9}>
           {/* target _blank는 보안 위협이 있어서 rel과 같이 사용 
           어떤창에서 열었는지에 대한 정보를  noreferrer noopener로 보안 위협 방지*/}
