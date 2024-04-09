@@ -37,8 +37,7 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(
   cors({
-    origin: true,
-    // origin: ['http://localhost:3000', 'http://hajungsns.com'],
+    origin: ['http://localhost:3000', 'http://hajungsns.com'],
     credentials: true, //cookie 전달 허용
   })
 );
