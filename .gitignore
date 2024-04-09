@@ -134,7 +134,7 @@ typings/
 
 # Serverless directories
 .serverless
-react-full-sns.pem
+hajeong-sns.pem
 node_modules
 .env
 .next

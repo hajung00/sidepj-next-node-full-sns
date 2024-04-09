@@ -9,25 +9,18 @@ import { useSelector } from 'react-redux';
 import Router from 'next/router';
 
 const LoginWrapper = styled.div`
-  width: 100%;
-  height: 745px;
+  min-width: 350px;
+  height: 100vh;
+  margin: 0 auto;
 `;
-const MainImage = styled.div`
-  width: 50%;
-  height: 100%;
-  float: left;
-  background-image: url(images/login_back.png);
-  background-size: cover;
-  background-position: center;
-`;
+
 const LoginSubWrapper = styled.div`
-  padding-top: 5%;
-  padding-left: 7%;
-  width: 50%;
-  float: left;
+  padding: 3%;
   font-family: sans-serif;
   font-weight: bold;
   height: 100%;
+
+  background: #f0f2f5;
 `;
 
 const Login = () => {
@@ -43,14 +36,7 @@ const Login = () => {
   return (
     <>
       <LoginWrapper>
-        <MainImage></MainImage>
         <LoginSubWrapper>
-          <h1 style={{ fontWeight: 'bolder', fontSize: '3rem' }}>
-            지금 일어나고 있는 일
-          </h1>
-          <h2 style={{ fontWeight: 'bolder', fontSize: '2rem' }}>
-            오늘 SNS에 가입하세요.
-          </h2>
           <LoginForm />
         </LoginSubWrapper>
       </LoginWrapper>

@@ -13,39 +13,49 @@ import {
 import Router from 'next/router';
 import Link from 'next/link';
 
-const MainImage = styled.div`
-  width: 50%;
-  height: 100%;
-  float: left;
-  background-image: url(images/login_back.png);
-  background-size: cover;
-  background-position: center;
-`;
-
 const ErrorMessage = styled.div`
   color: red;
 `;
 
 const SignupPageWrapper = styled.div`
   width: 100%;
-  height: 745px;
-  float: left;
+  padding: 2% 0;
+  background: #f0f2f5;
 `;
 const SignUpFormWrapper = styled.div`
-  width: 50%;
-  height: 80%;
-  float: left;
-  padding-left: 14%;
-  padding-top: 4%;
+  min-width: 350px;
   font-family: sans-serif;
   font-weight: bold;
+  height: 100%;
+  width: 350px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const FormWrapper = styled(Form)`
   padding: 15px;
-  border: 1px solid gray;
-  width: 300px;
+  border: 1px solid rgb(219, 219, 219);
   text-align: center;
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+  background: #fff;
+
+  .logo {
+    background-image: url(images/logo.png);
+    background-size: cover;
+    background-position: center;
+    height: 205px;
+  }
+
+  & > h1 {
+    font-weight: 600;
+    font-size: 16px;
+    color: #737373;
+    margin-bottom: 1.9rem;
+  }
 `;
 
 const InputWrapper = styled.div`
@@ -53,11 +63,13 @@ const InputWrapper = styled.div`
 `;
 
 const SignupWrapper = styled.div`
-  width: 300px;
   padding: 20px 20px;
   margin-top: 30px;
-  border: 1px solid gray;
+  border: 1px solid rgb(219, 219, 219);
   text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+  background: #fff;
 `;
 
 const Signup = () => {
@@ -176,7 +188,6 @@ const Signup = () => {
 
   return (
     <SignupPageWrapper>
-      <MainImage />
       <SignUpFormWrapper>
         <Head>
           <title>회원가입</title>
@@ -185,7 +196,11 @@ const Signup = () => {
         {/* 가입하기 버튼 누르면 submit되어 onFinish 실행 */}
 
         <FormWrapper onFinish={onSubmit}>
-          <h1>Signup</h1>
+          <div className='logo'></div>
+          <h1>
+            친구들의 사진과 동영상을 보려면
+            <br /> 가입하세요.
+          </h1>
           <InputWrapper>
             <label htmlFor='user-email'>프로필 사진</label>
             <div>

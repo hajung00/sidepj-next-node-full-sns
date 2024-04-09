@@ -14,17 +14,29 @@ import Router from 'next/router';
 // `;
 
 const LoginFormWrapper = styled.div`
-  width: 300px;
-  height: 500px;
-  padding-top: 5%;
-  float: left;
+  min-width: 350px;
+  margin: 0 auto;
+  max-width: 350px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const FormWrapper = styled(Form)`
   padding: 15px;
-  border: 1px solid gray;
+  border: 1px solid rgb(219, 219, 219);
   width: 100%;
   text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  .logo {
+    background-image: url(images/logo.png);
+    background-size: cover;
+    background-position: center;
+    height: 205px;
+  }
 `;
 
 const LoginButton = styled(Button)`
@@ -36,8 +48,11 @@ const SignupWrapper = styled.div`
   width: 100%;
   padding: 12px;
   margin-top: 30px;
-  border: 1px solid gray;
+  border: 1px solid rgb(219, 219, 219);
   text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+  background: #fff;
 `;
 
 function LoginForm() {
@@ -62,7 +77,8 @@ function LoginForm() {
   return (
     <LoginFormWrapper>
       <FormWrapper onFinish={onSubmitForm}>
-        <h1>Login</h1>
+        <div className='logo'></div>
+
         <div>
           <label htmlFor='user-id' type='email'>
             이메일

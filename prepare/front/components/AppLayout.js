@@ -289,6 +289,7 @@ const LogoutBtn = styled.button`
   border: 1px solid #f0f0f0;
   box-shadow: 3px 3px 4px 1px #f0f0f0;
   border-radius: 5px;
+  cursor: pointer;
   :hover {
     background-color: #f0f0f0;
     transition: all 0.1s;
@@ -465,21 +466,21 @@ function AppLayout({ children }) {
             <Menu.Item style={{ height: 'auto' }}>
               <MenuItem_wrapper>
                 <>
-                  <Link href='#none'>
+                  {/* <Link href='#none'>
                     <a>
                       <img src={process.env.PUBLIC_URL + '/images/alarm.jpg'} />
                     </a>
                   </Link>
                   <Link href='#none'>
                     <a>알림</a>
-                  </Link>
+                  </Link> */}
                 </>
               </MenuItem_wrapper>
             </Menu.Item>
             <Menu.Item style={{ height: 'auto', position: 'relative' }}>
               <MenuItem_wrapper>
                 <>
-                  <Link href='#none'>
+                  {/* <Link href='#none'>
                     <a>
                       <img
                         src={process.env.PUBLIC_URL + '/images/message.jpg'}
@@ -488,7 +489,7 @@ function AppLayout({ children }) {
                   </Link>
                   <Link href='#none'>
                     <a>쪽지</a>
-                  </Link>
+                  </Link> */}
                 </>
               </MenuItem_wrapper>
             </Menu.Item>
@@ -544,6 +545,7 @@ function AppLayout({ children }) {
             <span>Trends for you</span>
             {hashTag.map((hash, i) => (
               <HashList
+                key={i}
                 onClick={() => {
                   onHashClick(hash);
                 }}
