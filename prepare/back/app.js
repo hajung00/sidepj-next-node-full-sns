@@ -37,7 +37,7 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'http://hajungsns.com'],
+    origin: ['http://localhost:3000', 'http://hajungsns.shop'],
     credentials: true, //cookie 전달 허용
   })
 );
@@ -52,27 +52,30 @@ app.use(express.urlencoded({ extended: true }));
 // session: 백앤드 user의 전체 데이터(nickname, id, email ,,,)
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
-// app.use(
-//   session({
-//     saveUninitialized: false,
-//     resave: false,
-//     secret: process.env.COOKIE_SECRET,
-//     proxy: true,
-//     cookie: {
-//       httpOnly: true,
-//       secure: false,
-//       domain: process.env.NODE_ENV === 'production' && '.hajungsns.com',
-//     },
-//   })
-// );
-
+// 배포
 app.use(
   session({
     saveUninitialized: false,
     resave: false,
     secret: process.env.COOKIE_SECRET,
+    proxy: true,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+      domain: process.env.NODE_ENV === 'production' && '.hajungsns.shop',
+    },
   })
 );
+
+// local환경
+// app.use(
+//   session({
+//     saveUninitialized: false,
+//     resave: false,
+//     secret: process.env.COOKIE_SECRET,
+//   })
+// );
+
 app.use(passport.initialize());
 app.use(passport.session());
 
