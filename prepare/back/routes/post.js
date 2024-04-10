@@ -21,16 +21,15 @@ AWS.config.update({
   secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
   region: 'ap-northeast-2',
 });
-
 const upload = multer({
   storage: multerS3({
     s3: new AWS.S3(),
     bucket: 'hajungsns',
     key(req, file, cb) {
-      cb(null, `original/${Date.now()}+${path.basename(file.originalname)}`);
+      cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`);
     },
   }),
-  limits: { fileSize: 20 * 1024 * 1024 },
+  limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
 });
 
 //POST /post
