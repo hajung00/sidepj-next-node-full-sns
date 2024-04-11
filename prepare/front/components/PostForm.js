@@ -143,11 +143,7 @@ function PostForm() {
         </PostWrapper>
         {imagePaths.map((y, i) => (
           <div key={y} style={{ display: 'inline-block' }}>
-            <img
-              src={y.replace(/\/thumb\//, '/original/')}
-              style={{ width: '200px' }}
-              alt={y}
-            />
+            <img src={y} style={{ width: '200px' }} alt={y} />
             <div>
               <Button
                 onClick={onRemoveImage(i)}

@@ -35,10 +35,7 @@ function ImagesZoom({ images, onClose }) {
           >
             {images.map((image) => (
               <ImgWrapper key={image.src}>
-                <img
-                  src={`${image.src.replace(/\/thumb\//, '/original/')}`}
-                  alt={image.src}
-                />
+                <img src={`${image.src}`} alt={image.src} />
               </ImgWrapper>
             ))}
           </Slider>
